@@ -1,0 +1,39 @@
+.button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1rem;
+    /* margin-top: 0.5rem; */
+}
+
+.modal-header {
+    display: flex;
+    /* flex-flow: column; */
+    flex-direction: column;
+
+
+}
+
+.modal-header-div {
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    text-align: center;
+}
+
+.modal-body-div {
+    display: flex;
+    /* flex-flow: column; */
+    flex-direction: column;
+    text-align: left;
+
+
+}
+
+.modal-body-div-buttom{
+    margin-top: 10px;
+}
+
+.modal-footer-yo{
+    
+    justify-content: center !important;
+}

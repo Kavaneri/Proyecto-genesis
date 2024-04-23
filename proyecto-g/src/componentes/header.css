@@ -1,0 +1,91 @@
+.header-bg {
+    /* ff 3.6+ */
+    background: -moz-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* safari 5.1+,chrome 10+ */
+    background: -webkit-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* opera 11.10+ */
+    background: -o-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* ie 6-9 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#459F58', endColorstr='#2A9391', GradientType=0);
+
+    /* ie 10+ */
+    background: -ms-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* global 94%+ browsers support */
+    background: linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    position: relative;
+
+}
+
+/* .offcanvas {
+    width: 20% !important;
+} */
+
+.offcanvas-header {
+    background-color: rgba(42, 147, 97, 1);
+}
+
+.offcanvas-body {
+    /* ff 3.6+ */
+    background: -moz-linear-gradient(180deg, rgba(42, 147, 97, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* safari 5.1+,chrome 10+ */
+    background: -webkit-linear-gradient(180deg, rgba(42, 147, 97, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* opera 11.10+ */
+    background: -o-linear-gradient(180deg, rgba(42, 147, 97, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* ie 6-9 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#459F58', endColorstr='#2A9361', GradientType=1);
+
+    /* ie 10+ */
+    background: -ms-linear-gradient(180deg, rgba(42, 147, 97, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* global 94%+ browsers support */
+    background: linear-gradient(180deg, rgba(42, 147, 97, 1) 0%, rgba(69, 159, 88, 1) 100%);
+}
+
+.navbar-form{
+    margin-right: 20px;
+}
+
+.navbar-form button {
+    margin-left: -52px;
+
+}
+
+.div-user{
+    cursor: pointer;
+}
+
+.header-brand {
+ position: absolute;
+ margin-left: 70px;
+}
+
+/* .col-cart{
+    position: relative;
+} */
+
+.div-img{
+    position: absolute;
+    bottom: 7px;
+    right: 15px;
+}
+
+/* .nav-item-text {
+    color: white;
+    font-size: large;
+    text-align: center;
+}
+
+.dropdown-text {
+    color: white;
+    font-size: large;
+    text-align: center;
+    white-space: nowrap;
+} */

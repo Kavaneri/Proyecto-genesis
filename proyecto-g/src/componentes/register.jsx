@@ -6,8 +6,40 @@ import img2 from './imagenes/dia-del-gato-la-merced.jpg'
 import img3 from './imagenes/servicios-la-merced.jpg'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod'
+
+
+let regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+
+const schema = z.object({
+    nombre: z.string().min(1),
+    apellidos: z.string().min(1),
+    email: z.string().email({message: "Correo invalido"}),
+    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex, {message: "La contraseña debe contener al menos una letra en mayuscula, una en minuscula y un caracter especial"}),
+    confirmPassword: z.string().min(8)
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Las contraseñas no conciden",
+    path:["confirmPassword"],
+});
 
 export default function Register() {
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
+
+    const onSubmit = async (data) => {
+        try{
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            throw new Error()
+            console.log(data);
+        }catch (error){
+            setError("root",{
+                message: "Correo o contraseña incorrectos"
+            })
+        }
+       
+    }
+
     return (
         <div className='formulario-div'>
             <Container className='formulario-div-container'>
@@ -19,16 +51,18 @@ export default function Register() {
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>
-                            <Form>
+                            <Form onSubmit={handleSubmit(onSubmit)}>
                                 <Row className="mb-3">
                                     <FormGroup as={Col} controlId='formGridName'>
                                         <FormLabel>Nombre</FormLabel>
-                                        <Form.Control />
+                                        <Form.Control {...register("nombre")} required />
+                                        {errors.nombre && (<div style={{color:"red"}}>{errors.nombre.message}</div>)}
                                     </FormGroup>
 
                                     <FormGroup as={Col} controlId='formGridSurname'>
                                         <FormLabel>Apellidos</FormLabel>
-                                        <Form.Control />
+                                        <Form.Control {...register("apellidos")} required />
+                                        {errors.apellidos && (<div style={{color:"red"}}>{errors.apellidos.message}</div>)}
                                     </FormGroup>
                                 </Row>
 
@@ -36,21 +70,29 @@ export default function Register() {
 
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control type="email" placeholder="Example@hotmail.com" />
+                                        <Form.Control {...register("email")} type="email" placeholder="Example@hotmail.com" required />
+                                        {errors.email && (<div style={{color:"red"}}>{errors.email.message}</div>)}
                                     </FormGroup>
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl type='password' />
+                                        <FormControl {...register("password")} type='password' required />
+                                        {errors.password && (<p role='alert' style={{color:"red"}}>{errors.password.message}</p >)}
                                     </FormGroup>
 
-                                    <FormGroup className='mb-4' controlId='formGridPassword'>
+                                    <FormGroup className='mb-4' controlId='formGridConfirmPassword'>
                                         <FormLabel>Confirma tu contraseña</FormLabel>
-                                        <FormControl type='password' />
+                                        <FormControl {...register("confirmPassword")} type='password' required />
+                                        {errors.confirmPassword && (<p role='alert' style={{color:"red"}}>{errors.confirmPassword.message}</p>)}
                                     </FormGroup>
 
                                     <div className='text-center pt-1 mb-5 pb-1 '>
-                                        <Button className='mb-4 w-100 gradient-custom-2' variant='secondary' type='submit'>Crear cuenta</Button>
+                                        <Button 
+                                        className='mb-4 w-100 gradient-custom-2' v
+                                        ariant='secondary' 
+                                        type='submit'
+                                        disabled={isSubmitting}
+                                         >{isSubmitting ? "Espere..." : "Crear Cuenta"}</Button>
                                     </div>
 
                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">

@@ -6,17 +6,27 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod'
 
+const regexPassword = "/^[a-zA-Z0-9!@#$%^&*]{6,16}$/"
+
 const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8)
+    email: z.string().email({message: "Correo invalido"}),
+    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regexPassword)
 })
 
 export default function Login() {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
 
     const onSubmit = async (data) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log(data);
+        try{
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            throw new Error()
+            console.log(data);
+        }catch (error){
+            setError("root",{
+                message: "Correo o contraseña incorrectos"
+            })
+        }
+       
     }
 
     return (
@@ -34,15 +44,15 @@ export default function Login() {
                                 <Row>
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email", {required: "El correo es obligatorio",})} type="email" placeholder="Example@hotmail.com" />
-                                        {errors.email && (<div>{errors.email.message}</div>)}
+                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" />
+                                        {errors.email && (<div style={{color:"red"}}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password", {required: "La contraseña es obligatoria"})} type='password' />
-                                        {errors.password && (<div>{errors.password.message}</div>)}
+                                        <FormControl {...register("password")} required type='password' />
+                                        {errors.password && (<div style={{color:"red"}}>{errors.password.message}</div>)}
                                     </FormGroup>
 
                                     <FormGroup className='mb-4' id='formGridCheckox'>
@@ -57,6 +67,8 @@ export default function Login() {
                                             disabled={isSubmitting}>
                                             {isSubmitting ? "Espere..." : "Iniciar Sesión"}
                                         </Button>
+                                        {errors.root && (<div>{errors.root.message}</div>)}
+
                                         <a className='text-muted text-center forgotten-password' href='#!'>¿Olvidaste tu contraseña?</a>
                                     </div>
 

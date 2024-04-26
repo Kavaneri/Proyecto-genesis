@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod'
 
-const regexPassword = "/^[a-zA-Z0-9!@#$%^&*]{6,16}$/"
+let regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
 
 const schema = z.object({
     email: z.string().email({message: "Correo invalido"}),
-    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regexPassword)
+    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex)
 })
 
 export default function Login() {

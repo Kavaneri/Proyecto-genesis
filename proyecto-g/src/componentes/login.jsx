@@ -1,5 +1,6 @@
 import React from 'react'
 import './login.css'
+import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -37,6 +38,7 @@ export default function Login() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
+                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px"/>
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>

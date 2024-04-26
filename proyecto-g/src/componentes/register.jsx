@@ -1,9 +1,6 @@
 import React from 'react'
 import './login.css'
-import Carousel from 'react-bootstrap/Carousel';
-import img1 from './imagenes/promo-la-merced.jpg'
-import img2 from './imagenes/dia-del-gato-la-merced.jpg'
-import img3 from './imagenes/servicios-la-merced.jpg'
+import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -17,6 +14,17 @@ const schema = z.object({
     nombre: z.string().min(1),
     apellidos: z.string().min(1),
     email: z.string().email({message: "Correo invalido"}),
+
+    nuip: z.coerce.number()
+    .int()
+    .min(10000000,{message: "El número de identificación debe contener mínimo 8 cifras"})
+    .max(9999999999,{message: "El número de identificación debe contener máximo 10 cifras"}),
+
+    telefono: z.coerce.number()
+    .int()
+    .min(1000000, {message: "El número de identificación debe contener mínimo 8 cifras"})
+    .max(9999999999,{message: "El número de identificación debe contener máximo 10 cifras"}),
+
     password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex, {message: "La contraseña debe contener al menos una letra en mayuscula, una en minuscula y un caracter especial"}),
     confirmPassword: z.string().min(8)
 }).refine((data) => data.password === data.confirmPassword, {
@@ -48,6 +56,7 @@ export default function Register() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
+                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px"/>
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>
@@ -67,6 +76,18 @@ export default function Register() {
                                 </Row>
 
                                 <Row>
+
+                                    <FormGroup as={Col} controlId='formGridId' >
+                                        <FormLabel>Número de identificación</FormLabel>
+                                        <Form.Control {...register("nuip")} required/>
+                                        {errors.nuip && (<div style={{color:"red"}}>{errors.nuip.message}</div>)}
+                                    </FormGroup>
+
+                                    <FormGroup as={Col} controlId='formGridPhoneNumber' >
+                                        <FormLabel>Telefono</FormLabel>
+                                        <Form.Control {...register("telefono")} required/>
+                                        {errors.telefono && (<div style={{color:"red"}}>{errors.telefono.message}</div>)}
+                                    </FormGroup>
 
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>

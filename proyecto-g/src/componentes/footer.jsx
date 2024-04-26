@@ -3,6 +3,7 @@ import logo from './Logo la merced.png'
 import facebook from './iconos/facebook.svg'
 import instagram from './iconos/instagram.svg'
 import whatsapp from './iconos/WhatsApp (2).svg'
+import mapPinPoint from './iconos/map-pinpoint.svg'
 import './footer.css'
 
 export default function Footer() {
@@ -14,20 +15,7 @@ export default function Footer() {
                     <p>Calle 56 # 28-12 Esquina B/ Mirriñao, Palmira</p>
                 </div>
                 <div className='footer-links-div'>
-                    <h4>Redes sociales</h4>
-{/* 
-                    <ul>
-                        <li><a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA'>
-                            Facebook
-                            </a></li>
-                        <li><a href='https://www.instagram.com/veterinarialamerced/'>
-                            Instagram</a></li>
-                        <li><a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA'>
-                            WhatsApp</a></li>
-                    </ul> */}
-                  
-
-
+                    <h4>Siguenos</h4>
                     <a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA' target='_blank'>
                         <img src={facebook} alt='icono Facebook' />
                         Facebook
@@ -45,25 +33,22 @@ export default function Footer() {
                         <img alt="Chat on WhatsApp" src="WhatsAppButtonGreenLarge.svg" />
                     </a> 
                     */}
+
+
+                </div>
+                <div className='footer-links-div'>
+                    <h4>Contáctanos</h4>
                     <a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA' target='_blank'>
                         <img src={whatsapp} alt='icono Whatsapp' />
                         WhatsApp
                     </a>
-
                 </div>
                 <div className='footer-links-div'>
-                    <h4>Compañia</h4>
-                    <p>Redes</p>
-                    <p>Redes</p>
-                    <p>Redes</p>
-                    <p>Redes</p>
-                </div>
-                <div className='footer-links-div'>
-                    <h4>Contactenos</h4>
-                    <p>Redes</p>
-                    <p>Redes</p>
-                    <p>Redes</p>
-                    <p>Redes</p>
+                    <h4>Visitanos</h4>
+                    <a href='https://maps.app.goo.gl/e9cvtQSzCiyG9ppp8' target='_blank'>
+                        <img src={mapPinPoint} alt="Puntero de mapa" />
+                        Clinica veterinaria La merced
+                    </a>
                 </div>
             </div>
             <div className='footer-derechos'>

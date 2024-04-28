@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useContext, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
 
 import login from './iconos/login.svg'
 import carrito from './iconos/carrito2.svg';
@@ -21,6 +22,7 @@ import pqrs from './iconos/pqrs2.svg'
 import './header.css'
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom';
+import { ShopContext } from './context-shop/context-shop';
 
 export default function Cabecera() {
 
@@ -29,66 +31,67 @@ export default function Cabecera() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const {getCantidadProductos} = useContext(ShopContext)
+    const cantidadProductos = getCantidadProductos()
+
     return (
         <>
             {['false'].map((expand) => (
                 <Navbar key={expand} expand={expand} className="bg-body-tertiary header-bg" sticky='true'>
-                    <Container fluid>
-                        <Stack direction='horizontal' gap={3}>
-                            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-                            <Navbar.Offcanvas
-                                id={`offcanvasNavbar-expand-${expand}`}
-                                aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-                                placement="start"
-                                scroll='true'
-                                className='offcanvas'>
-                                <Offcanvas.Header closeButton>
-                                    <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                                        <Navbar.Brand className='header-brand' href="#">
-                                            <img
-                                                alt=""
-                                                src={logo}
-                                                width="30"
-                                                height="30"
-                                                className="d-inline-block align-top" />{' '}
-                                                Menú
-                                            </Navbar.Brand>
-                                    </Offcanvas.Title>
-                                </Offcanvas.Header>
-                                <Offcanvas.Body>
-                                    <Nav>
-                                        <Nav.Item>
-                                            <Nav.Link href="/"><img src={inicio} alt='inicio' /> Inicio</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link href="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link href='/pqrs'><img src={pqrs} alt='pqrs' /> PQRS</Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                    <Container>
-                                        <Row>
-                                            {/* <Col><img src={instagram} alt="instagram" /></Col>
+                    <Container >
+                        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+                        <Navbar.Offcanvas
+                            id={`offcanvasNavbar-expand-${expand}`}
+                            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+                            placement="start"
+                            scroll='true'
+                            className='offcanvas'>
+                            <Offcanvas.Header closeButton>
+                                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                                    <Navbar.Brand className='header-brand' href="#">
+                                        <img
+                                            alt=""
+                                            src={logo}
+                                            width="30"
+                                            height="30"
+                                            className="d-inline-block align-top" />{' '}
+                                        Menú
+                                    </Navbar.Brand>
+                                </Offcanvas.Title>
+                            </Offcanvas.Header>
+                            <Offcanvas.Body>
+                                <Nav>
+                                    <Nav.Item>
+                                        <Nav.Link href="/"><img src={inicio} alt='inicio' /> Inicio</Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link href="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link href='/pqrs'><img src={pqrs} alt='pqrs' /> PQRS</Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                                <Container>
+                                    <Row>
+                                        {/* <Col><img src={instagram} alt="instagram" /></Col>
                                             <Col><img src={facebook} alt="facebook" /></Col>
                                             <Col><img src={whatsapp} alt="whatsapp" /></Col>
                                             <Col><img src={instagram} alt="instagram" /></Col> */}
-                                        </Row>
+                                    </Row>
 
-                                    </Container>
-                                </Offcanvas.Body>
-                            </Navbar.Offcanvas>
-                            <Navbar.Brand className='header-brand' href='/'>
-                                <img
-                                    alt=""
-                                    src={logo}
-                                    width="30"
-                                    height="30"
-                                    className="d-inline-block align-top" />{' '}
-                                </Navbar.Brand>
-                        </Stack>
-                        <Row>
-                            <Col lg={9}>
+                                </Container>
+                            </Offcanvas.Body>
+                        </Navbar.Offcanvas>
+                        <Navbar.Brand className='header-brand' href='/'>
+                            <img
+                                alt=""
+                                src={logo}
+                                width="30"
+                                height="30"
+                                className="d-inline-block align-top" />{' '}
+                        </Navbar.Brand>
+                        <Row className='justifu-content-center'>
+                            {/* <Col>
                                 <Form className="d-flex navbar-form ">
                                     <Form.Control
                                         type="search"
@@ -112,16 +115,17 @@ export default function Cabecera() {
                                         </svg>
                                     </Button>
                                 </Form>
-                            </Col>
-                            <Col lg={2}>
+                            </Col> */}
+                            <Col>
                                 <UserModal />
                             </Col>
-
-                            <Link to='/Carrito'>
-                                <div className='div-img'>
-                                    <img src={carrito} alt="carro de compras" />
-                                </div>
-                            </Link>
+                            <Col className='column-cart'>
+                                    <Link to='/Carrito' >
+                                        <div className='div-img position-relative'>
+                                            <img src={carrito} alt="carro de compras" /><Badge  className='badge' bg="danger">{cantidadProductos}</Badge>
+                                        </div>
+                                    </Link>
+                            </Col>
                         </Row>
                     </Container>
                 </Navbar>

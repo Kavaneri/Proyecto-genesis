@@ -17,8 +17,8 @@ import CardHeader from 'react-bootstrap/esm/CardHeader';
 
 export default function Carrito() {
 
-  const { detalleCompra } = useContext(ShopContext)
-
+  const { detalleCompra, getSubtotalProductos } = useContext(ShopContext)
+  const cant = getSubtotalProductos()
   return (
     <>
       <Cabecera />
@@ -41,7 +41,7 @@ export default function Carrito() {
                       <CardBody>
                         <CardHeader><strong>Resumen</strong></CardHeader>
                         <CardText className='d-flex flex-column'>
-                          <p className='fw-light'>Cantidad de productos</p>     
+                          <p className='fw-light'>Cantidad de productos ${cant}</p>     
                           <p className='fw-light'>Envio</p>                    
                           <p className='fw-light'>Total</p>                      
                         </CardText>

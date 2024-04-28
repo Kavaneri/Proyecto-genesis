@@ -11,6 +11,8 @@ const getDetalleCompra = () =>{
     return detalle
 }
 
+
+
 export const ShopContextProvider = ({children}) => {
 
     const[detalleCompra, setDetalleCompra] = useState(getDetalleCompra());
@@ -19,7 +21,29 @@ export const ShopContextProvider = ({children}) => {
         setDetalleCompra((prev) => ({...prev , [productoId]: prev[productoId] + 1}))
     }
 
-    const contextValue = {detalleCompra, agregarProducto}
+    const getCantidadProductos = () =>{
+        let cantidad = 0
+        for(const item in detalleCompra){
+            if(detalleCompra[item] > 0){
+                // let itemInfo = PRODUCTS.find((product) => product.id === Number(item))
+                cantidad += detalleCompra[item]
+            }
+        }
+        return cantidad
+    }
+
+    const getSubtotalProductos = () =>{
+        let cantidad = 0
+        for(const item in detalleCompra){
+            if(detalleCompra[item] > 0){
+                let itemInfo = PRODUCTS.find((product) => product.id === Number(item))
+                cantidad += detalleCompra[item] * itemInfo.precio
+            }
+        }
+        return cantidad
+    }
+
+    const contextValue = {detalleCompra, agregarProducto, getSubtotalProductos, getCantidadProductos}
 
     console.log(detalleCompra)
 

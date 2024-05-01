@@ -19,7 +19,7 @@ export default function CategoriaComida() {
         <>
             <Cabecera />
             <Container fluid>
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-center">
                     <Col className='col-filtros' xs='3'>
 
                         <div className='div-filtro'>
@@ -81,7 +81,7 @@ export default function CategoriaComida() {
                             <div className='row justify-content-center align-items-start'>
                                 <CardGroup>
                                     {PRODUCTS.map((producto) => (
-                                        <div key={producto.id} className='col-6 col-sm-3'>
+                                        <div key={producto.id} className='col col-sm-3'>
 
                                             {/* <Cards {...producto}/> */}
 

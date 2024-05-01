@@ -21,6 +21,10 @@ export const ShopContextProvider = ({children}) => {
         setDetalleCompra((prev) => ({...prev , [productoId]: prev[productoId] + 1}))
     }
 
+    const removerProducto = (productoId) =>{
+        setDetalleCompra((prev) => ({...prev , [productoId]: prev[productoId] - 1}))
+    }
+
     const getCantidadProductos = () =>{
         let cantidad = 0
         for(const item in detalleCompra){
@@ -43,7 +47,8 @@ export const ShopContextProvider = ({children}) => {
         return cantidad
     }
 
-    const contextValue = {detalleCompra, agregarProducto, getSubtotalProductos, getCantidadProductos}
+
+    const contextValue = {detalleCompra, agregarProducto, removerProducto, getSubtotalProductos, getCantidadProductos}
 
     console.log(detalleCompra)
 

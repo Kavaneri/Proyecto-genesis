@@ -10,11 +10,12 @@ import { PRODUCTS } from './productos';
 import Cabecera from './header';
 import { ShopContext } from './context-shop/context-shop';
 import './categoriaComida.css'
+import { Link } from 'react-router-dom';
 
 
 export default function CategoriaComida() {
 
-    const {agregarProducto} = useContext(ShopContext)
+    const { agregarProducto } = useContext(ShopContext)
     return (
         <>
             <Cabecera />
@@ -23,6 +24,33 @@ export default function CategoriaComida() {
                     <Col className='col-filtros' xs='3'>
 
                         <div className='div-filtro'>
+                            <Link className='' to='/Comida'>Comida</Link>
+                        </div>
+
+                        <div className='div-filtro'>
+                            <Link className='' to='/Hogar'>Hogar</Link>
+                        </div>
+
+                        <div className='div-filtro'>
+                            <Link className='' to='/Juguetes'>juguetes</Link>
+                        </div>
+
+                        <div className='div-filtro'>
+                           <Link className='' to='/Salud'>Salud</Link>
+                        </div>
+
+                        <div className='div-filtro'>
+                             <Link className='' to='/Viaje'>Viaje</Link>
+                        </div>
+
+                        <div className='div-filtro'>
+                             <Link className='' to='/Paseo'>Paseo</Link>
+                        </div>
+
+                        <div className='div-filtro'>
+                             <Link className='' to='/Arenas'>Arenas</Link>
+                        </div>
+                        {/* <div className='div-filtro'>
                             <p><strong>Raza</strong></p>
                             {['Husky siberiano', 'Golder retriever', 'Caniche', 'Pastor alemán'].map((raza) =>
                                 <Form.Check
@@ -64,7 +92,7 @@ export default function CategoriaComida() {
                                     label={`${raza}`}
                                 />
                             )}
-                        </div>
+                        </div> */}
                     </Col>
 
                     <Col className='col-main' >
@@ -85,7 +113,7 @@ export default function CategoriaComida() {
 
                                             {/* <Cards {...producto}/> */}
 
-                                             <Card>
+                                            <Card>
                                                 <Card.Img variant="top" src={producto.productImage} />
                                                 <Card.Body className='card-body'>
                                                     <Card.Title className='card-title text-center'> <small>{producto.productName}</small></Card.Title>
@@ -96,7 +124,7 @@ export default function CategoriaComida() {
                                                         <Button className='mx-2' variant='outline-success' onClick={() => agregarProducto(producto.id)}>Agregar Al Carrito</Button>
                                                     </div>
                                                 </Card.Body>
-                                            </Card> 
+                                            </Card>
                                         </div>
                                     ))}
                                 </CardGroup>

@@ -89,8 +89,9 @@ export default function Carrito() {
       que no se pierda la información contenida en el objeto detalleCompra.Cuando lo 
       arregle utilizaré un botón decente
       <Button className='mb-4 w-50' variant='outline-primary'>Continuar comprando</Button> 
+      
       */}
-      <Link className='mb-4 w-50' to='/Cat'>Continuar comprando</Link>
+      <Link className='mb-4 w-50' to='/Comida'>Continuar comprando</Link>
       </div>
     </>
 

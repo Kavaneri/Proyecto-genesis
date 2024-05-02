@@ -31,7 +31,7 @@ export default function Cabecera() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const {getCantidadProductos} = useContext(ShopContext)
+    const { getCantidadProductos } = useContext(ShopContext)
     const cantidadProductos = getCantidadProductos()
 
     return (
@@ -62,13 +62,13 @@ export default function Cabecera() {
                             <Offcanvas.Body>
                                 <Nav>
                                     <Nav.Item>
-                                        <Nav.Link href="/"><img src={inicio} alt='inicio' /> Inicio</Nav.Link>
+                                        <Link to="/"><img src={inicio} alt='inicio' /> Inicio </Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Nav.Link href="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Nav.Link>
+                                        <Link to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Nav.Link href='/pqrs'><img src={pqrs} alt='pqrs' /> PQRS</Nav.Link>
+                                        <Link to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
                                     </Nav.Item>
                                 </Nav>
                                 <Container>
@@ -82,13 +82,15 @@ export default function Cabecera() {
                                 </Container>
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>
-                        <Navbar.Brand className='header-brand' href='/'>
+                        <Navbar.Brand className='header-brand'>
+                            <Link to='/'>
                             <img
                                 alt=""
                                 src={logo}
                                 width="30"
                                 height="30"
                                 className="d-inline-block align-top" />{' '}
+                                </Link>
                         </Navbar.Brand>
                         <Row className='justifu-content-center'>
                             {/* <Col>
@@ -120,11 +122,11 @@ export default function Cabecera() {
                                 <UserModal />
                             </Col>
                             <Col className='column-cart'>
-                                    <Link to='/Carrito' >
-                                        <div className='div-img position-relative'>
-                                            <img src={carrito} alt="carro de compras" /><Badge  className='badge' bg="danger">{cantidadProductos}</Badge>
-                                        </div>
-                                    </Link>
+                                <Link to='/Carrito' >
+                                    <div className='div-img position-relative'>
+                                        <img src={carrito} alt="carro de compras" /><Badge className='badge' bg="danger">{cantidadProductos}</Badge>
+                                    </div>
+                                </Link>
                             </Col>
                         </Row>
                     </Container>

@@ -49,13 +49,15 @@
     background: linear-gradient(180deg, rgba(42, 147, 97, 1) 0%, rgba(69, 159, 88, 1) 100%);
 }
 
-.navbar-form{
-    margin-right: 20px;
-}
 
 .navbar-form button {
-    margin-left: -52px;
+    position: relative;
+    right: 20px;
 
+}
+
+.navbar-form .form-control{
+    border: 1px solid black;
 }
 
 .div-user{
@@ -67,15 +69,24 @@
  margin-left: 70px;
 }
 
-/* .col-cart{
-    position: relative;
-} */
+.column-cart{
+    /* border: 1px solid black; */
+    margin-right: 20px;
+    margin-left: -35px;
+}
 
-.div-img{
+.badge{
+    position: absolute;
+    right: -30%;
+    bottom: 65%;
+}
+
+
+/* .div-img{
     position: absolute;
     bottom: 7px;
     right: 15px;
-}
+} */
 
 /* .nav-item-text {
     color: white;

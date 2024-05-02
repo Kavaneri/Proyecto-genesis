@@ -13,7 +13,7 @@ export default function Categorias() {
                     {/* <Link to='/Register'>
                         <p>Comida</p>
                     </Link> */}
-                    <a href='/Cat'>
+                    <a href='/Comida'>
                         <p>Comida</p>
                     </a>
                 </div>

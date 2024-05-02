@@ -1,22 +1,33 @@
 import React from 'react'
 import './login.css'
+import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod'
 
+let regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+
 const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8)
+    email: z.string().email({message: "Correo invalido"}),
+    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex)
 })
 
 export default function Login() {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
 
     const onSubmit = async (data) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log(data);
+        try{
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            throw new Error()
+            console.log(data);
+        }catch (error){
+            setError("root",{
+                message: "Correo o contraseña incorrectos"
+            })
+        }
+       
     }
 
     return (
@@ -27,6 +38,7 @@ export default function Login() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
+                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px"/>
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>
@@ -34,15 +46,15 @@ export default function Login() {
                                 <Row>
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email", {required: "El correo es obligatorio",})} type="email" placeholder="Example@hotmail.com" />
-                                        {errors.email && (<div>{errors.email.message}</div>)}
+                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" />
+                                        {errors.email && (<div style={{color:"red"}}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password", {required: "La contraseña es obligatoria"})} type='password' />
-                                        {errors.password && (<div>{errors.password.message}</div>)}
+                                        <FormControl {...register("password")} required type='password' />
+                                        {errors.password && (<div style={{color:"red"}}>{errors.password.message}</div>)}
                                     </FormGroup>
 
                                     <FormGroup className='mb-4' id='formGridCheckox'>
@@ -57,6 +69,8 @@ export default function Login() {
                                             disabled={isSubmitting}>
                                             {isSubmitting ? "Espere..." : "Iniciar Sesión"}
                                         </Button>
+                                        {errors.root && (<div>{errors.root.message}</div>)}
+
                                         <a className='text-muted text-center forgotten-password' href='#!'>¿Olvidaste tu contraseña?</a>
                                     </div>
 

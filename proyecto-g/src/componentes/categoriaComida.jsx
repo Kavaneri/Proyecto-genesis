@@ -24,31 +24,27 @@ export default function CategoriaComida() {
                     <Col className='col-filtros' xs='3'>
 
                         <div className='div-filtro'>
-                            <Link className='' to='/Comida'>Comida</Link>
+                            <Link className='txtGreen' to='/Comida'>Comida</Link>
                         </div>
 
                         <div className='div-filtro'>
-                            <Link className='' to='/Hogar'>Hogar</Link>
+                            <Link className='txtGreen' to='/Hogar'>Hogar</Link>
                         </div>
 
                         <div className='div-filtro'>
-                            <Link className='' to='/Juguetes'>juguetes</Link>
+                            <Link className='txtGreen' to='/Juguetes'>juguetes</Link>
                         </div>
 
                         <div className='div-filtro'>
-                           <Link className='' to='/Salud'>Salud</Link>
+                           <Link className='txtGreen' to='/Salud'>Salud</Link>
                         </div>
 
                         <div className='div-filtro'>
-                             <Link className='' to='/Viaje'>Viaje</Link>
+                             <Link className='txtGreen' to='/Viaje'>Viaje</Link>
                         </div>
 
                         <div className='div-filtro'>
-                             <Link className='' to='/Paseo'>Paseo</Link>
-                        </div>
-
-                        <div className='div-filtro'>
-                             <Link className='' to='/Arenas'>Arenas</Link>
+                             <Link className='txtGreen' to='/Arenas'>Paseo</Link>
                         </div>
                         {/* <div className='div-filtro'>
                             <p><strong>Raza</strong></p>
@@ -97,13 +93,13 @@ export default function CategoriaComida() {
 
                     <Col className='col-main' >
                         <Form.Group className="mb-3 d-flex justify-content-end align-items-end" id="formGridCheckbox">
-                            <Form.Label>State</Form.Label>
+                            <Form.Label className='espacio'>Tipo Animal:</Form.Label>
                             <Form.Select defaultValue="Choose..." style={{ width: '200px' }}>
-                                <option>Choose...</option>
-                                <option>...</option>
+                                <option>Ambos</option>
+                                <option>Perro</option>
+                                <option>Gato</option>
                             </Form.Select>
                         </Form.Group>
-                        columna productos - tipo animal
 
                         <Container>
                             <div className='row justify-content-center align-items-start'>

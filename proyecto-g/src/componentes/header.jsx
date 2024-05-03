@@ -48,7 +48,7 @@ export default function Cabecera() {
                             className='offcanvas'>
                             <Offcanvas.Header closeButton>
                                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                                    <Navbar.Brand className='header-brand' href="#">
+                                    <Navbar.Brand className='header-brand txtwhite' href="#" >
                                         <img
                                             alt=""
                                             src={logo}
@@ -60,16 +60,18 @@ export default function Cabecera() {
                                 </Offcanvas.Title>
                             </Offcanvas.Header>
                             <Offcanvas.Body>
-                                <Nav>
-                                    <Nav.Item>
-                                        <Link to="/"><img src={inicio} alt='inicio' /> Inicio </Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Link to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Link to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
-                                    </Nav.Item>
+                                <Nav >
+                                <Nav.Item>
+                                            <Nav.Link href="/" className='txtwhite'><img src={inicio} alt='inicio' /> Inicio</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link href="/Agendarcita" className='txtwhite'><img src={calendario} alt='agendar cita' /> Agenda tu cita</Nav.Link>
+                                        </Nav.Item>
+                                        {/*<Nav.Item>
+                                            <Nav.Link href='/pqrs' className='txtwhite'><img src={pqrs} alt='pqrs' /> PQRS</Nav.Link>
+                                        </Nav.Item>*/}
+                                        
+ 
                                 </Nav>
                                 <Container>
                                     <Row>

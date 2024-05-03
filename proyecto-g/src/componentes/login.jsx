@@ -38,7 +38,9 @@ export default function Login() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
-                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px"/>
+                                <a href="/">
+                                    <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" />
+                                </a>
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>

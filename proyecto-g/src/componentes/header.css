@@ -80,7 +80,9 @@
     right: -30%;
     bottom: 65%;
 }
-
+.txtwhite{
+    color: rgb(221, 221, 221) !important;
+}
 
 /* .div-img{
     position: absolute;

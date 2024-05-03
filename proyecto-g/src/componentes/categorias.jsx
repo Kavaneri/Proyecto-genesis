@@ -41,21 +41,13 @@ export default function Categorias() {
                         <p>Viajes</p>
                     </a>
                 </div>
-            </div>
-
-            <div className='row align-items-start'>
                 <div className='col items item-6'>
                     <a href='#'>
                         <p>Paseo</p>
                     </a>
                 </div>
-                <div className='col items item-7'>
-                    <a href='#'>
-                        <p>Arenas</p>
-                    </a>
-                </div>
-
             </div>
+
 
 
         </div>

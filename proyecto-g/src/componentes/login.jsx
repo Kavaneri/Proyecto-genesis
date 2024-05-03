@@ -85,32 +85,6 @@ export default function Login() {
 
                     <Col>
                         <div className='d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4'>
-                            {/* <Carousel className='carrusel' slide={false}>
-                                <Carousel.Item>
-                                    <img
-                                        width={300}
-                                        height={500}
-                                        className='d-block w-100'
-                                        src={img1}
-                                        alt='primer imagen' />
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <img
-                                        width={900}
-                                        height={500}
-                                        className='d-block w-100'
-                                        src={img2}
-                                        alt='segunda imagen' />
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <img
-                                        width={900}
-                                        height={500}
-                                        className='d-block w-100'
-                                        src={img3}
-                                        alt='tercer imagen' />
-                                </Carousel.Item>
-                            </Carousel> */}
                             <div className='text-white px-3 py-4 p-md-5 mx-md-4'>
                                 <h4 className='mb-4'>Nos alegra tenerte aquí</h4>
                                 <p className='small mb-0'> I journeyed long in walkin beyond the place of stopping

@@ -14,7 +14,7 @@ export default function Cards() {
             <div className='card-cont'>
                 <Row>
                     <Col>
-                        {/* {PRODUCTS.map((producto) => (
+                        {PRODUCTS.map((producto) => (
                             <Card style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={producto.productImage} />
                                 <Card.Body className='card-body'>
@@ -28,7 +28,7 @@ export default function Cards() {
                                 </Card.Body>
                             </Card>
 
-                        ))} */}
+                        ))}
                     </Col>
                 </Row>
             </div>

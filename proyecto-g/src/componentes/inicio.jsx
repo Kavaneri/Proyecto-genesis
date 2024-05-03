@@ -5,13 +5,14 @@ import Carrusel from './corrusel'
 import Cards from './cards'
 import Footer from './footer'
 import Categorias from './categorias'
+import CarruselDescuentos from './carruselDescuentos'
 export default function Inicio() {
   return (
     <div>
         <Cabecera />
         <Carrusel />
         <Categorias/>
-        {/* <Cards /> */}
+        <CarruselDescuentos/>
         <Footer />
     </div>
   )

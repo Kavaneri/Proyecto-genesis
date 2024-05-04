@@ -24,7 +24,7 @@
 
 .cmb-filtro{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     font-size: 14px;
     font-weight: 700;

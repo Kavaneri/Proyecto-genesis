@@ -22,7 +22,7 @@ function App() {
 
       <div className="App">
 
-        <Categorias />
+        {/* <Categorias /> */}
 
 
         {/* <header className='App-header'>

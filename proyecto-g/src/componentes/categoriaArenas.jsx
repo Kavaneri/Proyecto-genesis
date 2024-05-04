@@ -1,7 +1,9 @@
 import React from 'react'
+import CategoriaComida from './categoriaComida'
+import { PRODUCTS } from './productos'
 
 export default function CategoriaArenas() {
   return (
-    <div>categoriaArenas</div>
+    <CategoriaComida baseInfo={PRODUCTS}/>
   )
 }

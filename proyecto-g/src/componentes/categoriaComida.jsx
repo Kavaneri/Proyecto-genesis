@@ -13,16 +13,16 @@ import './categoriaComida.css'
 import { Link } from 'react-router-dom';
 
 
-export default function CategoriaComida() {
+export default function CategoriaComida({baseInfo}) {
+    baseInfo = PRODUCTS
 
+    const { agregarProducto, filtrarProductos, handleCategory, } = useContext(ShopContext)
 
-
-    const { agregarProducto, filtrarProductos, handleCategory } = useContext(ShopContext)
-    const filtrados = filtrarProductos(PRODUCTS)
+    const filtrados = filtrarProductos(baseInfo)
     return (
         <>
             <Cabecera />
-            <Container fluid>
+            <Container fluid onLoad={() => window.scrollTo({top: -1000, behavior:"smooth"})}>
                 <Row className="justify-content-center">
                     <Col className='col-filtros' xs='3'>
 
@@ -70,10 +70,10 @@ export default function CategoriaComida() {
                         <Container>
                             <div className='row justify-content-center align-items-start'>
                                 <CardGroup>
+                                    
                                     {filtrados.map((producto) => (
+                                        
                                         <div key={producto.id} className='col col-sm-3'>
-
-                                            {/* <Cards {...producto}/> */}
 
                                             <Card>
                                                 <Card.Img variant="top" src={producto.productImage} />
@@ -83,7 +83,7 @@ export default function CategoriaComida() {
                                                         <small className='text-muted'>{producto.precio}</small>
                                                     </Card.Text>
                                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                                                        <Button className='mx-2' variant='outline-success' onClick={() => agregarProducto(producto.id)}>Agregar Al Carrito</Button>
+                                                        <Button className='mx-2' variant='outline-success' onClick={() => agregarProducto(producto.id)}>Agregar al Carrito</Button>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

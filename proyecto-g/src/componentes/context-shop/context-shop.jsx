@@ -36,7 +36,6 @@ export const ShopContextProvider = ({ children }) => {
         }))
     }
 
-    const productosFiltrados = filtrarProductos(PRODUCTS)
 
 
     const agregarProducto = (productoId) => {
@@ -70,7 +69,7 @@ export const ShopContextProvider = ({ children }) => {
     }
 
 
-    const contextValue = { detalleCompra, agregarProducto, removerProducto, getSubtotalProductos, getCantidadProductos, filtrarProductos, handleCategory,}
+    const contextValue = { detalleCompra, agregarProducto, removerProducto, getSubtotalProductos, getCantidadProductos, filtrarProductos, handleCategory, }
 
     console.log(detalleCompra)
 

@@ -21,3 +21,16 @@
     margin-top: 20px;
     border-top: 1px solid rgb(145, 144, 144);
 }
+
+.cmb-filtro{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.cmb-filtro-label{
+    display: flex;
+    margin: 1rem;
+}

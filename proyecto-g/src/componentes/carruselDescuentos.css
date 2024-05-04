@@ -30,3 +30,8 @@
     max-height: 100%;
 }
 
+.card-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

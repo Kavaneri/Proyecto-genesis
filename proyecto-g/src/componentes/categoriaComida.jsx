@@ -11,6 +11,7 @@ import Cabecera from './header';
 import { ShopContext } from './context-shop/context-shop';
 import './categoriaComida.css'
 import { Link } from 'react-router-dom';
+import {Toaster, toast} from 'sonner'
 
 
 export default function CategoriaComida({baseInfo}) {
@@ -83,7 +84,8 @@ export default function CategoriaComida({baseInfo}) {
                                                         <small className='text-muted'>{producto.precio}</small>
                                                     </Card.Text>
                                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                                                        <Button className='mx-2' variant='outline-success' onClick={() => agregarProducto(producto.id)}>Agregar al Carrito</Button>
+                                                        <Toaster richColors expand={false} closeButton/>
+                                                        <Button className='mx-2' variant='outline-success' onClick={() => {agregarProducto(producto.id); toast.info('Producto agregado al carrito')}}>Agregar al Carrito</Button>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

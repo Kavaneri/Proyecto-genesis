@@ -15,6 +15,7 @@
     "react-router": "^6.22.3",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "sonner": "^1.4.41",
     "web-vitals": "^3.5.2",
     "zod": "^3.22.5"
   },

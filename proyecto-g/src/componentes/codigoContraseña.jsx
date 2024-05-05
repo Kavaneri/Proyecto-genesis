@@ -1,35 +1,24 @@
 import React from 'react'
-import './login.css'
-import logo from './Logo la merced.png'
+import './codigoContraseña.css'
+import Carousel from 'react-bootstrap/Carousel';
+import img1 from './imagenes/promo-la-merced.jpg'
+import img2 from './imagenes/dia-del-gato-la-merced.jpg'
+import img3 from './imagenes/servicios-la-merced.jpg'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod'
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
-let regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+import { useState } from 'react';
+import logo from './Logo la merced.png'
+import UserModal from './notificacionCodigo';
 
-const schema = z.object({
-    email: z.string().email({message: "Correo invalido"}),
-    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex)
-})
 
-export default function Login() {
-    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
 
-    const onSubmit = async (data) => {
-        try{
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-            throw new Error()
-            console.log(data);
-        }catch (error){
-            setError("root",{
-                message: "Correo o contraseña incorrectos"
-            })
-        }
-       
-    }
 
+
+export default function EnlaceContraseña() {
+    const [showPwd, setShowPwd] = useState(true)
     return (
         <div className='formulario-div'>
             <Container className='formulario-div-container'>
@@ -38,46 +27,49 @@ export default function Login() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
-                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px"/>
+                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" />
                                 <h4>Somos clinica veterinaria La Merced </h4>
-                                <p>Bienvenido</p>
+                                <br></br>
+                                <p>A continuacion digita tu nueva contraseña: </p>
+                                <br></br>
+
                             </div>
-                            <Form onSubmit={handleSubmit(onSubmit)}>
+                            <Form>
+
+
                                 <Row>
-                                    <FormGroup className='mb-4' controlId='formGridEmail'>
-                                        <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" />
-                                        {errors.email && (<div style={{color:"red"}}>{errors.email.message}</div>)}
-                                    </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
-                                        <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password")} required type='password' />
-                                        {errors.password && (<div style={{color:"red"}}>{errors.password.message}</div>)}
+                                        <FormLabel>Nueva Contraseña</FormLabel>
+                                        <FormControl type={showPwd ? "text" : 'password'} />
                                     </FormGroup>
+                                    <div className="icon-container" onClick={() => setShowPwd(!showPwd)}>
+                                        {showPwd ? <FaEyeSlash className="iconEyeSlash" /> : <FaEye className="iconEye" />}
 
-                                    <FormGroup className='mb-4' id='formGridCheckox'>
-                                        <FormCheck type='checkbox' label='Recuerdame' />
-                                    </FormGroup>
-
-                                    <div className='text-center pt-1 mb-5 pb-1 '>
-                                        <Button
-                                            className='mb-4 w-100 gradient-custom-2'
-                                            variant='secondary'
-                                            type='submit'
-                                            disabled={isSubmitting}>
-                                            {isSubmitting ? "Espere..." : "Iniciar Sesión"}
-                                        </Button>
-                                        {errors.root && (<div>{errors.root.message}</div>)}
-
-                                        <a className='text-muted text-center forgotten-password' href='/correoContraseña'>¿Olvidaste tu contraseña?</a>
                                     </div>
 
-                                    <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                                        <p className='mb-0'>¿No tienes una cuenta?</p>
-                                        <Link to='/Register'><Button className='mx-2' variant='outline-primary' >Registrate</Button></Link>
-                                    </div>
+
+
+                                    <FormGroup className='mb-4' controlId='formGridPassword'>
+                                        <FormLabel>Confirma tu contraseña</FormLabel>
+                                        <FormControl type={showPwd ? "text" : 'password'} />
+                                        <div className="icon-container2" onClick={() => setShowPwd(!showPwd)}>
+                                            {showPwd ? <FaEyeSlash className="iconEyeSlash" /> : <FaEye className="iconEye" />}
+
+                                        </div>
+                                        <div className="btn-verificar" id="btnVer">
+                                            <UserModal modificarModal="Se actualizo tu contraseña con exito!" modificarbtnModal="Continuar" modificarRuta="/Login"/>
+                                        </div>
+                                    </FormGroup>
+
+
+
+
+                                    {/* <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+                                        <p className='mb-0'>Ya tienes una cuenta?</p>
+                                       <Link to='/Login'> <Button  className='mx-2' variant='outline-primary' >Iniciar sesión</Button></Link>
+                                    </div> */}
                                 </Row>
                             </Form>
                         </div>

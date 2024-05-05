@@ -20,6 +20,8 @@ import CategoriaSalud from './componentes/categoriaSalud';
 import CategoriaViaje from './componentes/categoriaViaje';
 import CategoriaPaseo from './componentes/categoriaPaseo';
 import CategoriaArenas from './componentes/categoriaArenas';
+import CorreoContraseña from './componentes/correoContraseña';
+import CodigoContraseña from './componentes/codigoContraseña';
 import { ShopContextProvider } from './componentes/context-shop/context-shop';
 
 
@@ -83,6 +85,14 @@ const router = createBrowserRouter(
       path : '/Arenas',
       element : <CategoriaArenas/>
     },
+    {
+      path: '/correoContraseña',
+      element: <CorreoContraseña />
+    },
+    {
+      path: '/codigoContraseña',
+      element: <CodigoContraseña />
+    }
   ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -62,13 +62,13 @@ export default function Cabecera() {
                             <Offcanvas.Body>
                                 <Nav>
                                     <Nav.Item>
-                                        <Link to="/"><img src={inicio} alt='inicio' /> Inicio </Link>
+                                        <Nav.Link href="/"><img src={inicio} alt='inicio' /> Inicio </Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Link to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
+                                        <Nav.Link href="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Link to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
+                                        <Nav.Link href="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Nav.Link>
                                     </Nav.Item>
                                 </Nav>
                                 <Container>

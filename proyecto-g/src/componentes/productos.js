@@ -8,76 +8,86 @@ export const PRODUCTS = [
         productName: "Concentrado Chunky",
         precio: 999999,
         productImage: chunky,
-        category : "Perro"
+        category : "Perro",
+        type: "Comida"
     },
     {
         id: 2,
         productName: "Purina Cat Chow",
         precio: 2000,
         productImage: purina,
-        category : "Gato"
+        category : "Gato",
+        type: "Comida",
     },
     {
         id: 3,
         productName: "Hueso masticable",
         precio: 50000,
         productImage: hueso,
-        category : "Perro"
+        category : "Perro",
+        type: "Arena",
     },
     {
         id: 4,
-        productName: "prueba",
+        productName: "Pasta Antipulgas",
         precio: 50000,
         productImage: hueso,
-        category : "Perro"
+        category : "Perro",
+        type: "Salud",
         
     },
     {
         id: 5,
-        productName: "prueba",
+        productName: "Tusivet",
         precio: 50000,
         productImage: hueso,
-        category : "Perro"
+        category : "Perro",
+        type: "Salud",
         
     },
     {
         id: 6,
-        productName: "prueba",
+        productName: "Caja de transporte",
         precio: 50000,
         productImage: hueso,
-        category : "Gato"
+        category : "Gato",
+        type: "Viaje",
         
     },
     {
         id: 7,
-        productName: "prueba",
+        productName: "Cama Grande",
         precio: 50000,
         productImage: hueso,
-        category : "Gato"
+        category : "Gato",
+        type: "Hogar",
         
     },
     {
         id: 8,
-        productName: "prueba",
+        productName: "Castillo",
         precio: 50000,
         productImage: hueso,
-        category : "Gato"
+        category : "Gato",
+        type: "Hogar",
         
     },
     {
         id: 9,
-        productName: "prueba",
+        productName: "Pelota chillona",
         precio: 50000,
         productImage: hueso,
-        category : "Perro"
+        category : "Perro",
+        type: "Juguete",
         
     },
     {
         id: 10,
-        productName: "prueba",
+        productName: "Correa Grande",
         precio: 50000,
         productImage: hueso,
-        category : "Perro"
+        category : "Perro",
+        type: "Paseo",
         
     },
 

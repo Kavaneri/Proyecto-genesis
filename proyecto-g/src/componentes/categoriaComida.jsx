@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -14,12 +14,15 @@ import { Link } from 'react-router-dom';
 import {Toaster, toast} from 'sonner'
 
 
-export default function CategoriaComida({baseInfo}) {
+export default function CategoriaComida({baseInfo, type = "Comida"}) {
     baseInfo = PRODUCTS
+    // type = "Comida"
+    const { agregarProducto, filtrarProductos, handleCategory, preFiltrar} = useContext(ShopContext)
 
-    const { agregarProducto, filtrarProductos, handleCategory, } = useContext(ShopContext)
 
-    const filtrados = filtrarProductos(baseInfo)
+    const primerfiltro = preFiltrar(PRODUCTS, type)
+
+    const filtrados = filtrarProductos(primerfiltro)
     return (
         <>
             <Cabecera />

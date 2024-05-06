@@ -17,15 +17,25 @@ export const ShopContextProvider = ({ children }) => {
 
     const [detalleCompra, setDetalleCompra] = useState(getDetalleCompra());
 
+    const preFiltrar = (products, type) =>{
+        return products.filter(product =>{
+            return (
+                product.type === type
+            )
+        })
+    }
+
+
     const [filtro, setFiltro] = useState({
         category: "all"
     })
 
-    const filtrarProductos = (products) => {
+    const filtrarProductos = (products, type) => {
         return products.filter(product => {
             return (
                 filtro.category === "all" ||
-                product.category === filtro.category
+                product.category === filtro.category ||
+                product.type === type
             )
         })
     }
@@ -69,7 +79,7 @@ export const ShopContextProvider = ({ children }) => {
     }
 
 
-    const contextValue = { detalleCompra, agregarProducto, removerProducto, getSubtotalProductos, getCantidadProductos, filtrarProductos, handleCategory, }
+    const contextValue = { detalleCompra, agregarProducto, removerProducto, getSubtotalProductos, getCantidadProductos, filtrarProductos, handleCategory, preFiltrar, }
 
     console.log(detalleCompra)
 

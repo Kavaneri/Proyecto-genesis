@@ -4,8 +4,8 @@ import { PRODUCTS } from './productos'
 
 export default function CategoriaViaje() {
   return (
-    <div onLoad={() => window.scrollTo({top: -1000, behavior:"smooth"})}>
-    <CategoriaComida baseInfo={PRODUCTS} />
+    <div>
+    <CategoriaComida baseInfo={PRODUCTS} type={"Viaje"}/>
     </div>
   )
 }

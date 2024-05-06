@@ -1,4 +1,4 @@
-import React from "react";
+
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -19,14 +19,22 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 
 import { Container, FormLabel } from "react-bootstrap";
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import React, { Component } from "react";
+import { setDefaultLocale } from 'react-datepicker';
+import { es } from 'date-fns/locale/es';
+registerLocale('es',es)
+setDefaultLocale('es',es)
 
 let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
 
 const schema = z.object({
     nombre: z.string().min(1),
     apellidos: z.string().min(1),
-    raza: z.string().min(1),
     email: z.string().email({ message: "Correo invalido" }),
+    direccion: z.string().min(1),
+    
 
     nuip: z.coerce.number()
         .int()
@@ -62,7 +70,8 @@ export default function Formulario() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [fechaSeleccionada, cambiarFechaSeleccionada] = useState(new Date());
+    const [selectedData, setSelectedDate] = useState(null);
+
 
 
     return (
@@ -115,6 +124,8 @@ export default function Formulario() {
                             </Row>
                         </div>
 
+
+
                         <div className="container">
                             <h3 className="encabezado-persona">DATOS DE LA MASCOTA:</h3>
                             <br />
@@ -146,7 +157,14 @@ export default function Formulario() {
 
                                 <Form.Group as={Col} className='mb-4' controlId='formGridEmail'>
                                     <Form.Label style={{ color: 'white' }}>Fecha</Form.Label>
-                                    <Form.Control placeholder="Fecha" />
+                                    <br/>
+                                    <DatePicker className='calendario' selected={selectedData} onChange={date => setSelectedDate(date)}
+                                        showIcon
+                                        toggleCalendarOnIconClick
+                                        dateFormat="dd/MM/yyyy"
+                                        minDate={new Date}
+                                        locale="es"
+                                    />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridState">
@@ -177,7 +195,8 @@ export default function Formulario() {
                                 </Form.Group>
                                 <Form.Group as={Col} className='mb-4' controlId='formGridPassword'>
                                     <Form.Label style={{ color: 'white' }}>Direccion</Form.Label>
-                                    <Form.Control placeholder="Direccion" />
+                                    <Form.Control {...register("direccion")} required  />
+                                     {errors.direccion && (<div style={{ color: "red" }}>{errors.direccion.message}</div>)}
                                 </Form.Group>
                                 {/* <Form.Group as={Col} controlId="formGridCity"> */}
                                 {/* <Form.Control placeholder="Calendario" /> */}
@@ -200,7 +219,9 @@ export default function Formulario() {
                         <Container className="d-flex justify-content-center allign-items-center">
                             <Row>
                                 <Col>
-                                    <NotificacionCitas modificarModal="Tu solicitud de cita se envio con  exito!" modificarbtnModal="Enviar" />
+                                    <NotificacionCitas modificarModal="Tu solicitud de cita se envio con  exito!" modificarbtnModal="Enviar"
+                                    disabled={isSubmitting}
+                                    >{isSubmitting ? "Espere..." : "Enviar"}</NotificacionCitas>
                                 </Col>
                             </Row>
                         </Container>

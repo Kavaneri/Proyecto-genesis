@@ -12,13 +12,40 @@ import { FaEyeSlash } from "react-icons/fa";
 import { useState } from 'react';
 import logo from './Logo la merced.png'
 import UserModal from './notificacionCodigo';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+
+let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
 
 
+const schema = z.object({
 
+    password: z.string().min(8, { message: "Contraseña invalida" }).regex(regex, { message: "La contraseña debe contener al menos una letra en mayuscula, una en minuscula y un caracter especial" }),
+    confirmPassword: z.string().min(8)
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Las contraseñas no conciden",
+    path: ["confirmPassword"],
+});
 
 
 export default function EnlaceContraseña() {
     const [showPwd, setShowPwd] = useState(true)
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
+
+    const onSubmit = async (data) => {
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            throw new Error()
+            console.log(data);
+        } catch (error) {
+            setError("root", {
+                message: "Correo o contraseña incorrectos"
+            })
+        }
+
+    }
+
     return (
         <div className='formulario-div'>
             <Container className='formulario-div-container'>
@@ -42,7 +69,8 @@ export default function EnlaceContraseña() {
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Nueva Contraseña</FormLabel>
-                                        <FormControl type={showPwd ? "text" : 'password'} />
+                                        <FormControl  {...register("password")} type={showPwd ? "text" : 'password'} required />
+                                        {errors.password && (<p role='alert' style={{ color: "red" }}>{errors.password.message}</p >)}
                                     </FormGroup>
                                     <div className="icon-container" onClick={() => setShowPwd(!showPwd)}>
                                         {showPwd ? <FaEyeSlash className="iconEyeSlash" /> : <FaEye className="iconEye" />}
@@ -53,13 +81,17 @@ export default function EnlaceContraseña() {
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Confirma tu contraseña</FormLabel>
-                                        <FormControl type={showPwd ? "text" : 'password'} />
+                                        <FormControl  {...register("confirmPassword")} type={showPwd ? "text" : 'password'} required />
+                                        {errors.confirmPassword && (<p role='alert' style={{ color: "red" }}>{errors.confirmPassword.message}</p>)}
+
                                         <div className="icon-container2" onClick={() => setShowPwd(!showPwd)}>
                                             {showPwd ? <FaEyeSlash className="iconEyeSlash" /> : <FaEye className="iconEye" />}
 
                                         </div>
                                         <div className="btn-verificar" id="btnVer">
-                                            <UserModal modificarModal="Se actualizo tu contraseña con exito!" modificarbtnModal="Continuar" modificarRuta="/Login"/>
+                                            <UserModal modificarModal="Se actualizo tu contraseña con exito!" modificarbtnModal="Continuar" modificarRuta="/Login" disabled={isSubmitting}>
+                                                {isSubmitting ? "Espere..." : "Crear Cuenta"}
+                                            </UserModal>
                                         </div>
                                     </FormGroup>
 

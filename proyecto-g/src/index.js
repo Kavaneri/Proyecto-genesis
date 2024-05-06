@@ -23,6 +23,8 @@ import CategoriaArenas from './componentes/categoriaArenas';
 import CorreoContraseña from './componentes/correoContraseña';
 import CodigoContraseña from './componentes/codigoContraseña';
 import { ShopContextProvider } from './componentes/context-shop/context-shop';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 const router = createBrowserRouter(

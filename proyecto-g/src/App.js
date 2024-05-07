@@ -15,17 +15,91 @@ import Cabecera from './componentes/header';
 import React, { useState } from 'react';
 import Carrito from './componentes/carrito';
 
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Pqrs from './componentes/pqrs';
+import EditarPerfil from './componentes/EditarPerfil';
+import Formulario from './componentes/FormularioCitas(1)';
+import CategoriaHogar from './componentes/categoriaHogar';
+import CategoriaJuguetes from './componentes/categoriaJuguetes';
+import CategoriaSalud from './componentes/categoriaSalud';
+import CategoriaViaje from './componentes/categoriaViaje';
+import CategoriaPaseo from './componentes/categoriaPaseo';
+import CategoriaArenas from './componentes/categoriaArenas';
+
 function App() {
+
+  const router = createBrowserRouter(
+
+    [
+      {
+        path: '/',
+        element: <Inicio />,
+        errorElement: <div>404 Page not found</div> //Crear una pagina que los devuelva al Inicio cuando la caguen
+      },
+      {
+        path: '/Register',
+        element: <Register />
+      },
+      {
+        path: '/Login',
+        element: <Login />
+      },
+      {
+        path: '/Carrito',
+        element: <Carrito />
+      },
+      {
+        path: '/pqrs',
+        element: <Pqrs />
+      },
+      {
+        path: '/Editarperfil',
+        element: <EditarPerfil />
+      },
+      {
+        path: '/Agendarcita',
+        element: <Formulario />
+      },
+      {
+        path: '/Comida',
+        element: <CategoriaComida />
+      },
+      {
+        path: '/Hogar',
+        element: <CategoriaHogar />
+      },
+      {
+        path: '/Juguetes',
+        element: <CategoriaJuguetes />
+      },
+      {
+        path: '/Salud',
+        element: <CategoriaSalud />
+      },
+      {
+        path: '/Viaje',
+        element: <CategoriaViaje />
+      },
+      {
+        path: '/Paseo',
+        element: <CategoriaPaseo />
+      },
+      {
+        path: '/Arenas',
+        element: <CategoriaArenas />
+      },
+    ]);
 
   return (
 
 
-      <div className="App">
+    <div className="App">
 
-        {/* <Categorias /> */}
+      <RouterProvider router={router} />
+      {/* <Categorias /> */}
 
 
-        {/* <header className='App-header'>
+      {/* <header className='App-header'>
           <Cabecera />
         </header>
         <body>
@@ -40,7 +114,7 @@ function App() {
           <Footer />
         </footer> */}
 
-      </div>
+    </div>
   );
 }
 

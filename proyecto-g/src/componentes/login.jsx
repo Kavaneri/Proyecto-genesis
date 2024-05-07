@@ -1,34 +1,50 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import './login.css'
 import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { LoginContext } from './context-login/context-login';
 
-let regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+
 
 const schema = z.object({
-    email: z.string().email({message: "Correo invalido"}),
-    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex)
+    email: z.string().email({ message: "Correo invalido" }),
+    password: z.string().min(8, { message: "Contraseña invalida" })
 })
 
 export default function Login() {
-    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
+
+
+    const { authorize, handleAuth } = useContext(LoginContext)
+    const users = [{ username: "example@hotmail.com", password: "1234567890" }]
+    const navigate = useNavigate()
 
     const onSubmit = async (data) => {
-        try{
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-            throw new Error()
-            console.log(data);
-        }catch (error){
-            setError("root",{
-                message: "Correo o contraseña incorrectos"
-            })
-        }
-       
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        handleAuth()
+
+
+        // try {
+        //     await new Promise((resolve) => setTimeout(resolve, 1000))
+        //     console.log(data);
+        // } catch (error) {
+        //     setError("root", {
+        //         message: "Correo o contraseña incorrectos"
+        //     })
+        // }
+
     }
+    if (authorize) {
+        localStorage.setItem('authorization', JSON.stringify(authorize))
+        navigate("/Editarperfil")
+    }
+
+
 
     return (
         <div className='formulario-div'>
@@ -38,7 +54,7 @@ export default function Login() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
-                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px"/>
+                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" />
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>
@@ -47,14 +63,14 @@ export default function Login() {
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
                                         <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" />
-                                        {errors.email && (<div style={{color:"red"}}>{errors.email.message}</div>)}
+                                        {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
                                         <FormControl {...register("password")} required type='password' />
-                                        {errors.password && (<div style={{color:"red"}}>{errors.password.message}</div>)}
+                                        {errors.password && (<div style={{ color: "red" }}>{errors.password.message}</div>)}
                                     </FormGroup>
 
                                     <FormGroup className='mb-4' id='formGridCheckox'>

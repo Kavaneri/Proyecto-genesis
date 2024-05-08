@@ -87,7 +87,7 @@ export default function Login() {
                                         </Button>
                                         {errors.root && (<div>{errors.root.message}</div>)}
 
-                                        <a className='text-muted text-center forgotten-password' href='#!'>¿Olvidaste tu contraseña?</a>
+                                        <Link className='text-muted text-center forgotten-password' to='/correoContraseña'>¿Olvidaste tu contraseña?</Link>
                                     </div>
 
                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">

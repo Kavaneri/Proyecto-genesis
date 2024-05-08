@@ -25,6 +25,8 @@ import CategoriaSalud from './componentes/categoriaSalud';
 import CategoriaViaje from './componentes/categoriaViaje';
 import CategoriaPaseo from './componentes/categoriaPaseo';
 import CategoriaArenas from './componentes/categoriaArenas';
+import CorreoContraseña from './componentes/correoContraseña';
+import EnlaceContraseña from './componentes/codigoContraseña';
 
 function App() {
 
@@ -87,6 +89,13 @@ function App() {
       {
         path: '/Arenas',
         element: <CategoriaArenas />
+      },{
+        path: '/correoContraseña',
+        element: <CorreoContraseña/>
+      },
+      {
+        path: '/codigoContraseña',
+        element: <EnlaceContraseña/>
       },
     ]);
 

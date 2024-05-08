@@ -13,6 +13,10 @@ export default function UserModal() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const clearStorage = () =>{
+        localStorage.clear()
+    }
+
     return (
 
         <>
@@ -71,7 +75,7 @@ export default function UserModal() {
                                         Cerrar Sesión
                                     </Button>
                                 </Link> */}
-                                <Link to='/Register'>
+                                <Link to='/Register' onClick={() => clearStorage()}>
                                     <Button variant="success" className='mx-2'>
                                         {/* <img src={profile} alt='imagen usuario' /> */}
                                         Registrarse

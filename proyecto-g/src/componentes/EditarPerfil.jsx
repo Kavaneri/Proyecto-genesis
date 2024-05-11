@@ -48,6 +48,9 @@ export default function EditarPerfil() {
     const [authenticated, setAuthenticated] = useState(authState)
 
     useEffect(() => {
+
+        document.title="Mi Perfil"
+
         const logged = authorize
         if (logged) {
             setAuthenticated(true)

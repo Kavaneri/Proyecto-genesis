@@ -10,7 +10,6 @@ import NotificacionCitas from "./NotificacionCitas";
 import success from './iconos/success.svg'
 import Image from 'react-bootstrap/Image';
 import Alert from 'react-bootstrap/Alert';
-import { useState } from 'react';
 import Cabecera from "./header";
 import Footer from './footer'
 import { useForm } from 'react-hook-form';
@@ -21,7 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Container, FormLabel } from "react-bootstrap";
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { setDefaultLocale } from 'react-datepicker';
 import { es } from 'date-fns/locale/es';
 registerLocale('es', es)
@@ -50,7 +49,13 @@ const schema = z.object({
 });
 
 
+
 export default function Formulario() {
+
+    useEffect(() =>{
+        document.title = "Agendar Cita"
+    })
+
     const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
 
     const onSubmit = async (data) => {

@@ -1,4 +1,4 @@
-import React, { useContext, } from 'react'
+import React, { useContext, useEffect, } from 'react'
 import Cabecera from './header'
 import { PRODUCTS } from './productos'
 import { ShopContext } from './context-shop/context-shop';
@@ -16,6 +16,10 @@ import { Link } from 'react-router-dom';
 
 
 export default function Carrito() {
+
+  useEffect(() =>{
+    document.title= "Mi Carrito"
+  })
 
   const { detalleCompra, getSubtotalProductos, getCantidadProductos } = useContext(ShopContext)
   const cantidad = getCantidadProductos()

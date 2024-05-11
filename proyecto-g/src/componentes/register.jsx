@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './login.css'
 import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
@@ -33,6 +33,11 @@ const schema = z.object({
 });
 
 export default function Register() {
+
+    useEffect(() =>{
+        document.title="Registrarse"
+    })
+
     const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
 
     const onSubmit = async (data) => {

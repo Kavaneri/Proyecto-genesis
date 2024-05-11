@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,6 +15,11 @@ import {Toaster, toast} from 'sonner'
 
 
 export default function CategoriaComida({baseInfo, type = "Comida"}) {
+
+    useEffect(()=> {
+        document.title = "Comida"
+    })
+
     baseInfo = PRODUCTS
     // type = "Comida"
     const { agregarProducto, filtrarProductos, handleCategory, preFiltrar} = useContext(ShopContext)
@@ -53,10 +58,10 @@ export default function CategoriaComida({baseInfo, type = "Comida"}) {
                         <div className='div-filtro'>
                             <Link className='' to='/Paseo'>Paseo</Link>
                         </div>
-
+{/* 
                         <div className='div-filtro'>
                             <Link className='' to='/Arenas'>Arenas</Link>
-                        </div>
+                        </div> */}
 
                     </Col>
 

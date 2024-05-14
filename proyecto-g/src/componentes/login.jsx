@@ -16,22 +16,47 @@ const schema = z.object({
     password: z.string().min(8, { message: "Contraseña invalida" })
 })
 
+
+
+
 export default function Login() {
 
-    useEffect(() =>{
-        document.title="Ingresar"
+    useEffect(() => {
+        document.title = "Ingresar"
     })
 
     const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
 
 
-    const { authorize, handleAuth } = useContext(LoginContext)
-    const users = [{ username: "example@hotmail.com", password: "1234567890" }]
+    const { authorize, setAuthorize, setAuthorizeAdmin, authorizeAdmin, handleAuth } = useContext(LoginContext)
+    const users = [{ useremail: "example@hotmail.com", userpassword: "qQ1!qwer" },{ useremail: "chocoroger2011@hotmail.com", userpassword: "qQ1!qwer", admin: true }]
+
+    const [userEmail, setUserEmail] = useState("")
+    const [userPassword, setUserPassword] = useState("")
+
     const navigate = useNavigate()
 
     const onSubmit = async (data) => {
         await new Promise((resolve) => setTimeout(resolve, 1000))
-        handleAuth()
+        try {
+            const acc = users.find((user) => user.useremail === userEmail)
+            if (acc && acc.userpassword === userPassword) {
+                setAuthorize(true)
+                const storage = localStorage.setItem('authorization', JSON.stringify(authorize))
+                navigate("/Editarperfil")
+                console.log(storage)
+            }
+
+            if(acc && acc.userpassword === userPassword && acc.admin === true){
+                setAuthorizeAdmin(true)
+                localStorage.setItem('authorizationAdmin', JSON.stringify(authorizeAdmin))
+                navigate("/Admin")
+            }
+
+        } catch (err) {
+            console.log(err.message)
+        }
+
 
 
         // try {
@@ -44,10 +69,7 @@ export default function Login() {
         // }
 
     }
-    if (authorize) {
-        localStorage.setItem('authorization', JSON.stringify(authorize))
-        navigate("/Editarperfil")
-    }
+
 
 
 
@@ -67,14 +89,14 @@ export default function Login() {
                                 <Row>
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" />
+                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
                                         {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password")} required type='password' />
+                                        <FormControl {...register("password")} required type='password' value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
                                         {errors.password && (<div style={{ color: "red" }}>{errors.password.message}</div>)}
                                     </FormGroup>
 

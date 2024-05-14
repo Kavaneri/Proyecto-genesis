@@ -27,12 +27,12 @@ import CategoriaPaseo from './componentes/categoriaPaseo';
 import CategoriaArenas from './componentes/categoriaArenas';
 import CorreoContraseña from './componentes/correoContraseña';
 import EnlaceContraseña from './componentes/codigoContraseña';
-import Dashboard from './componentes-admin/dashboard';
-import Citas from './componentes-admin/citas';
-import Ventas from './componentes-admin/ventas';
-import Inventario from './componentes-admin/inventario';
-import Proveedores from './componentes-admin/proveedores';
-import Servicios from './componentes-admin/servicios';
+import Dashboard from './componentes/componentes-admin/dashboard';
+import Citas from './componentes/componentes-admin/citas';
+import Ventas from './componentes/componentes-admin/ventas';
+import Inventario from './componentes/componentes-admin/inventario';
+import Proveedores from './componentes/componentes-admin/proveedores';
+import Servicios from './componentes/componentes-admin/servicios';
 
 function App() {
 

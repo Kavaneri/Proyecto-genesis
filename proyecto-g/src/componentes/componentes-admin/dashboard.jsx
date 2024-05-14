@@ -12,7 +12,9 @@ export default function Dashboard() {
 
 
     const { authorizeAdmin } = useContext(LoginContext)
+
     const authAdminState = JSON.parse(localStorage.getItem('authorizationAdmin'))
+    
     const [adminAuthenticated, setAdminAuthenticated] = useState(authAdminState)
 
     const [estiloLogo, setEstiloLogo] = useState("logo-contenido")
@@ -23,7 +25,7 @@ export default function Dashboard() {
         document.title = "Admin"
 
         const loggedAdmin = authorizeAdmin
-        if (loggedAdmin) {
+        if (authorizeAdmin) {
             setAdminAuthenticated(true)
         }
     }, [])

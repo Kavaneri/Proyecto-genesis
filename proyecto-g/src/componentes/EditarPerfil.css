@@ -1,10 +1,10 @@
 .div-accesos {
 
-    margin-left: 385px;
+    /* margin-left: 385px;
 
     border-radius: 20px;
 
-    padding-left: 20px;
+    padding-left: 20px; */
 
     /* display:flex; */
 
@@ -13,28 +13,12 @@
 }
 
 .div-imagenUsuario {
-
     justify-content: center;
-
     display: flex;
-    /* 
-    flex-direction: column;
-
-    text-align: center; */
-
-
-
 }
 
 .div-editarUsuario {
-
     margin-top: 100px;
-
-    padding-left: 200px;
-
-    padding-right: 200px;
-
-
 }
 
 
@@ -56,21 +40,13 @@
 }
 
 .div-ubicacion {
-
-
     margin-bottom: 60px;
-
 }
 
 
 .nav-justified .nav-item,
 .nav-justified>.nav-link {
-
     background-color: white;
-
-
-
-
 }
 
 /* .nav-link {} */
@@ -106,20 +82,12 @@
 }
 
 .div-imagenMascota {
-
     justify-content: center;
-
     display: flex;
-
-
 }
 
 .div-editarMascota {
-
     margin-top: 100px;
-
     padding-left: 200px;
-
     padding-right: 200px;
-
 }

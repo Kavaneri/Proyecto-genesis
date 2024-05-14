@@ -28,8 +28,8 @@ export default function Login() {
     const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
 
 
-    const { authorize, setAuthorize, setAuthorizeAdmin, authorizeAdmin, handleAuth } = useContext(LoginContext)
-    const users = [{ useremail: "example@hotmail.com", userpassword: "qQ1!qwer" },{ useremail: "chocoroger2011@hotmail.com", userpassword: "qQ1!qwer", admin: true }]
+    const { authorize, setAuthorize, setAuthorizeAdmin, authorizeAdmin, setUser, user, handleAuth } = useContext(LoginContext)
+    const users = [{ name: "Roger Andrey", surname: "Vaca Arboleda", Nuip: "1006309353", phone: "3185747693", useremail: "example@hotmail.com", userpassword: "qQ1!qwer" }, { useremail: "chocoroger2011@hotmail.com", userpassword: "qQ1!qwer", admin: true }]
 
     const [userEmail, setUserEmail] = useState("")
     const [userPassword, setUserPassword] = useState("")
@@ -42,20 +42,29 @@ export default function Login() {
             const acc = users.find((user) => user.useremail === userEmail)
             if (acc && acc.userpassword === userPassword) {
                 setAuthorize(true)
-                const storage = localStorage.setItem('authorization', JSON.stringify(authorize))
-                navigate("/Editarperfil")
-                console.log(storage)
+                localStorage.setItem('authorization', JSON.stringify(authorize))
+                setUser(acc)
+                localStorage.setItem('User', JSON.stringify(acc))
+
             }
 
-            if(acc && acc.userpassword === userPassword && acc.admin === true){
+            if (acc && acc.userpassword === userPassword && acc.admin === true) {
                 setAuthorizeAdmin(true)
                 localStorage.setItem('authorizationAdmin', JSON.stringify(authorizeAdmin))
-                navigate("/Admin")
+                setUser(acc)
+                localStorage.setItem('User', JSON.stringify(acc))
+
             }
+            if (authorize || authorizeAdmin) {
+                navigate("/Editarperfil")
+            } 
+            
+
 
         } catch (err) {
             console.log(err.message)
         }
+
 
 
 
@@ -69,6 +78,8 @@ export default function Login() {
         // }
 
     }
+
+
 
 
 

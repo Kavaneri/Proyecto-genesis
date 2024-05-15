@@ -26,7 +26,6 @@ import { es } from 'date-fns/locale/es';
 registerLocale('es', es)
 setDefaultLocale('es', es)
 
-let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
 
 const schema = z.object({
     nombre: z.string().min(1),
@@ -44,15 +43,14 @@ const schema = z.object({
         .int()
         .min(1000000, { message: "El número de identificación debe contener mínimo 8 cifras" })
         .max(9999999999, { message: "El número de identificación debe contener máximo 10 cifras" }),
-    password: z.string().min(8, { message: "Contraseña invalida" }).regex(regex, { message: "La contraseña debe contener al menos una letra en mayuscula, una en minuscula y un caracter especial" }),
-    confirmPassword: z.string().min(8)
+ 
 });
 
 
 
 export default function Formulario() {
 
-    useEffect(() =>{
+    useEffect(() => {
         document.title = "Agendar Cita"
     })
 
@@ -224,9 +222,17 @@ export default function Formulario() {
                         <Container className="d-flex justify-content-center allign-items-center">
                             <Row>
                                 <Col>
-                                    <NotificacionCitas modificarModal="Tu solicitud de cita se envio con  exito!" modificarbtnModal="Enviar"
+                                    {/* <NotificacionCitas modificarModal="Tu solicitud de cita se envio con  exito!" modificarbtnModal="Enviar"
                                         disabled={isSubmitting}
-                                    >{isSubmitting ? "Espere..." : "Enviar"}</NotificacionCitas>
+                                    >{isSubmitting ? "Espere..." : "Enviar"}</NotificacionCitas> */}
+                                    <Button
+                                        className=' btn-submitCita'
+                                        variant='primary'
+                                        type='submit'
+                                        disabled={isSubmitting}>
+                                        {isSubmitting ? "Espere..." : "Iniciar Sesión"}
+                                    </Button>
+                                    {errors.root && (<div>{errors.root.message}</div>)}
                                 </Col>
                             </Row>
                         </Container>

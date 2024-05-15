@@ -81,6 +81,42 @@
     bottom: 65%;
 }
 
+.offcanvas{
+    width: 250px !important;
+}
+
+.offcanvas-link{
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+    text-align: start;
+}
+
+.offcanvas-link:hover{
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+    text-align: start;
+}
+
+.separator{
+    border: 1px solid white;
+    width: 100%;
+    font: bold;
+}
+
+.zeldas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    height: 60%;
+    
+}
+
+.icon-resize{
+    width: 100% !important;
+}
 
 /* .div-img{
     position: absolute;

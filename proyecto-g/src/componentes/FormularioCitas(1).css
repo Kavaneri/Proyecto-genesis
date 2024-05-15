@@ -147,3 +147,13 @@
 
 
 }
+
+@media (max-width:576px) {
+    .btn-submitCita {
+        width: 300px !important;
+    }
+}
+
+.btn-submitCita {
+    width: 500px;
+}

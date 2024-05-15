@@ -16,7 +16,7 @@ import inicio from './iconos/inicio.svg'
 import calendario from './iconos/calendario.svg'
 import facebook from './iconos/facebook.svg'
 import instagram from './iconos/instagram.svg'
-import whatsapp from './iconos/whatsapp.svg'
+import whatsapp from './iconos/WhatsApp (2).svg'
 import logo from './Logo la merced.png'
 import pqrs from './iconos/pqrs2.svg'
 import './header.css'
@@ -60,39 +60,43 @@ export default function Cabecera() {
                                 </Offcanvas.Title>
                             </Offcanvas.Header>
                             <Offcanvas.Body>
-                                <Nav>
-                                    <Nav.Item>
-                                        <Link to="/"><img src={inicio} alt='inicio' /> Inicio </Link>
+                                <Nav className='gap-3'>
+                                    <Nav.Item >
+                                        <Link className='offcanvas-link' to="/"><img src={inicio} alt='inicio' /> Inicio </Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Link to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
+                                        <Link className='offcanvas-link' to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Link to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
+                                        <Link className='offcanvas-link' to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
                                     </Nav.Item>
                                 </Nav>
-                                <Container>
-                                    <Row>
-                                        {/* <Col><img src={instagram} alt="instagram" /></Col>
-                                            <Col><img src={facebook} alt="facebook" /></Col>
-                                            <Col><img src={whatsapp} alt="whatsapp" /></Col>
-                                            <Col><img src={instagram} alt="instagram" /></Col> */}
-                                    </Row>
 
-                                </Container>
+                                <div className='zeldas text-center'>
+                                    <hr className='separator' />
+                                    <div className='d-flex gap-4'>
+                                        <img className='icon-resize' src={facebook} alt='facebook' />
+                                        <img src={instagram} alt='instagras' />
+                                        <img src={whatsapp} alt='whatsapp' />
+                                    </div>
+                                    <div className='pt-4 text-white'>Proyecto G V1.0</div>
+                                    <div className='text-white'>Derechos reservados 2024</div>
+                                </div>
+
+
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>
                         <Navbar.Brand className='header-brand'>
                             <Link to='/'>
-                            <img
-                                alt=""
-                                src={logo}
-                                width="30"
-                                height="30"
-                                className="d-inline-block align-top" />{' '}
-                                </Link>
+                                <img
+                                    alt=""
+                                    src={logo}
+                                    width="30"
+                                    height="30"
+                                    className="d-inline-block align-top" />{' '}
+                            </Link>
                         </Navbar.Brand>
-                        <Row className='justifu-content-center'>
+                        <Row className='justify-content-center'>
                             {/* <Col>
                                 <Form className="d-flex navbar-form ">
                                     <Form.Control

@@ -59,12 +59,12 @@ export default function Formulario() {
     const onSubmit = async (data) => {
         try {
             await new Promise((resolve) => setTimeout(resolve, 1000))
-            throw new Error()
+            // throw new Error()
             console.log(data);
         } catch (error) {
-            setError("root", {
-                message: "Correo o contraseña incorrectos"
-            })
+            // setError("root", {
+            //     message: "Correo o contraseña incorrectos"
+            // })
         }
 
     }

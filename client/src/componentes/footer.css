@@ -50,7 +50,7 @@
 }
 
 .footer-links-div a{
-    color: black;
+    color: white;
     background-color: transparent;
     text-decoration: none;
     text-align: start;
@@ -90,7 +90,11 @@
 .footer-derechos p{
     font-size: 12px;
     line-height: 14px;
-    
-    
-
 } 
+
+h4{
+    color: white !important;
+}
+p{
+    color: white !important;
+}

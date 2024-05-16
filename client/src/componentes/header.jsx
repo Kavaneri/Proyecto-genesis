@@ -48,7 +48,7 @@ export default function Cabecera() {
                             className='offcanvas'>
                             <Offcanvas.Header closeButton>
                                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                                    <Navbar.Brand className='header-brand' href="#">
+                                    <Navbar.Brand className='header-brand txtWhite' href="#">
                                         <img
                                             alt=""
                                             src={logo}
@@ -67,9 +67,7 @@ export default function Cabecera() {
                                     <Nav.Item>
                                         <Link className='offcanvas-link' to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
                                     </Nav.Item>
-                                    <Nav.Item>
-                                        <Link className='offcanvas-link' to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
-                                    </Nav.Item>
+
                                 </Nav>
 
                                 <div className='zeldas text-center'>

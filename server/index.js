@@ -1361,10 +1361,10 @@ app.use(express.json());
         app.post("/usuarios", async (req, res) => {
             try {
                 // Obtener los datos del cuerpo de la solicitud
-                const { nuipCliente, clave, correo, telefono, nombre, apellido,idroll } = req.body;
+                const { nuipusuario, clave_hash, correo, telefono, nombre, apellido, idroll } = req.body;
         
                 // Verificar si el NUIP es válido (debe ser un número de 9 a 11 dígitos)
-                if (!/^[\d]{9,11}$/.test(nuipCliente)) {
+                if (!/^[\d]{9,11}$/.test(nuipusuario)) {
                     return res.status(400).json({ message: "El NUIP no es válido. Debe ser un número de 9 a 11 dígitos." });
                 }
         
@@ -1374,17 +1374,17 @@ app.use(express.json());
                 }
         
                 // Verificar si la contraseña tiene al menos 8 caracteres
-                if (clave.length < 8) {
+                if (clave_hash.length < 3) {
                     return res.status(400).json({ message: "La contraseña debe tener al menos 8 caracteres." });
                 }
         
                 // Calcular el hash SHA-256 de la contraseña
-                const hash = crypto.createHash('sha256').update(clave).digest('hex');
+                const hash = crypto.createHash('sha256').update(clave_hash).digest('hex');
         
                 // Insertar los datos en la base de datos
                 const newProveedor = await pool.query(
-                    "INSERT INTO usuarios (nuipCliente, clave_hash, correo, telefono, nombre, apellido, idroll) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-                    [nuipCliente, hash, correo, telefono, nombre, apellido,idroll]
+                    "INSERT INTO usuarios (nuipusuario, clave_hash, correo, telefono, nombre, apellido, idroll) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+                    [nuipusuario, hash, correo, telefono, nombre, apellido, idroll]
                 );
         
                 res.json(newProveedor.rows[0]); // Responder con los datos insertados

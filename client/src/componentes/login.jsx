@@ -10,11 +10,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoginContext } from './context-login/context-login';
 
 
-
 const schema = z.object({
     email: z.string().email({ message: "Correo invalido" }),
     password: z.string().min(8, { message: "Contraseña invalida" })
 })
+
 
 
 

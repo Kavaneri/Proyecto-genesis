@@ -8,14 +8,14 @@ import './footer.css'
 
 export default function Footer() {
     return (
-        <div className='footer-padding'>
+        <div className='footer-padding '>
             <div className='footer-link'>
                 <div className='footer-link-logo'>
                     <img src={logo} alt='logo' width="100" height="100" />
                     <p>Calle 56 # 28-12 Esquina B/ Mirriñao, Palmira</p>
                 </div>
                 <div className='footer-links-div'>
-                    <h4>Siguenos</h4>
+                    <h4 className='  txtwhite'>Siguenos</h4>
                     <a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA' target='_blank'>
                         <img src={facebook} alt='icono Facebook' />
                         Facebook
@@ -36,7 +36,7 @@ export default function Footer() {
 
 
                 </div>
-                <div className='footer-links-div'>
+                <div className='footer-links-div '>
                     <h4>Contáctanos</h4>
                     <a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA' target='_blank'>
                         <img src={whatsapp} alt='icono Whatsapp' />

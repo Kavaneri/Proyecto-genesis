@@ -118,6 +118,10 @@
     width: 100% !important;
 }
 
+.txtWhite{
+    color: white !important;
+}
+
 /* .div-img{
     position: absolute;
     bottom: 7px;

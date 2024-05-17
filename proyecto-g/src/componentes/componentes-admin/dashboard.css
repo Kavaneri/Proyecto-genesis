@@ -1,11 +1,11 @@
 .columna-navegacion{
-    border: 1px solid black;
+    /* border: 1px solid black; */
     background: rgba(69, 159, 88, 1);
-    height: 100vh;
+    height: 1600px;
     margin: 0;
 }
 .columna-contenido{
-    border: 1px solid black;
+    /* border: 1px solid black; */
     height: 100vh;
 }
 .logo-contenido{

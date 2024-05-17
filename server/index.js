@@ -1348,6 +1348,7 @@ app.use(express.json());
     //tablas de usuarios
         //obtener usuarios
         app.get("/usuarios", async(req,res) => {
+            console.log("aqui")
             try {
                 const allTodos = await pool.query("SELECT * FROM usuarios");
                 res.json( allTodos.rows);
@@ -1395,7 +1396,7 @@ app.use(express.json());
         });
         
         //inicio seccion de un usuario
-        app.get("/autenticar", async (req, res) => {
+        app.post("/autenticar", async (req, res) => {
             try {
                 // Obtener los datos de la consulta
                 const { correo, clave } = req.body;

@@ -9,17 +9,38 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoginContext } from './context-login/context-login';
 
-
+//
 const schema = z.object({
     email: z.string().email({ message: "Correo invalido" }),
-    password: z.string().min(8, { message: "Contraseña invalida" })
+    password: z.string().min(1, { message: "Contraseña invalida" })
 })
 
 
-
-
-
 export default function Login() {
+
+    const [correo, setcorreo] = useState(null)
+    const [clave, setclave] = useState(null)
+
+
+    const onSubmit = async (data) => {
+        try {
+            console.log("email: ", correo);
+            console.log("clave: ", clave);
+            
+            const body = { correo, clave };
+
+            const url = `http://localhost:5000/autenticar`;
+            const response = await fetch(url, {
+                method : "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body)
+            });
+            const data = await response.json();
+            console.log("Usuario autenticado:", data);
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
 
     useEffect(() => {
         document.title = "Ingresar"
@@ -29,60 +50,7 @@ export default function Login() {
 
 
     const { authorize, setAuthorize, setAuthorizeAdmin, authorizeAdmin, setUser, user, handleAuth } = useContext(LoginContext)
-    const users = [{ name: "Roger Andrey", surname: "Vaca Arboleda", Nuip: "1006309353", phone: "3185747693", useremail: "example@hotmail.com", userpassword: "qQ1!qwer" }, { useremail: "chocoroger2011@hotmail.com", userpassword: "qQ1!qwer", admin: true }]
-
-    const [userEmail, setUserEmail] = useState("")
-    const [userPassword, setUserPassword] = useState("")
-
-    const navigate = useNavigate()
-
-    const onSubmit = async (data) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        try {
-            const acc = users.find((user) => user.useremail === userEmail)
-            if (acc && acc.userpassword === userPassword) {
-                setAuthorize(true)
-                localStorage.setItem('authorization', JSON.stringify(authorize))
-                setUser(acc)
-                localStorage.setItem('User', JSON.stringify(acc))
-
-            }
-
-            if (acc && acc.userpassword === userPassword && acc.admin === true) {
-                setAuthorizeAdmin(true)
-                localStorage.setItem('authorizationAdmin', JSON.stringify(authorizeAdmin))
-                setUser(acc)
-                localStorage.setItem('User', JSON.stringify(acc))
-
-            }
-            if (authorize || authorizeAdmin) {
-                navigate("/Editarperfil")
-            } 
-            
-
-
-        } catch (err) {
-            console.log(err.message)
-        }
-
-
-
-
-        // try {
-        //     await new Promise((resolve) => setTimeout(resolve, 1000))
-        //     console.log(data);
-        // } catch (error) {
-        //     setError("root", {
-        //         message: "Correo o contraseña incorrectos"
-        //     })
-        // }
-
-    }
-
-
-
-
-
+    const users = [{ name: "Roger Andrey", surname: "Vaca Arboleda", Nuip: "1006309353", phone: "3185747693", correo: "example@hotmail.com", clave: "qQ1!qwer" }, { correo: "chocoroger2011@hotmail.com", clave: "qQ1!qwer", admin: true }]
 
     return (
         <div className='formulario-div'>
@@ -100,14 +68,14 @@ export default function Login() {
                                 <Row>
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" value={correo} onChange={(e) => setcorreo(e.target.value)} />
                                         {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password")} required type='password' value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                                        <FormControl {...register("password")} required type='password' value={clave} onChange={(e) => setclave(e.target.value)} />
                                         {errors.password && (<div style={{ color: "red" }}>{errors.password.message}</div>)}
                                     </FormGroup>
 
@@ -127,7 +95,7 @@ export default function Login() {
 
                                         <Link className='text-muted text-center forgotten-password' to='/correoContraseña'>¿Olvidaste tu contraseña?</Link>
                                     </div>
-
+                                    
                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
                                         <p className='mb-0'>¿No tienes una cuenta?</p>
                                         <Link to='/Register'><Button className='mx-2' variant='outline-primary' >Registrate</Button></Link>
@@ -141,13 +109,7 @@ export default function Login() {
                         <div className='d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4'>
                             <div className='text-white px-3 py-4 p-md-5 mx-md-4'>
                                 <h4 className='mb-4'>Nos alegra tenerte aquí</h4>
-                                <p className='small mb-0'> I journeyed long in walkin beyond the place of stopping
-                                    where there was no more returning to the people i had known i saw the world forgotten
-                                    where the grass gives up on growing and i knew that i would never make another journey home
-                                    upon that fleshy plain below the final rock outcropping stretch the vast and empty desert
-                                    of the hungry, bleeding thing encompasing the earth to the horizon, all-consuming, crying in
-                                    a thousand voices to its desolate god-king. And the music of its crying, never deade, ever dying,
-                                    sent me running in a madness i can scarce compare to fear</p>
+                                <p className='small mb-0'> mision y vision</p>
                             </div>
                         </div>
                     </Col>

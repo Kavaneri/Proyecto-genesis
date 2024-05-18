@@ -1359,36 +1359,24 @@ app.use(express.json());
         });
 
         //publicar usuarios
-        app.post("/usuarios", async (req, res) => {
+        app.post("/usuarios/cliente", async (req, res) => {
             try {
                 // Obtener los datos del cuerpo de la solicitud
-                const { nuipusuario, clave_hash, correo, telefono, nombre, apellido, idroll } = req.body;
-        
-                // Verificar si el NUIP es válido (debe ser un número de 9 a 11 dígitos)
-                if (!/^[\d]{9,11}$/.test(nuipusuario)) {
-                    return res.status(400).json({ message: "El NUIP no es válido. Debe ser un número de 9 a 11 dígitos." });
-                }
-        
-                // Verificar si el número de teléfono es válido (debe ser un número de 10 dígitos)
-                if (!/^\d{10}$/.test(telefono)) {
-                    return res.status(400).json({ message: "El número de teléfono no es válido. Debe ser un número de 10 dígitos." });
-                }
-        
-                // Verificar si la contraseña tiene al menos 8 caracteres
-                if (clave_hash.length < 3) {
-                    return res.status(400).json({ message: "La contraseña debe tener al menos 8 caracteres." });
-                }
+                const { nuipusuario, clave_hash, correo, telefono, nombre } = req.body;
+                const idroll = 1;
+                console.log(nuipusuario, clave_hash, correo, telefono, nombre,idroll);
         
                 // Calcular el hash SHA-256 de la contraseña
                 const hash = crypto.createHash('sha256').update(clave_hash).digest('hex');
         
                 // Insertar los datos en la base de datos
                 const newProveedor = await pool.query(
-                    "INSERT INTO usuarios (nuipusuario, clave_hash, correo, telefono, nombre, apellido, idroll) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-                    [nuipusuario, hash, correo, telefono, nombre, apellido, idroll]
+                    "INSERT INTO usuarios (nuipusuario, clave_hash, correo, telefono, nombre, idroll) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                    [nuipusuario, hash, correo, telefono, nombre, idroll]
                 );
-        
+                console.log(nuipusuario, hash, correo, telefono, nombre, idroll);
                 res.json(newProveedor.rows[0]); // Responder con los datos insertados
+                
             } catch (error) {
                 console.error(error.message);
                 res.status(500).send("Error al insertar en la base de datos.");
@@ -1400,6 +1388,7 @@ app.use(express.json());
             try {
                 // Obtener los datos de la consulta
                 const { correo, clave } = req.body;
+                console.log(correo, clave);
         
                 // Buscar el usuario en la base de datos por correo electrónico
                 const usuario = await pool.query(

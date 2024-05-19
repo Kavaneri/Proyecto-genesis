@@ -67,7 +67,7 @@ app.use(express.json());
 
                     // Realizar la inserción en la base de datos
                     const newCita = await pool.query(
-                        "INSERT INTO citas (direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
+                        "INSERT INTO citas (direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
                         [direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente ]
                     );
             

@@ -68,6 +68,8 @@ export default function Formulario() {
         setfechacita(formattedDate);
     };
 
+
+    
     const [selectedData, setSelectedDate] = useState(null);
 
     useEffect(() => {
@@ -80,12 +82,20 @@ export default function Formulario() {
         try {
             const bodyCliente = {nuipcliente, correo, telefono, nombres};
             const bodyMascota = {nombremascota, raza};
-            const bodyCita = {direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idcliente};
             
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log("cliente: ", bodyCliente);
-            console.log("mascota:",bodyMascota);
-            console.log("cita: ",bodyCita);
+
+
+            const bodyCita = {direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idcliente };
+            const urlcitas = `http://localhost:5000/citas`;
+
+            const responsecitas = await fetch(urlcitas, {
+                method : "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(bodyCita)
+            });
+            const datacitas = await responsecitas.json();
+            console.log("Usuario autenticado:", datacitas);
+
             //console.log(data);
         } catch (error) {
             console.error(error);
@@ -204,7 +214,7 @@ export default function Formulario() {
                                             showIcon
                                             toggleCalendarOnIconClick
                                             dateFormat="dd/MM/yyyy"
-                                            minDate={new Date()}
+                                            minDate={minDate}
                                             locale="es"
                                         />
                                 </Form.Group>
@@ -257,9 +267,9 @@ export default function Formulario() {
                                         defaultValue="" 
                                         onChange={(e) => setidbarrioaprovado(parseInt(e.target.value, 10))}>
                                         <option value="NULL" >...</option>
-                                        <option value="1">San Pedro</option>
-                                        <option value="2">primero de mayo</option>
-                                        <option value="3">popular modelo</option>
+                                        <option value="15">San Pedro</option>
+                                        <option value="16">primero de mayo</option>
+                                        <option value="17">popular modelo</option>
                                     </Form.Select>
                                 </Form.Group>
 

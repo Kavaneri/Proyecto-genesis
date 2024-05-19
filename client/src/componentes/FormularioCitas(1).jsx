@@ -14,12 +14,12 @@ import { es } from 'date-fns/locale/es';
 import Cabecera from "./header";
 import Footer from './footer';
 import TimePicker from 'react-time-picker';
+import { format } from 'date-fns';
 
 registerLocale('es', es);
 
 const schema = z.object({
     nombre: z.string().min(3,{message:  "El nombre es requerido"}),
-    apellidos: z.string().min(3, {message: "El apellido es requerido"}),
     email: z.string().email({ message: "Correo invalido" }),
     direccion: z.string().min(3, {message:"La dirección es requerida"}),
     nuip: z.coerce.number()
@@ -38,6 +38,36 @@ export default function Formulario() {
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 2);
 
+    //capturar datos cliente
+    //nuipcliente, correo, telefono, nombres
+    const [nuipcliente, setnuipcliente] = useState('');
+    const [correo , setcorreo] = useState('');
+    const [telefono , settelefono] = useState('');
+    const [nombres , setnombres] = useState('');
+    
+    //caputrar datos mascotacitas
+    // nombremascota, raza 
+    const [nombremascota, setnombremascota,] = useState('');
+    const [raza , setraza] = useState('');
+
+    //capturar datos cita
+    //direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente 
+    const[ direccion,setdireccion]=useState('');
+    const[fechacita ,setfechacita]=useState('');
+    const[horacita ,sethoracita]=useState('');
+    const[comentariocliente ,setcomentariocliente]=useState('');
+    const[idservicio ,setidservicio]=useState('');
+    const[idtipodomicilio ,setidtipodomicilio]=useState('');
+    const[idmascota ,setidmascota]=useState('');
+    const[idbarrioaprovado ,setidbarrioaprovado]=useState('');
+    const[idcliente  ,setidcliente ]=useState('');
+
+
+    const handleDateChange = (date) => {
+        const formattedDate = format(date, 'yyyy-MM-dd'); // Formatea la fecha
+        setfechacita(formattedDate);
+    };
+
     const [selectedData, setSelectedDate] = useState(null);
 
     useEffect(() => {
@@ -48,8 +78,15 @@ export default function Formulario() {
 
     const onSubmit = async (data) => {
         try {
+            const bodyCliente = {nuipcliente, correo, telefono, nombres};
+            const bodyMascota = {nombremascota, raza};
+            const bodyCita = {direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idcliente};
+            
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log(data);
+            console.log("cliente: ", bodyCliente);
+            console.log("mascota:",bodyMascota);
+            console.log("cita: ",bodyCita);
+            //console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -68,52 +105,50 @@ export default function Formulario() {
                             <br />
                             <Row className="mb-3">
                                 <Form.Group as={Col} className='mb-4' controlId='formGridNombre'>
-                                    <Form.Label className='etiqueta' style={{ color: 'white' }}>Nombre</Form.Label>
+                                    <Form.Label className='etiqueta' style={{ color: 'white' }}> Nombre </Form.Label>
                                     <Form.Control 
-                                        {...register("nombre")} 
+                                        {...register("nombre", {required: "el nombre es obligatorio"})}
+                                        value={nombres} onChange={(e) => setnombres(e.target.value)} 
                                         className={errors.nombre ? 'input-error' : ''} 
                                         required 
                                         type='text' 
                                     />
                                     {errors.nombre && (<div style={{ color: "red" }}>{errors.nombre.message}</div>)}
                                 </Form.Group>
-                                <Form.Group as={Col} className='mb-4' controlId='formGridApellidos'>
-                                    <Form.Label className='etiqueta' style={{ color: 'white' }}>Apellido</Form.Label>
-                                    <Form.Control 
-                                        {...register("apellidos")} 
-                                        className={errors.apellidos ? 'input-error' : ''} 
-                                        required 
-                                    />
-                                    {errors.apellidos && (<div style={{ color: "red" }}>{errors.apellidos.message}</div>)}
-                                </Form.Group>
                                 <Form.Group as={Col} className='mb-4' controlId='formGridNuip'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Nuip</Form.Label>
                                     <Form.Control 
-                                        {...register("nuip")} 
-                                        className={errors.nuip ? 'input-error' : ''} 
-                                        required 
-                                    />
+                                            {...register("nuip", { 
+                                                required: "El número de identificación es obligatorio", 
+                                                valueAsNumber: true // Esta opción es para que React Hook Form maneje el valor como número
+                                            })} 
+                                            value={nuipcliente} 
+                                            onChange={(e) => setnuipcliente(parseInt(e.target.value, 10))} 
+                                        />
                                     {errors.nuip && (<div style={{ color: "red" }}>{errors.nuip.message}</div>)}
                                 </Form.Group>
                                 <Form.Group className='mb-4' controlId='formGridEmail'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Correo</Form.Label>
                                     <Form.Control 
-                                        {...register("email")} 
+                                        {...register("email", { required: "El correo electrónico es obligatorio", pattern: { value: /^\S+@\S+$/i, message: "El correo electrónico no es válido" } })}
                                         type="email" 
                                         className={errors.email ? 'input-error' : ''} 
                                         placeholder="Example@hotmail.com" 
                                         required 
+                                        value = {correo}
+                                        onChange={(e) => setcorreo(e.target.value)}
                                     />
-                                    {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
                                 </Form.Group>
                                 <Form.Group className='mb-4' controlId='formGridTelefono'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Telefono</Form.Label>
                                     <Form.Control 
-                                        {...register("telefono")} 
-                                        className={errors.telefono ? 'input-error' : ''} 
-                                        required 
-                                    />
-                                    {errors.telefono && (<div style={{ color: "red" }}>{errors.telefono.message}</div>)}
+                                            {...register("telefono", { 
+                                                required: "El teléfono es obligatorio",
+                                                valueAsNumber: true // Esta opción es para que React Hook Form maneje el valor como número
+                                            })} 
+                                            value={telefono} 
+                                            onChange={(e) => settelefono(parseInt(e.target.value,10))} />
+                                        {errors.telefono && (<div style={{ color: "red" }}>{errors.telefono.message}</div>)}
                                 </Form.Group>
                             </Row>
                         </div>
@@ -123,8 +158,25 @@ export default function Formulario() {
                             <Row className="mb-3">
                                 <Form.Group as={Col} className='mb-4' controlId='formGridNombreMascota'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Nombre</Form.Label>
-                                    <Form.Control {...register("nombreMascota")} required />
+                                    <Form.Control 
+                                        {...register("nombremascota", {required: "el nombre de la mascota es obligatoria"})}
+                                        value={nombremascota} onChange={(e) => setnombremascota(e.target.value)} 
+                                        className={errors.nombre ? 'input-error' : ''} 
+                                        required 
+                                        type='text' 
+                                    />
                                     {errors.nombreMascota && (<div style={{ color: "red" }}>{errors.nombreMascota.message}</div>)}
+                                </Form.Group>
+                                <Form.Group as={Col} className='mb-4' controlId='formGridNombre'>
+                                    <Form.Label className='etiqueta' style={{ color: 'white' }}> raza </Form.Label>
+                                    <Form.Control 
+                                        {...register("raza", {required: "la raza es obligatoria"})}
+                                        value={raza} onChange={(e) => setraza(e.target.value)} 
+                                        className={errors.nombre ? 'input-error' : ''} 
+                                        required 
+                                        type='text' 
+                                    />
+                                    {errors.nombre && (<div style={{ color: "red" }}>{errors.nombre.message}</div>)}
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridEspecie">
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Especie</Form.Label>
@@ -134,8 +186,10 @@ export default function Formulario() {
                                         <option value="gato">Gato</option>
                                     </Form.Select>
                                 </Form.Group>
+                                
                             </Row>
                         </div>
+
                         <div className="container">
                             <h3 className="encabezado-persona">DATOS DE LA CITA:</h3>
                             <br />
@@ -143,21 +197,24 @@ export default function Formulario() {
                                 <Form.Group as={Col} className='mb-4' controlId='formGridFecha'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Fecha</Form.Label>
                                     <br />
-                                    <DatePicker 
-                                        className='calendario' 
-                                        selected={selectedData} 
-                                        onChange={date => setSelectedDate(date)}
-                                        showIcon
-                                        toggleCalendarOnIconClick
-                                        dateFormat="dd/MM/yyyy"
-                                        minDate={minDate}
-                                        locale="es"
-                                    />
+                                        <DatePicker
+                                            className='calendario'
+                                            selected={fechacita ? new Date(fechacita) : null} // Convierte la fecha de nuevo a objeto Date si no es nulo
+                                            onChange={handleDateChange}
+                                            showIcon
+                                            toggleCalendarOnIconClick
+                                            dateFormat="dd/MM/yyyy"
+                                            minDate={new Date()}
+                                            locale="es"
+                                        />
                                 </Form.Group>
-                                <Form.Group as={Col} controlId="formGridHora">
+
+                                <Form.Group as={Col} className='mb-4' controlId='formGridHora'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Hora</Form.Label>
-                                    <Form.Select defaultValue="Choose...">
-                                        <option value="NULL" >...</option>
+                                    <Form.Select
+                                        defaultValue="" 
+                                        onChange={(e) => sethoracita(e.target.value, 10)}>
+                                        <option value="" disabled>Choose...</option>
                                         <option value="7:00">7 am</option>
                                         <option value="10:00">10 am</option>
                                         <option value="13:00">1 pm</option>
@@ -165,41 +222,53 @@ export default function Formulario() {
                                         <option value="18:00">5 pm</option>
                                     </Form.Select>
                                 </Form.Group>
+
                                 <Form.Group as={Col} controlId="formGridServicio">
-                                    <Form.Label className='etiqueta' style={{ color: 'white' }}>Servicio</Form.Label>
-                                    <Form.Select defaultValue="Choose...">
-                                        <option value="NULL" >...</option>
-                                        <option value="Estetica">Estetica</option>
-                                        <option value="Estetica">Dentista</option>
-                                        <option value="Estetica">Guarderia</option>
-                                        <option value="General">General</option>
-                                    </Form.Select>
+                                <Form.Label className='etiqueta' style={{ color: 'white' }}>Servicio</Form.Label>
+                                <Form.Select 
+                                    defaultValue="" 
+                                    onChange={(e) => setidservicio(parseInt(e.target.value, 10))}>
+                                    <option value="" disabled>Choose...</option>
+                                    <option value="2">baño perro</option>
+                                    <option value="4">baño gato</option>
+                                    <option value="5">cita general perro</option>
+                                    <option value="6">cita general gato</option>
+                                    <option value="7">cita dentita perro</option>
+                                    <option value="8">cita dentita gato</option>
+                                </Form.Select>
                                 </Form.Group>
                             </Row>
                             <Row>
                                 <Form.Group as={Col} controlId="formGridDomicilio">
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Tipo de domicilio</Form.Label>
-                                    <Form.Select defaultValue="Choose...">
+                                    <Form.Select 
+                                        defaultValue="" 
+                                        onChange={(e) => setidtipodomicilio(parseInt(e.target.value, 10))}>
+                                        <option value="" disabled>Choose...</option>
                                         <option value="NULL" >...</option>
-                                        <option value="1">recogemos tu mascota</option>
-                                        <option value="2">veterinario a domicilio</option>
-                                        <option value="3">tu mismo lo traes</option>
+                                        <option value="3">recogemos tu mascota</option>
+                                        <option value="4">veterinario a domicilio</option>
+                                        <option value="5">tu mismo lo traes</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridBarrioAprovado">
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Barrio</Form.Label>
-                                    <Form.Select defaultValue="Choose...">
+                                    <Form.Select 
+                                        defaultValue="" 
+                                        onChange={(e) => setidbarrioaprovado(parseInt(e.target.value, 10))}>
                                         <option value="NULL" >...</option>
                                         <option value="1">San Pedro</option>
                                         <option value="2">primero de mayo</option>
                                         <option value="3">popular modelo</option>
                                     </Form.Select>
                                 </Form.Group>
+
                                 <Form.Group as={Col} className='mb-4' controlId='formGridDireccion'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Direccion</Form.Label>
                                     <Form.Control 
-                                        {...register("direccion")} 
-                                        className={errors.direccion ? 'input-error' : ''} 
+                                        {...register("direccion", {required: "el direccion es obligatorio"})} 
+                                        type ='direccion' value={direccion} onChange={(e)=>setdireccion(e.target.value)}
+                                        className={errors.nombre ? 'input-error' : ''} 
                                         required 
                                     />
                                     {errors.direccion && (<div style={{ color: "red" }}>{errors.direccion.message}</div>)}
@@ -208,7 +277,14 @@ export default function Formulario() {
                             <Row className="mb-3">
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Observaciones (Opcional)</Form.Label>
-                                    <Form.Control as="textarea" rows={3} />
+                                    <Form.Control as="textarea" rows={3} 
+                                        {...register("comentariocliente")} 
+                                        type ='comentariocliente' 
+                                        value={comentariocliente} 
+                                        onChange={(e)=>setcomentariocliente(e.target.value)} 
+                                        className={errors.nombre ? 'input-error' : ''} 
+                                        required 
+                                    />
                                 </Form.Group>
                             </Row>
                         </div>

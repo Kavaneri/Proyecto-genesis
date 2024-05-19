@@ -48,12 +48,27 @@ app.use(express.json());
             app.post("/citas", async (req, res) => {
                 try {
                     //obtener los datos del http
-                    const { direccion, fechaCita, horaCita, comentarioCliente,comentarioMedico,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idestadocita,idcliente } = req.body;
-            
+                    const { direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idcliente } = req.body;
+                    const idestadocita = 1;
+
+                    // Verificación de la hora de la cita (7:00 AM - 6:00 PM)
+                    const [hour, minute] = horacita.split(":").map(Number);
+                    if (hour < 7 || hour > 18 || (hour === 18 && minute > 0)) {
+                        return res.status(400).send("La hora de la cita debe estar entre las 7:00 AM y las 6:00 PM.");
+                    }
+                    
+                    // Verificación de la fecha de la cita (mínimo 36 horas después de la solicitud)
+                    const fechaActual = new Date();
+                    const fechaCitaDate = new Date(fechacita);
+                    const diferenciaHoras = (fechaCitaDate - fechaActual) / (1000 * 60 * 60);
+                    if (diferenciaHoras < 36) {
+                        return res.status(400).send("La fecha de la cita debe ser al menos 36 horas después del momento de la solicitud.");
+                    }
+
                     // Realizar la inserción en la base de datos
                     const newCita = await pool.query(
-                        "INSERT INTO citas (direccion,fechacita,horacita,comentariocliente,comentariomedico,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
-                        [direccion,fechaCita,horaCita,comentarioCliente,comentarioMedico,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente ]
+                        "INSERT INTO citas (direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente) VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
+                        [direccion,fechacita,horacita,comentariocliente,idservicio,idtipodomicilio,idmascota, idbarrioaprovado,idestadocita,idcliente ]
                     );
             
                     res.json(newCita.rows[0]);
@@ -87,12 +102,12 @@ app.use(express.json());
             app.post("/clientes", async (req, res) => {
                 try {
                     //obtener los datos del http
-                    const { nuipcliente, correo, telefono, nombres, apellidos } = req.body;
+                    const { nuipcliente, correo, telefono, nombres} = req.body;
             
                     // Realizar la inserción en la base de datos
                     const newCliente = await pool.query(
-                        "INSERT INTO clientes (nuipcliente, correo, telefono, nombres, apellidos) VALUES ($1, $2, $3, $4,$5) RETURNING *",
-                        [nuipcliente, correo, telefono, nombres, apellidos]
+                        "INSERT INTO clientes (nuipcliente, correo, telefono, nombres) VALUES ($1, $2, $3, $4) RETURNING *",
+                        [nuipcliente, correo, telefono, nombres]
                     );
             
                     res.json(newCliente.rows[0]);
@@ -198,9 +213,9 @@ app.use(express.json());
             });
     //tabla de mascotas de las citas
         //obtener mascotas de las citas
-            app.get("/mascotas", async(req,res) => {
+            app.get("/mascotascitas", async(req,res) => {
                 try {
-                    const allTodos = await pool.query("SELECT * FROM mascotas");
+                    const allTodos = await pool.query("SELECT * FROM mascotascitas");
                     res.json( allTodos.rows);
                 } catch (error) {
                     console.error(error.message);
@@ -209,14 +224,14 @@ app.use(express.json());
             });
 
         //publicar mascotas de las citas
-            app.post("/mascotas", async (req, res) => {
+            app.post("/mascotascitas", async (req, res) => {
                 try {
                     //obtener lo escrito en el raw body
                     const { nombremascota, raza } = req.body;
             
                     // Realizar la inserción en la base de datos
                     const newMascota = await pool.query(
-                        "INSERT INTO mascotas (nombreMascota, raza) VALUES ($1, $2) RETURNING *",
+                        "INSERT INTO mascotascitas (nombreMascota, raza) VALUES ($1, $2) RETURNING *",
                         [nombremascota, raza]
                     );
             

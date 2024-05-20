@@ -298,6 +298,7 @@ app.use(express.json());
             //comida
             app.get("/productos/comida", async(req,res) => {
                 try {
+                    console.log("aca")
                     const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 1 ");
                     res.json( allTodos.rows);
                 } catch (error) {
@@ -346,26 +347,16 @@ app.use(express.json());
                 }
             });
             //paseo
-            app.get("/productos/comida", async(req,res) => {
+            app.get("/productos/paseo", async(req,res) => {
                 try {
-                    const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 6 ");
+                    console.log("aca")
+                    const allTodos = await pool.query("select * from productos where idcategoria = 6 ");
                     res.json( allTodos.rows);
                 } catch (error) {
                     console.error(error.message);
                     res.status(500).send("Error al obtener en la base de datos.");
                 }
             });
-            //comida
-            app.get("/productos/comida", async(req,res) => {
-                try {
-                    const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 1 ");
-                    res.json( allTodos.rows);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
-                }
-            });
-            
             
         //publicar producto tienda
             app.delete("/productos", async(req,res) => {

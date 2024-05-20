@@ -16,6 +16,27 @@ import {Toaster, toast} from 'sonner'
 
 export default function CategoriaComida({baseInfo, type = "Comida"}) {
 
+    const productosComida = async (data) => {
+        try {
+            const url = `http://localhost:5000/productos/comida`;
+            const response = await fetch(url, {
+                method : "GET",
+                headers: {"Content-Type": "application/json"}
+            });
+            const data = await response.json();
+            console.log("productos:", response)
+            return data;
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    const mostrarProductosComida = async () => {
+        const productosMostrar = await productosComida(); // Esperar a que la promesa se resuelva
+        console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
+    };
+    
+
     useEffect(()=> {
         document.title = "Comida"
     })

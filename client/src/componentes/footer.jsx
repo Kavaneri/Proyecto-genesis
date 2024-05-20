@@ -12,7 +12,7 @@ export default function Footer() {
             <div className='footer-link'>
                 <div className='footer-link-logo'>
                     <img src={logo} alt='logo' width="100" height="100" />
-                    <p>Calle 56 # 28-12 Esquina B/ Mirriñao, Palmira</p>
+                    <p className='  txtwhite'>Calle 56 # 28-12 Esquina B/ Mirriñao, Palmira</p>
                 </div>
                 <div className='footer-links-div'>
                     <h4 className='  txtwhite'>Siguenos</h4>
@@ -37,14 +37,14 @@ export default function Footer() {
 
                 </div>
                 <div className='footer-links-div '>
-                    <h4>Contáctanos</h4>
+                    <h4 className='txtwhite'>Contáctanos</h4>
                     <a href='https://www.facebook.com/Clinicaveterinarialamerced/?locale=es_LA' target='_blank'>
                         <img src={whatsapp} alt='icono Whatsapp' />
                         WhatsApp
                     </a>
                 </div>
                 <div className='footer-links-div'>
-                    <h4>Visitanos</h4>
+                    <h4 className='txtwhite'>Visitanos</h4>
                     <a href='https://maps.app.goo.gl/e9cvtQSzCiyG9ppp8' target='_blank'>
                         <img src={mapPinPoint} alt="Puntero de mapa" />
                         Clinica veterinaria La merced
@@ -52,7 +52,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className='footer-derechos'>
-                <p>Derechos reservados</p>
+                <p className='txtwhite'>Derechos reservados</p>
             </div>
         </div>
     )

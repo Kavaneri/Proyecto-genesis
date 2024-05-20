@@ -92,9 +92,6 @@
     line-height: 14px;
 } 
 
-h4{
-    color: white !important;
-}
-p{
+.txtwhite{
     color: white !important;
 }

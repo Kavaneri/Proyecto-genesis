@@ -298,7 +298,7 @@ app.use(express.json());
             //comida
             app.get("/productos/comida", async(req,res) => {
                 try {
-                    console.log("aca")
+                    console.log("comida")
                     const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 1 ");
                     res.json( allTodos.rows);
                 } catch (error) {
@@ -309,6 +309,7 @@ app.use(express.json());
             //hogar
             app.get("/productos/hogar", async(req,res) => {
                 try {
+                    console.log("hogar")
                     const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 2 ");
                     res.json( allTodos.rows);
                 } catch (error) {
@@ -319,6 +320,7 @@ app.use(express.json());
             //juguetes
             app.get("/productos/juguetes", async(req,res) => {
                 try {
+                    console.log("juguetes")
                     const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 3 ");
                     res.json( allTodos.rows);
                 } catch (error) {
@@ -329,6 +331,7 @@ app.use(express.json());
             //salud
             app.get("/productos/salud", async(req,res) => {
                 try {
+                    console.log("salud")
                     const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 4 ");
                     res.json( allTodos.rows);
                 } catch (error) {
@@ -339,6 +342,7 @@ app.use(express.json());
             //viaje
             app.get("/productos/viaje", async(req,res) => {
                 try {
+                    console.log("viaje")
                     const allTodos = await pool.query("SELECT * FROM productos where idcategoria = 5 ");
                     res.json( allTodos.rows);
                 } catch (error) {
@@ -349,7 +353,7 @@ app.use(express.json());
             //paseo
             app.get("/productos/paseo", async(req,res) => {
                 try {
-                    console.log("aca")
+                    console.log("paseo")
                     const allTodos = await pool.query("select * from productos where idcategoria = 6 ");
                     res.json( allTodos.rows);
                 } catch (error) {

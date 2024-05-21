@@ -23,6 +23,8 @@ export default function CategoriaJuguetes() {
       console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
   };
 
+  mostrarProductosjuguetes();
+
   useEffect(() =>{
     document.title = "Jueguetes"
   })

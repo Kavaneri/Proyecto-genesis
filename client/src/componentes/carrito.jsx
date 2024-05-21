@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, } from 'react'
+import React, { useContext, useEffect, useState, } from 'react'
 import Cabecera from './header'
 import { PRODUCTS } from './productos'
 import { ShopContext } from './context-shop/context-shop';
@@ -13,10 +13,30 @@ import CardBody from 'react-bootstrap/esm/CardBody';
 import CardText from 'react-bootstrap/esm/CardText';
 import CardHeader from 'react-bootstrap/esm/CardHeader';
 import { Link } from 'react-router-dom';
+import { date } from 'zod';
 
 
 export default function Carrito() {
+  //variables cliente
+  //nuipcliente, correo, telefono, nombres
+  const [nuipcliente, setnuipcliente] = useState('');
+  const [correo , setcorreo] = useState('');
+  const [telefono , settelefono] = useState('');
+  const [nombres , setnombres] = useState('');
 
+  //variables ventas
+  //fechaventa, valortotal, direccion, idbarriosaprovado, idestadoventa, idcliente
+  const [fechaventa, setfechaventa] = useState('');
+  const [valortotal, servalortotal] = useState('');
+  const [direccion ,setdireccion]=useState('');
+  const [idbarriosaprovado ,setidbarriosaprovado]=useState('');
+  const [idestadoventa ,setidestadoventa]=useState('');
+  const [idcliente ,setidcliente]=useState('');
+
+  const handleDateChange = (date) => {
+    setfechaventa(new date());
+  };
+  
   useEffect(() =>{
     document.title= "Mi Carrito"
   })
@@ -24,6 +44,35 @@ export default function Carrito() {
   const { detalleCompra, getSubtotalProductos, getCantidadProductos } = useContext(ShopContext)
   const cantidad = getCantidadProductos()
   const cant = getSubtotalProductos()
+
+
+  const onSubmit = async (data) => {
+    try {
+      const urlcliente = `http://localhost:5000/clientes`;
+      const bodyCliente = {nuipcliente, correo, telefono, nombres};
+      const responsecliente = await fetch(urlcliente, {
+          method : "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(bodyCliente)
+      });
+      const datacliente = await responsecliente.json();
+      console.log("cliente registrado:", datacliente);
+
+      const urlventa = `http://localhost:5000/ventas`;
+      const bodyVenta = {};
+      const responseventa = await fetch(urlventa, {
+        method : "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(bodyVenta)
+      });
+      const dataventa = await responseventa.json();
+       console.log("venta registrada:", dataventa);
+
+        //console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+};
 
   const estilosDetalle = () => {
     let estilo = "div-resumen-show"
@@ -65,6 +114,54 @@ export default function Carrito() {
 
           <Col className='col-resumen'>
             <div className={estilosDetalle()}>
+              <Card>
+                <CardBody>
+                  <CardHeader><strong>Datos venta</strong></CardHeader>
+                                <form onSubmit={onSubmit}>
+                    <div>
+                      <label>
+                        NUIP Cliente:
+                        <input
+                          type="text"
+                          value={nuipcliente}
+                          onChange={(e) => setnuipcliente(e.target.value)}
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        Correo:
+                        <input
+                          type="email"
+                          value={correo}
+                          onChange={(e) => setcorreo(e.target.value)}
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        Teléfono:
+                        <input
+                          type="tel"
+                          value={telefono}
+                          onChange={(e) => settelefono(e.target.value)}
+                        />
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        Nombres:
+                        <input
+                          type="text"
+                          value={nombres}
+                          onChange={(e) => setnombres(e.target.value)}
+                        />
+                      </label>
+                    </div>
+                    <button type="submit">Enviar</button>
+                  </form>
+                </CardBody>
+              </Card>
               <Card>
                 <CardBody>
                   <CardHeader><strong>Resumen</strong></CardHeader>

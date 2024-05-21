@@ -18,10 +18,12 @@ export default function CategoriaSalud() {
     }
   };
 
-  const mostrarProductos = async () => {
+  const mostrarProductosSalud = async () => {
       const productosMostrar = await productos(); // Esperar a que la promesa se resuelva
       console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
   };
+
+  mostrarProductosSalud();
   useEffect(()=>{
     document.title="Salud"
   })

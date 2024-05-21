@@ -36,12 +36,12 @@ export default function CategoriaComida({baseInfo, type = "Comida"}) {
         console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
     };
     
+    mostrarProductosComida();
 
     useEffect(()=> {
         document.title = "Comida"
     })
 
-    baseInfo = PRODUCTS
     // type = "Comida"
     const { agregarProducto, filtrarProductos, handleCategory, preFiltrar} = useContext(ShopContext)
 

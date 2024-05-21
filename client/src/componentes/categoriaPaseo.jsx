@@ -22,6 +22,7 @@ export default function CategoriaPaseo() {
       const productosMostrar = await productosPaseo(); // Esperar a que la promesa se resuelva
       console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
   };
+  mostrarProductos();
   
   useEffect(() =>{
     document.title="Paseo"

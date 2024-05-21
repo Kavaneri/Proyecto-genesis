@@ -80,21 +80,37 @@ export default function Formulario() {
 
     const onSubmit = async (data) => {
         try {
+            const urlcliente = `http://localhost:5000/clientes`;
             const bodyCliente = {nuipcliente, correo, telefono, nombres};
+            const responsecliente = await fetch(urlcliente, {
+                method : "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(bodyCliente)
+            });
+            const datacliente = await responsecliente.json();
+            console.log("Cliente registrado:", datacliente);
+
+
+            const urlmascota = `http://localhost:5000/clientes`;
             const bodyMascota = {nombremascota, raza};
-            
+            const responsemascota = await fetch(urlmascota, {
+                method : "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(bodyMascota)
+            });
+            const datamascota = await responsemascota.json();
+            console.log("mascota registrada:", datamascota);
 
 
             const bodyCita = {direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idcliente };
             const urlcitas = `http://localhost:5000/citas`;
-
             const responsecitas = await fetch(urlcitas, {
                 method : "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(bodyCita)
             });
             const datacitas = await responsecitas.json();
-            console.log("Usuario autenticado:", datacitas);
+            console.log("solicitud cita:", datacitas);
 
             //console.log(data);
         } catch (error) {

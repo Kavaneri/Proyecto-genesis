@@ -23,7 +23,7 @@ export default function CategoriaHogar() {
       const productosMostrar = await productosHogar(); // Esperar a que la promesa se resuelva
       console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
   };
-  
+  mostrarProductosHogar();
 
   useEffect(() =>{
     document.title="Hogar"

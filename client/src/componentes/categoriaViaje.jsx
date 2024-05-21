@@ -23,6 +23,8 @@ export default function CategoriaViaje() {
       console.log("return: ", productosMostrar); // Ahora productosMostrar debería contener los datos
   };
   
+  mostrarProductosViaje();
+
   useEffect(() =>{
     document.title="Viaje"
   })

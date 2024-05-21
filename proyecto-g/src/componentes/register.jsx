@@ -83,7 +83,7 @@ export default function Register() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
-                                <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" />
+                                <Link to='/'><img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" /></Link>
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>

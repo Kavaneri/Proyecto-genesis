@@ -160,3 +160,7 @@
 .input-error {
     border: 2px solid red;
 }
+.input-error {
+    border-color: red;
+}
+

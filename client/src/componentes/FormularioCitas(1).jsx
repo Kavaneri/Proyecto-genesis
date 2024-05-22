@@ -15,6 +15,8 @@ import Cabecera from "./header";
 import Footer from './footer';
 import TimePicker from 'react-time-picker';
 import { format } from 'date-fns';
+import { Modal } from 'react-bootstrap';
+
 
 registerLocale('es', es);
 
@@ -33,7 +35,8 @@ const schema = z.object({
 });
 
 export default function Formulario() {
-    
+    const [showModal, setShowModal] = useState(false);
+
     // Calcular la fecha mínima permitida (2 días después de la fecha actual)
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 2);
@@ -77,7 +80,7 @@ export default function Formulario() {
     }, []);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
-
+    
     const onSubmit = async (data) => {
         try {
             const urlcliente = `http://localhost:5000/clientes`;
@@ -89,9 +92,8 @@ export default function Formulario() {
             });
             const datacliente = await responsecliente.json();
             console.log("Cliente registrado:", datacliente);
-
-
-            const urlmascota = `http://localhost:5000/clientes`;
+    
+            const urlmascota = `http://localhost:5000/mascotascitas`;
             const bodyMascota = {nombremascota, raza};
             const responsemascota = await fetch(urlmascota, {
                 method : "POST",
@@ -100,9 +102,8 @@ export default function Formulario() {
             });
             const datamascota = await responsemascota.json();
             console.log("mascota registrada:", datamascota);
-
-
-            const bodyCita = {direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idcliente };
+    
+            const bodyCita = {direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota: datamascota.idmascota,idbarrioaprovado,idcliente: datacliente.idcliente  };
             const urlcitas = `http://localhost:5000/citas`;
             const responsecitas = await fetch(urlcitas, {
                 method : "POST",
@@ -111,12 +112,14 @@ export default function Formulario() {
             });
             const datacitas = await responsecitas.json();
             console.log("solicitud cita:", datacitas);
-
-            //console.log(data);
+    
+            // Mostrar modal de éxito
+            setShowModal(true);
         } catch (error) {
             console.error(error);
         }
     };
+    
 
     return (
         <>
@@ -130,16 +133,16 @@ export default function Formulario() {
                             <h3 className="encabezado-persona">DATOS PERSONALES:</h3>
                             <br />
                             <Row className="mb-3">
-                                <Form.Group as={Col} className='mb-4' controlId='formGridNombre'>
-                                    <Form.Label className='etiqueta' style={{ color: 'white' }}> Nombre </Form.Label>
-                                    <Form.Control 
-                                        {...register("nombre", {required: "el nombre es obligatorio"})}
-                                        value={nombres} onChange={(e) => setnombres(e.target.value)} 
-                                        className={errors.nombre ? 'input-error' : ''} 
-                                        required 
-                                        type='text' 
-                                    />
-                                    {errors.nombre && (<div style={{ color: "red" }}>{errors.nombre.message}</div>)}
+                            <Form.Group as={Col} className='mb-4' controlId='formGridNombre'>
+                                <Form.Label className='etiqueta' style={{ color: 'white' }}> Nombre </Form.Label>
+                                <Form.Control 
+                                    {...register("nombre", {required: "el nombre es obligatorio"})}
+                                    value={nombres} onChange={(e) => setnombres(e.target.value)} 
+                                    className={errors.nombre ? 'input-error' : ''} 
+                                    required 
+                                    type='text' 
+                                />
+                                {errors.nombre && (<div style={{ color: "red" }}>{errors.nombre.message}</div>)}
                                 </Form.Group>
                                 <Form.Group as={Col} className='mb-4' controlId='formGridNuip'>
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Nuip</Form.Label>
@@ -332,6 +335,22 @@ export default function Formulario() {
                 </div>
             </div>
             <Footer />
+            
+
+            {/* Modal para confirmar la venta registrada */}
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                <Modal.Title>Venta Registrada</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Tu solicitud fue presentada con exito</Modal.Body>
+                <Modal.Body>Tenviaremos la confirmacion a tu correo las proximas 36 horas.</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowModal(false)} href='/'>
+                    Cerrar
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </>
+        
     );
 }

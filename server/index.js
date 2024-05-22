@@ -237,7 +237,7 @@ app.use(express.json());
                         [nombremascota, raza]
                     );
             
-                    res.json(newMascota.rows[0]);
+                    res.json({idmascota: newMascota.rows[0].idmascota});
                 } catch (error) {
                     console.error(error.message);
                     res.status(500).send("Error al insertar la mascota en la base de datos.");

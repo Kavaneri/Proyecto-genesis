@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Modal } from 'react-bootstrap';
 
 const Formulario = () => {
+    const [showModal, setShowModal] = useState(false);
 
     const [nuipusuario, setnuipusuario] = useState('');
     const [clave_hash, setclave_hash] = useState('');
@@ -27,6 +29,8 @@ const Formulario = () => {
             });
             const data = await response.json();
             console.log("Usuario autenticado:", data);
+
+            setShowModal(true);
         } catch (error) {
             console.log(error.message);
         }
@@ -121,6 +125,19 @@ const Formulario = () => {
                         </div>
                     </Col>
 
+            {/* Modal para confirmar la cita registrada */}
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                <Modal.Title>Perfil Registrada</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Bienvenido, ahora tu cuenta esta registrada.</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowModal(false)} href='/'>
+                    Cerrar
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
                     <Col>
                         <div className='d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4'>
                             {/* 
@@ -152,7 +169,9 @@ const Formulario = () => {
                     </Col>
                 </Row>
             </Container>
+
         </div>
+        
     );
 };
 

@@ -1,36 +1,36 @@
-.col-main {
-
-    /* border-right: 1px solid black;
-    border-right: 1px solid black; */
-    margin-top: 150px;
-    height: max-content;
-    /* border-right: '1px solid black', 
-    border-bottom: '1px solid black',
-     height: 'max-content' */
-}
-.col-filtros{
-    margin-top: 40px;
-    /* border-right: 1px solid black;
-    border-bottom: 1px solid black;  */
-    height: max-content
+.sidebar {
+    width: 200px; /* Ajusta el ancho según tus necesidades */
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 30px;
+    background-color: #f7f7f7; /* Color de fondo neutro */
+    border-right: 1px solid #e0e0e0; /* Línea divisoria sutil */
+    border-radius: 15px; /* Bordes redondeados del contenedor */
 }
 
 .div-filtro {
-    padding-top: 20px;
-    padding-bottom: 20px;
     margin-top: 20px;
-    border-top: 1px solid rgb(145, 144, 144);
+    margin-bottom: 20px; /* Espaciado entre cada enlace */
 }
 
-.cmb-filtro{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 700;
+.filtro-link {
+    text-align: center;
+    text-decoration: none; /* Quita el subrayado de los enlaces */
+    color: #333; /* Color del texto */
+    font-size: 18px; /* Tamaño de la fuente */
+    font-family: 'Arial', sans-serif; /* Tipografía sencilla */
+    padding: 10px 15px; /* Espaciado interno */
+    display: block; /* Para que el enlace ocupe todo el div */
+    border-radius: 25px; /* Bordes muy redondeados */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Efecto de transición */
 }
 
-.cmb-filtro-label{
-    display: flex;
-    margin: 1rem;
+.filtro-link:hover {
+    background-color: #e0e0e0; /* Cambio de color al pasar el cursor */
+    color: #000; /* Color del texto al pasar el cursor */
+    transform: scale(1.05); /* Pequeño zoom al pasar el cursor */
+}
+.productos{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

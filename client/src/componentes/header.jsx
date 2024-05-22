@@ -91,7 +91,7 @@ export default function Cabecera() {
                                     src={logo}
                                     width="30"
                                     height="30"
-                                    className="d-inline-block align-top" />{' '}
+                                    className="d-inline-block align-top logo" />{' '}
                             </Link>
                         </Navbar.Brand>
                         <Row className='justify-content-center'>

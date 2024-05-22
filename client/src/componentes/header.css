@@ -121,6 +121,10 @@
 .txtWhite{
     color: white !important;
 }
+.logo{
+    min-height: 40px !important;
+    min-width: 40px !important;
+}
 
 /* .div-img{
     position: absolute;

@@ -11,7 +11,7 @@
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 700px) {
     .carousel {
       width:auto;
       height:auto;
@@ -29,4 +29,7 @@
 .carousel-control-next-icon,
 .carousel-control-prev-icon {
   filter: invert(1);
+}
+.todo{
+    margin: 0 !important;
 }

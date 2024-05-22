@@ -6,7 +6,7 @@ import img3 from './imagenes/servicios-la-merced.jpg'
 import './carrusel.css'
 export default function Carrusel() {
     return (
-        <div>
+        <div className='todo'>
             <Carousel>
                 <Carousel.Item>
                     <img

@@ -1,15 +1,14 @@
-import React from 'react'
-import './categorias.css'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import './categorias.css';
+import { Link } from 'react-router-dom';
 
 export default function Categorias() {
     return (
-        <div className=' container text-center categorias-div'>
+        <div className='container text-center categorias-div'>
+            <h2 className='titulo-separador'>Visita nuestra tienda</h2>
+            <hr className='separador' />
+
             <div className='row align-items-start'>
-                
-                <h2 className='titulo-separador'>Visita nuestra tienda</h2>
-                <hr className='separador' />
-                
                 <div className='col items item-1'>
                     <Link to='/Comida'>
                         <p>Comida</p>
@@ -41,22 +40,6 @@ export default function Categorias() {
                     </Link>
                 </div>
             </div>
-
-            <div className='row align-items-start'>
-
-            </div>
-
-            <div className='row align-items-start'>
-
-                {/* <div className='col items item-7'>
-                    <a href='#'>
-                        <p>Arenas</p>
-                    </a>
-                </div> */}
-
-            </div>
-
-
         </div>
-    )
+    );
 }

@@ -12,6 +12,7 @@ import { ShopContext } from './context-shop/context-shop';
 import './categoriaComida.css'
 import { Link } from 'react-router-dom';
 import {Toaster, toast} from 'sonner'
+import Footer from './footer'
 
 
 export default function CategoriaComida({baseInfo, type = "Comida"}) {
@@ -55,38 +56,30 @@ export default function CategoriaComida({baseInfo, type = "Comida"}) {
             <Container fluid onLoad={() => window.scrollTo({top: -1000, behavior:"smooth"})}>
                 <Row className="justify-content-center">
                     <Col className='col-filtros' xs='3'>
-
+                    <div className='sidebar'>
                         <div className='div-filtro'>
-                            <Link className='' to='/Comida'>Comida</Link>
+                            <Link className='filtro-link' to='/Comida'>Comida</Link>
                         </div>
-
                         <div className='div-filtro'>
-                            <Link className='' to='/Hogar'>Hogar</Link>
+                            <Link className='filtro-link' to='/Hogar'>Hogar</Link>
                         </div>
-
                         <div className='div-filtro'>
-                            <Link className='' to='/Juguetes'>juguetes</Link>
+                            <Link className='filtro-link' to='/Juguetes'>Juguetes</Link>
                         </div>
-
                         <div className='div-filtro'>
-                            <Link className='' to='/Salud'>Salud</Link>
+                            <Link className='filtro-link' to='/Salud'>Salud</Link>
                         </div>
-
                         <div className='div-filtro'>
-                            <Link className='' to='/Viaje'>Viaje</Link>
+                            <Link className='filtro-link' to='/Viaje'>Viaje</Link>
                         </div>
-
                         <div className='div-filtro'>
-                            <Link className='' to='/Paseo'>Paseo</Link>
+                            <Link className='filtro-link' to='/Paseo'>Paseo</Link>
                         </div>
-{/* 
-                        <div className='div-filtro'>
-                            <Link className='' to='/Arenas'>Arenas</Link>
-                        </div> */}
+                    </div>
 
                     </Col>
 
-                    <Col className='col-main' >
+                    <Col className='col-main productos' >
                         <Form.Group className="cmb-filtro" id="formGridCheckbox">
                             <Form.Label htmlFor='category' className='cmb-filtro-label'>Categoria</Form.Label>
                             <Form.Select defaultValue="Escoge..." style={{ width: '200px' }} onChange={handleCategory}>
@@ -128,7 +121,10 @@ export default function CategoriaComida({baseInfo, type = "Comida"}) {
 
                 </Row>
             </Container>
+            
+      <Footer />
         </>
+        
     )
 
 }

@@ -58,7 +58,7 @@ export default function Formulario() {
     const[ direccion,setdireccion]=useState('');
     const[fechacita ,setfechacita]=useState('');
     const[horacita ,sethoracita]=useState('');
-    const[comentariocliente ,setcomentariocliente]=useState('');
+    const[comentariocliente ,setcomentariocliente]=useState(' ');
     const[idservicio ,setidservicio]=useState('');
     const[idtipodomicilio ,setidtipodomicilio]=useState('');
     const[idmascota ,setidmascota]=useState('');
@@ -337,7 +337,7 @@ export default function Formulario() {
             <Footer />
             
 
-            {/* Modal para confirmar la venta registrada */}
+            {/* Modal para confirmar la cita registrada */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                 <Modal.Title>Venta Registrada</Modal.Title>

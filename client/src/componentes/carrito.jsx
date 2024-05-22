@@ -33,9 +33,9 @@ export default function Carrito() {
   const [showModal, setShowModal] = useState(false);
 
   const barrios = [
-    { id: 1, nombre: 'Barrio 1' },
-    { id: 2, nombre: 'Barrio 2' },
-    { id: 3, nombre: 'Barrio 3' },
+    { id: 15, nombre: 'Barrio 1' },
+    { id: 16, nombre: 'Barrio 2' },
+    { id: 17, nombre: 'Barrio 3' },
     // Agrega más barrios según sea necesario
   ];
 
@@ -100,8 +100,10 @@ export default function Carrito() {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(bodyVenta)
       });
+      console.log(bodyVenta);
       const dataventa = await responseventa.json();
       console.log("venta registrada:", dataventa);
+
 
       // Mostrar el modal si la venta se registra correctamente
       setShowModal(true);

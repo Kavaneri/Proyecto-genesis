@@ -99,23 +99,25 @@ app.use(express.json());
                 }
             });
         //publicar clientes
-            app.post("/clientes", async (req, res) => {
-                try {
-                    //obtener los datos del http
-                    const { nuipcliente, correo, telefono, nombres} = req.body;
-            
-                    // Realizar la inserción en la base de datos
-                    const newCliente = await pool.query(
-                        "INSERT INTO clientes (nuipcliente, correo, telefono, nombres) VALUES ($1, $2, $3, $4) RETURNING *",
-                        [nuipcliente, correo, telefono, nombres]
-                    );
-            
-                    res.json(newCliente.rows[0]);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al insertar el cliente en la base de datos.");
-                }
-            });
+        app.post("/clientes", async (req, res) => {
+            try {
+                // Obtener los datos del HTTP
+                const { nuipcliente, correo, telefono, nombres } = req.body;
+        
+                // Realizar la inserción en la base de datos
+                const newCliente = await pool.query(
+                    "INSERT INTO clientes (nuipcliente, correo, telefono, nombres) VALUES ($1, $2, $3, $4) RETURNING idcliente",
+                    [nuipcliente, correo, telefono, nombres]
+                );
+        
+                // Retornar solo el valor de idcliente
+                res.json({ idcliente: newCliente.rows[0].idcliente });
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al insertar el cliente en la base de datos.");
+            }
+        });
+        
     //tablas detalle ventas
         //obtener detalles ventas
 
@@ -565,8 +567,8 @@ app.use(express.json());
         //registrar una venta
             app.post("/ventas", async (req, res) => {
                 try {
-                    const { fechaventa, valortotal, direccion, idbarriosaprovado, idestadoventa, idcliente } = req.body;
-            
+                    const { fechaventa, valortotal, direccion, idbarriosaprovado,idcliente} = req.body;
+                    const idestadoventa = 2;
                     // Verificar si los datos son válidos
                     if (!fechaventa || !valortotal || !direccion || !idbarriosaprovado || !idestadoventa || !idcliente) {
                         return res.status(400).json({ message: "La fecha de venta, total, dirección, cliente, barrio aprobado y estado de venta son campos obligatorios." });

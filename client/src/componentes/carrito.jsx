@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
 import './carrito.css';
 import CardBody from 'react-bootstrap/esm/CardBody';
 import CardText from 'react-bootstrap/esm/CardText';
@@ -22,49 +23,89 @@ export default function Carrito() {
   const [nombres, setnombres] = useState('');
 
   // Variables ventas
-  //fechaventa, valortotal, direccion, idbarriosaprovado, idestadoventa, idcliente 
   const [fechaventa , setfechaventa] = useState('');
-  const [valortotal , setvalortotal] = useState('');
+  const [valortotal , setvalortotal] = useState(0);
   const [direccion, setdireccion] = useState('');
-  const [idbarriosaprovado, setidbarriosaprovado] = useState('');
+  const [idbarriosaprovado, setidbarriosaprovado] = useState(0);
   const [idcliente , setidcliente] = useState('');
 
+  const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+
+  const barrios = [
+    { id: 1, nombre: 'Barrio 1' },
+    { id: 2, nombre: 'Barrio 2' },
+    { id: 3, nombre: 'Barrio 3' },
+    // Agrega más barrios según sea necesario
+  ];
 
   useEffect(() => {
     document.title = 'Mi Carrito';
-  });
+
+    // Obtener la fecha actual
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    setfechaventa(formattedDate);  // Establecer la fecha de venta
+  }, []);
 
   const { detalleCompra, getSubtotalProductos, getCantidadProductos } = useContext(ShopContext);
   const cantidad = getCantidadProductos();
-  const cant = getSubtotalProductos();
+  const subtotal = getSubtotalProductos();
+  const envio = 10000;
+  const total = subtotal + envio;
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!nuipcliente) newErrors.nuipcliente = 'NUIP Cliente es obligatorio.';
+    if (!correo) newErrors.correo = 'Correo es obligatorio.';
+    if (!telefono) {
+      newErrors.telefono = 'Teléfono es obligatorio.';
+    } else if (!/^\d{10}$/.test(telefono)) {
+      newErrors.telefono = 'El teléfono debe tener 10 dígitos y ser numérico.';
+    }
+    if (!nombres) newErrors.nombres = 'Nombres son obligatorios.';
+    if (!direccion) newErrors.direccion = 'Dirección es obligatoria.';
+    if (idbarriosaprovado === 0) newErrors.idbarriosaprovado = 'Debe seleccionar un barrio.';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
+    setvalortotal(total); // Actualiza el valortotal
+
     try {
       const urlcliente = `http://localhost:5000/clientes`;
       const bodyCliente = { nuipcliente, correo, telefono, nombres };
-      const bodyventa = {direccion, idbarriosaprovado};
-      console.log(bodyCliente);
-      console.log(bodyventa);
-      console.log('aqui');
-      /*
+
       const responsecliente = await fetch(urlcliente, {
-          method : "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(bodyCliente)
+        method : "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(bodyCliente)
       });
       const datacliente = await responsecliente.json();
       console.log("cliente registrado:", datacliente);
+      setidcliente(datacliente.idcliente); // Asignar el idcliente obtenido
 
+      const bodyVenta = { fechaventa, valortotal: total, direccion, idbarriosaprovado, idcliente: datacliente.idcliente };
       const urlventa = `http://localhost:5000/ventas`;
-      const bodyVenta = {};
       const responseventa = await fetch(urlventa, {
         method : "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(bodyVenta)
       });
       const dataventa = await responseventa.json();
-       console.log("venta registrada:", dataventa);*/
+      console.log("venta registrada:", dataventa);
+
+      // Mostrar el modal si la venta se registra correctamente
+      setShowModal(true);
+
     } catch (error) {
       console.error(error);
     }
@@ -124,8 +165,9 @@ export default function Carrito() {
                           value={nuipcliente}
                           onChange={(e) => setnuipcliente(e.target.value)}
                           placeholder='NUIP Cliente'
-                          className='form-control my-2'
+                          className={`form-control my-2 ${errors.nuipcliente ? 'is-invalid' : ''}`}
                         />
+                        {errors.nuipcliente && <div className='text-danger'>{errors.nuipcliente}</div>}
                       </Col>
                       <Col xs={6}>
                         <input
@@ -133,8 +175,9 @@ export default function Carrito() {
                           value={correo}
                           onChange={(e) => setcorreo(e.target.value)}
                           placeholder='Correo'
-                          className='form-control my-2'
+                          className={`form-control my-2 ${errors.correo ? 'is-invalid' : ''}`}
                         />
+                        {errors.correo && <div className='text-danger'>{errors.correo}</div>}
                       </Col>
                     </Row>
                     <Row>
@@ -144,8 +187,9 @@ export default function Carrito() {
                           value={telefono}
                           onChange={(e) => settelefono(e.target.value)}
                           placeholder='Teléfono'
-                          className='form-control my-2'
+                          className={`form-control my-2 ${errors.telefono ? 'is-invalid' : ''}`}
                         />
+                        {errors.telefono && <div className='text-danger'>{errors.telefono}</div>}
                       </Col>
                       <Col xs={6}>
                         <input
@@ -153,8 +197,9 @@ export default function Carrito() {
                           value={nombres}
                           onChange={(e) => setnombres(e.target.value)}
                           placeholder='Nombres'
-                          className='form-control my-2'
+                          className={`form-control my-2 ${errors.nombres ? 'is-invalid' : ''}`}
                         />
+                        {errors.nombres && <div className='text-danger'>{errors.nombres}</div>}
                       </Col>
                     </Row>
                     <Row>
@@ -164,17 +209,24 @@ export default function Carrito() {
                           value={direccion}
                           onChange={(e) => setdireccion(e.target.value)}
                           placeholder='Dirección'
-                          className='form-control my-2'
+                          className={`form-control my-2 ${errors.direccion ? 'is-invalid' : ''}`}
                         />
+                        {errors.direccion && <div className='text-danger'>{errors.direccion}</div>}
                       </Col>
                       <Col xs={6}>
-                        <input
-                          type='text'
+                        <select
                           value={idbarriosaprovado}
-                          onChange={(e) => setidbarriosaprovado(e.target.value)}
-                          placeholder='ID Barrios Aprovado'
-                          className='form-control my-2'
-                        />
+                          onChange={(e) => setidbarriosaprovado(parseInt(e.target.value, 10))}
+                          className={`form-control my-2 ${errors.idbarriosaprovado ? 'is-invalid' : ''}`}
+                        >
+                          <option value=''>Seleccionar Barrio</option>
+                          {barrios.map((barrio) => (
+                            <option key={barrio.id} value={barrio.id}>
+                              {barrio.nombre}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.idbarriosaprovado && <div className='text-danger'>{errors.idbarriosaprovado}</div>}
                       </Col>
                     </Row>
                   </CardBody>
@@ -183,9 +235,11 @@ export default function Carrito() {
                       <strong>Resumen</strong>
                     </CardHeader>
                     <CardText className='d-flex flex-column'>
-                      <p className='fw-light'>Subtotal ${cant}</p>
-                      <p className='fw-light'>Envio</p>
-                      <p className='fw-light'>Total</p>
+                      <p className='fw-light'>
+                        Subtotal ${subtotal}
+                      </p>
+                      <p className='fw-light'>Envio: ${envio}</p>
+                      <p className='fw-light'>Total ${total}</p>
                     </CardText>
                   </CardBody>
                   <CardBody>
@@ -204,6 +258,19 @@ export default function Carrito() {
           Continuar comprando
         </Link>
       </div>
+
+      {/* Modal para confirmar la venta registrada */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Venta Registrada</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Tu venta ha sido registrada con éxito.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)} href='/'>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

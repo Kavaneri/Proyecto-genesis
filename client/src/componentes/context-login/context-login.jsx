@@ -6,12 +6,14 @@ export const LoginContextProvider = ({ children }) => {
 
 
     const [authorize, setAuthorize] = useState(false)
+    const[authorizeAdmin, setAuthorizeAdmin] = useState(false)
+    const [user, setUser] = useState([])
 
     const handleAuth = () =>{
         setAuthorize(true)
     }
 
-    const contextValue = {authorize,handleAuth}
+    const contextValue = {authorize,handleAuth, setAuthorize, authorizeAdmin, setAuthorizeAdmin, user, setUser}
     return (
         <LoginContext.Provider value={contextValue}>
             {children}

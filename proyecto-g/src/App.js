@@ -25,6 +25,14 @@ import CategoriaSalud from './componentes/categoriaSalud';
 import CategoriaViaje from './componentes/categoriaViaje';
 import CategoriaPaseo from './componentes/categoriaPaseo';
 import CategoriaArenas from './componentes/categoriaArenas';
+import CorreoContraseña from './componentes/correoContraseña';
+import EnlaceContraseña from './componentes/codigoContraseña';
+import Dashboard from './componentes/componentes-admin/dashboard';
+import Citas from './componentes/componentes-admin/citas';
+import Ventas from './componentes/componentes-admin/ventas';
+import Inventario from './componentes/componentes-admin/inventario';
+import Proveedores from './componentes/componentes-admin/proveedores';
+import Servicios from './componentes/componentes-admin/servicios';
 
 function App() {
 
@@ -87,6 +95,39 @@ function App() {
       {
         path: '/Arenas',
         element: <CategoriaArenas />
+      }, {
+        path: '/correoContraseña',
+        element: <CorreoContraseña />
+      },
+      {
+        path: '/codigoContraseña',
+        element: <EnlaceContraseña />
+      },
+      {
+        path: '/Admin',
+        element: <Dashboard />,
+        children: [
+          {
+            path: '/Admin/Citas',
+            element: <Citas />
+          },
+          {
+            path: '/Admin/Ventas',
+            element: <Ventas />
+          },
+          {
+            path: '/Admin/Inventario',
+            element: <Inventario />
+          },
+          {
+            path: '/Admin/Servicios',
+            element: <Servicios />
+          },
+          {
+            path: '/Admin/Proveedores',
+            element: <Proveedores />
+          }
+        ]
       },
     ]);
 
@@ -96,7 +137,7 @@ function App() {
     <div className="App">
 
       <RouterProvider router={router} />
-      {/* <Categorias /> */}
+      {/* <Dashboard/> */}
 
 
       {/* <header className='App-header'>

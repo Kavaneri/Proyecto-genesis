@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,15 +11,22 @@ import Cabecera from './header';
 import { ShopContext } from './context-shop/context-shop';
 import './categoriaComida.css'
 import { Link } from 'react-router-dom';
+import {Toaster, toast} from 'sonner'
 
 
-export default function CategoriaComida() {
+export default function CategoriaComida({baseInfo, type = "Comida"}) {
+    baseInfo = PRODUCTS
+    // type = "Comida"
+    const { agregarProducto, filtrarProductos, handleCategory, preFiltrar} = useContext(ShopContext)
 
-    const { agregarProducto } = useContext(ShopContext)
+
+    const primerfiltro = preFiltrar(PRODUCTS, type)
+
+    const filtrados = filtrarProductos(primerfiltro)
     return (
         <>
             <Cabecera />
-            <Container fluid>
+            <Container fluid onLoad={() => window.scrollTo({top: -1000, behavior:"smooth"})}>
                 <Row className="justify-content-center">
                     <Col className='col-filtros' xs='3'>
 
@@ -36,71 +43,30 @@ export default function CategoriaComida() {
                         </div>
 
                         <div className='div-filtro'>
-                           <Link className='' to='/Salud'>Salud</Link>
+                            <Link className='' to='/Salud'>Salud</Link>
                         </div>
 
                         <div className='div-filtro'>
-                             <Link className='' to='/Viaje'>Viaje</Link>
+                            <Link className='' to='/Viaje'>Viaje</Link>
                         </div>
 
                         <div className='div-filtro'>
-                             <Link className='' to='/Paseo'>Paseo</Link>
+                            <Link className='' to='/Paseo'>Paseo</Link>
                         </div>
 
                         <div className='div-filtro'>
-                             <Link className='' to='/Arenas'>Arenas</Link>
-                        </div>
-                        {/* <div className='div-filtro'>
-                            <p><strong>Raza</strong></p>
-                            {['Husky siberiano', 'Golder retriever', 'Caniche', 'Pastor alemán'].map((raza) =>
-                                <Form.Check
-                                    type='checkbox'
-                                    id='default-checkbox'
-                                    label={`${raza}`}
-                                />
-                            )}
+                            <Link className='' to='/Arenas'>Arenas</Link>
                         </div>
 
-                        <div className='div-filtro'>
-                            <p><strong>Tamaño</strong></p>
-                            {['Pequeño', 'Mediano', 'Grande'].map((tamaño) =>
-                                <Form.Check
-                                    type='checkbox'
-                                    id='default-checkbox'
-                                    label={`${tamaño}`}
-                                />
-                            )}
-                        </div>
-
-                        <div className='div-filtro'>
-                            <p><strong>Peso</strong></p>
-                            {['Menos de 1 kg', '1 - 5 kg', '6 - 10 kg', '11 - 15  kg', '16 - 20 kg', '21 - 25 kg', '+ 25 kg'].map((peso) =>
-                                <Form.Check
-                                    type='checkbox'
-                                    id='default-checkbox'
-                                    label={`${peso}`}
-                                />
-                            )}
-                        </div>
-
-                        <div className='div-filtro'>
-                            <p><strong>Precio</strong></p>
-                            {['$ 5000 - $ 10000', '$ 11000 - 20000', '$ 21000 - $ 30000', '$ 31000- $ 40000', '$ 41000 - $ 50000', '+ $ 50000'].map((raza) =>
-                                <Form.Check
-                                    type='checkbox'
-                                    id='default-checkbox'
-                                    label={`${raza}`}
-                                />
-                            )}
-                        </div> */}
                     </Col>
 
                     <Col className='col-main' >
-                        <Form.Group className="mb-3 d-flex justify-content-end align-items-end" id="formGridCheckbox">
-                            <Form.Label>State</Form.Label>
-                            <Form.Select defaultValue="Choose..." style={{ width: '200px' }}>
-                                <option>Choose...</option>
-                                <option>...</option>
+                        <Form.Group className="cmb-filtro" id="formGridCheckbox">
+                            <Form.Label htmlFor='category' className='cmb-filtro-label'>Categoria</Form.Label>
+                            <Form.Select defaultValue="Escoge..." style={{ width: '200px' }} onChange={handleCategory}>
+                                <option value='all'>Todos</option>
+                                <option value='Perro'>Perros</option>
+                                <option value='Gato'>Gatos</option>
                             </Form.Select>
                         </Form.Group>
                         columna productos - tipo animal
@@ -108,10 +74,10 @@ export default function CategoriaComida() {
                         <Container>
                             <div className='row justify-content-center align-items-start'>
                                 <CardGroup>
-                                    {PRODUCTS.map((producto) => (
+                                    
+                                    {filtrados.map((producto) => (
+                                        
                                         <div key={producto.id} className='col col-sm-3'>
-
-                                            {/* <Cards {...producto}/> */}
 
                                             <Card>
                                                 <Card.Img variant="top" src={producto.productImage} />
@@ -121,7 +87,8 @@ export default function CategoriaComida() {
                                                         <small className='text-muted'>{producto.precio}</small>
                                                     </Card.Text>
                                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                                                        <Button className='mx-2' variant='outline-success' onClick={() => agregarProducto(producto.id)}>Agregar Al Carrito</Button>
+                                                        <Toaster richColors expand={false} closeButton/>
+                                                        <Button className='mx-2' variant='outline-success' onClick={() => {agregarProducto(producto.id); toast.info('Producto agregado al carrito')}}>Agregar al Carrito</Button>
                                                     </div>
                                                 </Card.Body>
                                             </Card>

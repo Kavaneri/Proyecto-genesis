@@ -1,12 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DataTable from 'react-data-table-component'
 import data from "./MOCK_DATA.citas.json"
-import { Col, Form, FormControl, FormGroup, FormLabel, InputGroup, Row } from 'react-bootstrap'
+import { Col, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button';
+
 import "./citas.css"
+import { Toaster, toast } from 'sonner';
+import Cabecera from '../header';
 
 export default function Citas() {
+  //Lugar donde se guardan las citas al cargarse
+  const [citasInfo, setCitasInfo] = useState([])
 
+  //Activa-descativa animacion de carga
+  const [cargando, setCargando] = useState(true)
+
+  //Funcion que llama los datos
+  useEffect(() => {
+    fetch('https://664d399aede9a2b55652f8ed.mockapi.io/api/citas/solicitudes')
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data)
+        setCitasInfo(data)
+        setCargando(false)
+      })
+  }, [cargando])
+
+  const actualizarEstado = () => {
+    const cita = selectedRow[0]
+    fetch(`https://664d399aede9a2b55652f8ed.mockapi.io/api/citas/solicitudes/${cita.codigo}`, {
+      method: "PUT",
+      body: JSON.stringify(cita),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+    // .then(response => response.json())
+    // .then(() =>{
+    //   <Toaster/>
+    //   toast.success('Cita actualizada')
+    // })
+
+  }
 
   const columns = [
     {
@@ -19,7 +56,7 @@ export default function Citas() {
     },
     {
       name: "Raza paciente",
-      selector: row => row.paciente
+      selector: row => row.raza
     },
     {
       name: "Fecha solicitud",
@@ -51,11 +88,11 @@ export default function Citas() {
 
   const [selectedRow, setSelectedRow] = useState([])
   const [toggledClearRows, setToggleClearRows] = React.useState(false);
-  const [estadosCitas, setEstadosCitas] = useState([data])
+  // const [estadosCitas, setEstadosCitas] = useState([data])
 
   const handleChange = (state) => {
     setSelectedRow(state.selectedRows)
-    console.log(selectedRow)
+    console.log("citas seleccionadas",selectedRow)
   }
 
   const handleClearRows = () => {
@@ -68,26 +105,40 @@ export default function Citas() {
       seleccion.estado = "Aceptada"
       setSelectedRow(seleccion)
       handleClearRows()
+      toast.success('Cita aceptada')
+      // console.log("Cita cambiada",estadosCitas)
+    }
+  }
+  const rechazarCita = () => {
+    const seleccion = selectedRow[0]
+    if (seleccion) {
+      seleccion.estado = "Rechazada"
+      setSelectedRow(seleccion)
+      toast.error('Cita rechazada')
     }
   }
 
 
   return (
     <>
+      <Cabecera />
       <div className=''>
         <DataTable
           columns={columns}
-          data={data}
+          data={citasInfo}
           fixedHeader
           selectableRows
           conditionalRowStyles={conditionalRowsStyles}
           onSelectedRowsChange={handleChange}
+          pagination
+          progressPending={cargando}
+          responsive
         />
       </div>
 
       <div>
         <Form className='my-4'>
-          <Row>{console.log(selectedRow)}
+          <Row>
 
             <FormGroup as={Col} className='mt-3'>
               <FormLabel>Codigo Cita</FormLabel>
@@ -183,9 +234,11 @@ export default function Citas() {
 
           </Row>
 
+          <Toaster richColors expand={false} position='top-right' />
           <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
-            <Button variant='outline-success' onClick={aceptarCita} >Aceptar Solicitud</Button>
-            <Button variant='outline-danger' >Rechazar Solicitud</Button>
+
+            <Button variant='outline-success' onClick={() => { aceptarCita(); actualizarEstado() }} >Aceptar Solicitud</Button>
+            <Button variant='outline-danger' onClick={() => { rechazarCita(); actualizarEstado() }} >Rechazar Solicitud</Button>
           </div>
         </Form>
       </div>

@@ -31,49 +31,31 @@ export default function Login() {
     const { authorize, setAuthorize, setAuthorizeAdmin, authorizeAdmin, setUser, user, handleAuth } = useContext(LoginContext)
     const users = [{ name: "Roger Andrey", surname: "Vaca Arboleda", Nuip: "1006309353", phone: "3185747693", useremail: "example@hotmail.com", userpassword: "qQ1!qwer" }, { useremail: "chocoroger2011@hotmail.com", userpassword: "qQ1!qwer", admin: true }]
 
-    const [userEmail, setUserEmail] = useState("")
-    const [userPassword, setUserPassword] = useState("")
+    const [correo, setcorreo] = useState(null)
+    const [clave, setclave] = useState(null)
 
     const navigate = useNavigate()
 
     const onSubmit = async (data) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
         try {
-            const acc = users.find((user) => user.useremail === userEmail)
-            if (acc && acc.userpassword === userPassword) {
-                setAuthorize(true)
-                localStorage.setItem('authorization', JSON.stringify(authorize))
-                setUser(acc)
-                localStorage.setItem('User', JSON.stringify(acc))
-
-            }
-
-            if (acc && acc.userpassword === userPassword && acc.admin === true) {
-                setAuthorizeAdmin(true)
-                localStorage.setItem('authorizationAdmin', JSON.stringify(authorizeAdmin))
-                setUser(acc)
-                localStorage.setItem('User', JSON.stringify(acc))
-
-            }
-            if (authorize || authorizeAdmin) {
-                navigate("/Editarperfil")
-            } 
+            console.log("email: ", correo);
+            console.log("clave: ", clave);
             
+            const body = { correo, clave };
 
-
+            const url = `http://localhost:5000/autenticar`;
+            const response = await fetch(url, {
+                method : "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body)
+            });
+            const data = await response.json();
+            console.log("Usuario autenticado:", data);
         } catch (err) {
             console.log(err.message)
         }
 
-
-
-
-
     }
-
-
-
-
 
 
     return (
@@ -92,14 +74,14 @@ export default function Login() {
                                 <Row>
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" value={correo} onChange={(e) => setcorreo(e.target.value)} />
                                         {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password")} required type='password' value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                                        <FormControl {...register("password")} required type='password' value={clave} onChange={(e) => setclave(e.target.value)} />
                                         {errors.password && (<div style={{ color: "red" }}>{errors.password.message}</div>)}
                                     </FormGroup>
 

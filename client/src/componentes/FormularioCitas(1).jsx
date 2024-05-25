@@ -40,6 +40,8 @@ export default function Formulario() {
     // Calcular la fecha mínima permitida (2 días después de la fecha actual)
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 2);
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 30)
 
     //capturar datos cliente
     //nuipcliente, correo, telefono, nombres
@@ -229,11 +231,12 @@ export default function Formulario() {
                                         <DatePicker
                                             className='calendario'
                                             selected={fechacita ? new Date(fechacita) : null} // Convierte la fecha de nuevo a objeto Date si no es nulo
-                                            onChange={handleDateChange}
+                                            onChange={date => setfechacita(date)}
                                             showIcon
                                             toggleCalendarOnIconClick
-                                            dateFormat="dd/MM/yyyy"
+                                            dateFormat="yyyy-MM-dd"
                                             minDate={minDate}
+                                            maxDate={maxDate}
                                             locale="es"
                                         />
                                 </Form.Group>

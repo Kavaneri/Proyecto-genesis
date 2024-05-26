@@ -1,18 +1,51 @@
-.columna-navegacion{
-    border: 1px solid black;
-    background: rgba(69, 159, 88, 1);
-    height: 100vh;
-    margin: 0;
+.bg-custom {
+    background-color: rgba(69, 159, 88, 1);
+    color: white;
+    padding: 20px;
+    max-width: 15%;
 }
-.columna-contenido{
-    border: 1px solid black;
-    height: 100vh;
+
+.text-white {
+    color: white;
 }
-.logo-contenido{
-    display: block;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+
+.columna-navegacion a {
+    color: white;
+    text-decoration: none;
 }
-.logo-contenido-escondido{
-    display: none;
+
+.columna-navegacion a:hover {
+    color: lightgray;
+}
+
+.user-img {
+    max-width: 80px;
+    border-radius: 50%;
+}
+
+.user-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.menu-button {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    width: 100%;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border-radius: 28px;
+    background-color: rgb(49, 119, 64);
+    height: 70px;
+
+}
+
+.menu-button:hover {
+    background-color: rgb(139, 212, 155);
+    color: rgb(255, 255, 255);
+    border-color: rgba(69, 159, 88, 1);
+}
+.botonAdmin{
+    width: 100%;
 }

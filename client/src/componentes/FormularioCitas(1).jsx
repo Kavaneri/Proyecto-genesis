@@ -132,7 +132,9 @@ export default function Formulario() {
                 <div>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <div className="container">
-                            <h3 className="encabezado-persona">DATOS PERSONALES:</h3>
+                            <div className="lineasblancas">
+                                <h3 className="encabezado-persona">DATOS PERSONALES</h3>
+                            </div>
                             <br />
                             <Row className="mb-3">
                             <Form.Group as={Col} className='mb-4' controlId='formGridNombre'>
@@ -184,7 +186,9 @@ export default function Formulario() {
                             </Row>
                         </div>
                         <div className="container">
-                            <h3 className="encabezado-persona">DATOS DE LA MASCOTA:</h3>
+                            <div className="lineasblancas"> 
+                                <h3 className="encabezado-persona">DATOS DE LA MASCOTA</h3>
+                            </div>
                             <br />
                             <Row className="mb-3">
                                 <Form.Group as={Col} className='mb-4' controlId='formGridNombreMascota'>
@@ -199,7 +203,7 @@ export default function Formulario() {
                                     {errors.nombreMascota && (<div style={{ color: "red" }}>{errors.nombreMascota.message}</div>)}
                                 </Form.Group>
                                 <Form.Group as={Col} className='mb-4' controlId='formGridNombre'>
-                                    <Form.Label className='etiqueta' style={{ color: 'white' }}> raza </Form.Label>
+                                    <Form.Label className='etiqueta' style={{ color: 'white' }}> Raza </Form.Label>
                                     <Form.Control 
                                         {...register("raza", {required: "la raza es obligatoria"})}
                                         value={raza} onChange={(e) => setraza(e.target.value)} 
@@ -213,8 +217,9 @@ export default function Formulario() {
                                     <Form.Label className='etiqueta' style={{ color: 'white' }}>Especie</Form.Label>
                                     <Form.Select defaultValue="Choose...">
                                         <option value="NULL" >...</option>
-                                        <option value="perro">Perro</option>
-                                        <option value="gato">Gato</option>
+                                        <option value="perro">Canino</option>
+                                        <option value="perro">Joaquin</option>
+                                        <option value="gato">Felino</option>
                                     </Form.Select>
                                 </Form.Group>
                                 
@@ -222,7 +227,9 @@ export default function Formulario() {
                         </div>
 
                         <div className="container">
-                            <h3 className="encabezado-persona">DATOS DE LA CITA:</h3>
+                            <div className="lineasblancas"> 
+                                <h3 className="encabezado-persona">DATOS DE LA CITA</h3>
+                            </div>
                             <br />
                             <Row className="mb-3">
                                 <Form.Group as={Col} className='mb-4' controlId='formGridFecha'>
@@ -324,7 +331,7 @@ export default function Formulario() {
                             <Row>
                                 <Col>
                                     <Button
-                                        className='btn-submitCita'
+                                        className='btn-submitCita btndec'
                                         variant='primary'
                                         type='submit'
                                         disabled={isSubmitting}>

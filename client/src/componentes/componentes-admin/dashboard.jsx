@@ -15,7 +15,7 @@ export default function Dashboard() {
 
     const authAdminState = JSON.parse(localStorage.getItem('authorizationAdmin'))
     
-    const [adminAuthenticated, setAdminAuthenticated] = useState(authAdminState)
+    const [adminAuthenticated, setAdminAuthenticated] = useState(true)
 
     const [estiloLogo, setEstiloLogo] = useState("logo-contenido")
     const handleEstiloLogo = () => setEstiloLogo("logo-contenido-escondido")

@@ -3,6 +3,11 @@
     max-height:  400px;
 }
 
-img{
-    height: auto;
+.productoDetalleVenta{
+    margin-left: 10%;
+    max-width: 80% !important;
+    max-height: 80% !important;
+}
+.agregarQuitar{
+    margin: 1%;
 }

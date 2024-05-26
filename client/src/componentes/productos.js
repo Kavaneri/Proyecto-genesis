@@ -3,6 +3,7 @@ import purina from './imagenes/purinacat.jpg'
 import hueso from './imagenes/huesomasticable.webp'
 
 export const PRODUCTS = [
+    
     {
         id: 1,
         productName: "Concentrado Chunky",

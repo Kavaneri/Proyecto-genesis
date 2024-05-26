@@ -31,7 +31,7 @@ export default function CategoriaJuguetes() {
 
   return (
     <div >
-    <CategoriaComida baseInfo={PRODUCTS} type={"Juguete"}/>
+    <CategoriaComida baseInfo={PRODUCTS} type={"Juguetes"}/>
     </div>
   )
 }

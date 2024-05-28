@@ -1,44 +1,33 @@
-import React, { useContext } from 'react'
-import './carritoDetalle.css'
+import React, { useContext } from 'react';
 import { ShopContext } from './context-shop/context-shop';
-import Button from 'react-bootstrap/esm/Button'
-import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import './carritoDetalle.css'; // Asegúrate de crear y enlazar este archivo CSS
 
-
-export default function CarritoDetalle(props) {
-
-    const { id, productName, precio, productImage } = props.data
-    const { detalleCompra, agregarProducto, removerProducto } = useContext(ShopContext)
-
+const CarritoDetalle = ({ data }) => {
+    const { agregarProducto, removerProducto, detalleCompra } = useContext(ShopContext);
+    const { id, productName, precio, productImage } = data;
+    const cantidad = detalleCompra[id]?.cantidad || 0;
 
     return (
-        <div className='div-detalles'>
-            <div className='div-card'>
-                <div className="card mb-3 detalle" >
-                    <div className="row g-0 align-items-center">
-
-                        <div class="col">
-                            <img src={productImage} class="img-fluid rounded-start" alt="imagen producto" />
-                        </div>
-
-                        <div className="col d-flex">
-                            <div className="card-body d-flex flex-column">
-                                <h5 className="card-title text-break">{productName}</h5>
-                                <p className="card-text text-break">{precio}</p>
-                                <p className="card-text text-break"><small className="text-body-secondary">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-
-                        <div className='col-md my-4 px-5 d-flex justify-content-center align-items-center'>
-                            <Button onClick={() => removerProducto(id)} variant='danger'>-</Button>
-                            <Form.Control type='text' value={detalleCompra[id]} className='text-center'/>
-                            <Button onClick={() => agregarProducto(id)} variant='success'>+</Button>
-                        </div>
+        <Card className="my-2">
+            <Card.Body>
+                <div className="d-flex align-items-center detalle">
+                    <img src={productImage} alt={productName} width="50" height="50"  className='fotoProducto'/>
+                    <div className="ms-3">
+                        <Card.Title>{productName}</Card.Title>
+                        <Card.Text>${precio}</Card.Text>
+                        <Card.Text>Total: ${cantidad * precio}</Card.Text>
+                    </div>
+                    <div className="ms-auto d-flex align-items-center">
+                        <Button variant="danger" onClick={() => removerProducto(id)}>-</Button>
+                        <span className="cantidad mx-2">{cantidad}</span>
+                        <Button variant="success" onClick={() => agregarProducto(id)}>+</Button>
                     </div>
                 </div>
+            </Card.Body>
+        </Card>
+    );
+};
 
-            </div>
-
-        </div>
-    )
-}
+export default CarritoDetalle;

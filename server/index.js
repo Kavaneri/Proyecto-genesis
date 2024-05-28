@@ -797,20 +797,15 @@ app.use(express.json());
         //registrar detalle venta
         app.post("/detalleVenta", async (req, res) => {
             try {
-                const { cantidadProducto, precioDetalle } = req.body;
-        
-                // Verificar si los datos son válidos
-                if (!cantidadProducto || !precioDetalle) {
-                    return res.status(400).json({ message: "La cantidad de producto y el precio del detalle son campos obligatorios." });
-                }
-        
+                const { cantidad, valortotal, idventa, idproducto } = req.body;
+
                 // Realizar la inserción en la base de datos
                 const newDetalleVenta = await pool.query(
-                    "INSERT INTO detalleVenta (cantidadProducto, precioDetalle) VALUES ($1, $2) RETURNING *",
-                    [cantidadProducto, precioDetalle]
+                    "INSERT INTO detalleVenta (cantidad, valortotal, idventa, idproducto) VALUES ($1, $2, $3, $4) RETURNING *",
+                    [cantidad, valortotal, idventa, idproducto]
                 );
         
-                res.json(newDetalleVenta.rows[0]);
+                res.json(newDetalleVenta.rows);
             } catch (error) {
                 console.error(error.message);
                 res.status(500).send("Error al insertar el detalle de venta en la base de datos.");

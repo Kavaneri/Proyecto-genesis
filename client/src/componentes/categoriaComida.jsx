@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Container, Row, Col, Form, Card, CardGroup, Button } from 'react-bootstrap';
 import Cabecera from './header';
 import { ShopContext } from './context-shop/context-shop';
@@ -9,44 +9,16 @@ import Footer from './footer';
 
 // Componente principal
 export default function CategoriaComida({ baseInfo, type = "Comida" }) {
-    // Estado local para almacenar los productos obtenidos de la API
-    const [productos, setProductos] = useState([]);
+    //console.log("cagaste")
+    const { productos, detalleCompra, agregarProducto, filtrarProductos, handleCategory, preFiltrar } = useContext(ShopContext);
 
-    // Función para obtener los productos desde la API
-    const fetchProductos = async () => {
-        try {
-            const url = `http://localhost:5000/productos`;
-            const response = await fetch(url, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" }
-            });
-            const data = await response.json();
-
-            // Mapeo de los datos obtenidos a la estructura esperada por el componente
-            const mappedData = data.map(item => ({
-                id: item.idproducto,
-                productName: item.producto,
-                precio: item.precioventa,
-                productImage: item.foto || 'default_image_url.jpg', // URL de imagen por defecto si es null
-                category: mapSpeciesToCategory(item.idespecie), // Función para mapear idespecie a category
-                type: mapCategoryToType(item.idcategoria) // Función para mapear idcategoria a type
-            }));
-
-            // Actualiza el estado con los datos mapeados
-            setProductos(mappedData);
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
+    // Console.log para imprimir el estado detalleCompra
+    //console.log(JSON.stringify(detalleCompra, null, 2));
 
     // Hook useEffect para ejecutar código cuando el componente se monta
     useEffect(() => {
         document.title = "Comida"; // Actualiza el título del documento
-        fetchProductos(); // Llama a fetchProductos cuando el componente se monta
     }, []);
-
-    // Obtiene funciones y datos del contexto
-    const { agregarProducto, filtrarProductos, handleCategory, preFiltrar } = useContext(ShopContext);
 
     // Filtra los productos por tipo utilizando las funciones del contexto
     const primerfiltro = preFiltrar(productos, type);
@@ -106,7 +78,7 @@ export default function CategoriaComida({ baseInfo, type = "Comida" }) {
                                                     </Card.Text>
                                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
                                                         <Toaster richColors expand={false} closeButton />
-                                        {/* aqui es donde se llama la funcion para agregar un producto */}
+                                        {/* aquí es donde se llama la función para agregar un producto */}
                                                         <Button className='mx-2' variant='outline-success' onClick={() => { agregarProducto(producto.id); toast.info('Producto agregado al carrito') }}>
                                                             Agregar al Carrito
                                                         </Button>
@@ -124,36 +96,4 @@ export default function CategoriaComida({ baseInfo, type = "Comida" }) {
             <Footer />
         </>
     );
-}
-
-// Función para mapear idcategoria a type
-function mapCategoryToType(idcategoria) {
-    switch (idcategoria) {
-        case 1:
-            return 'Comida';
-        case 2:
-            return 'Hogar';
-        case 3:
-            return 'Juguetes';
-        case 4:
-            return 'Salud';
-        case 5:
-            return 'Viaje';
-        case 6:
-            return 'Paseo';
-        default:
-            return 'Otros'; // Default si idcategoria no coincide
-    }
-}
-
-// Función para mapear idespecie a category
-function mapSpeciesToCategory(idespecie) {
-    switch (idespecie) {
-        case 1:
-            return 'Gato';
-        case 2:
-            return 'Perro';
-        default:
-            return 'Otros'; // Default si idespecie no coincide
-    }
 }

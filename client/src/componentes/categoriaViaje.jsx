@@ -3,7 +3,6 @@ import CategoriaComida from './categoriaComida'
 import { PRODUCTS } from './productos'
 
 export default function CategoriaViaje() {
-
   useEffect(() =>{
     document.title="Viaje"
   })

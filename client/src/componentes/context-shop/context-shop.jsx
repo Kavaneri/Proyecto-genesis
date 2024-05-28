@@ -1,3 +1,4 @@
+
 import React, { createContext, useState } from 'react'
 import { PRODUCTS } from '../productos';
 
@@ -15,6 +16,7 @@ const getDetalleCompra = () => {
 
 export const ShopContextProvider = ({ children }) => {
 
+    //aplicar de string a json
     const [detalleCompra, setDetalleCompra] = useState(getDetalleCompra());
 
     const preFiltrar = (products, type) =>{
@@ -47,7 +49,7 @@ export const ShopContextProvider = ({ children }) => {
     }
 
 
-
+    //aqui recibimos desde categoria y se envia a detalle compra
     const agregarProducto = (productoId) => {
         setDetalleCompra((prev) => ({ ...prev, [productoId]: prev[productoId] + 1 }))
     }

@@ -106,6 +106,7 @@ export default function CategoriaComida({ baseInfo, type = "Comida" }) {
                                                     </Card.Text>
                                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
                                                         <Toaster richColors expand={false} closeButton />
+                                        {/* aqui es donde se llama la funcion para agregar un producto */}
                                                         <Button className='mx-2' variant='outline-success' onClick={() => { agregarProducto(producto.id); toast.info('Producto agregado al carrito') }}>
                                                             Agregar al Carrito
                                                         </Button>

@@ -7,10 +7,13 @@ import Form from 'react-bootstrap/Form';
 
 export default function CarritoDetalle(props) {
 
+    //detalle compra: id y cantidad nota" agregar valor total"
+    //
+
     const { id, productName, precio, productImage } = props.data
     const { detalleCompra, agregarProducto, removerProducto } = useContext(ShopContext)
 
-    console.log(detalleCompra);
+    console.log(JSON.stringify(detalleCompra));
 
     return (
         <div className='div-detalles'>

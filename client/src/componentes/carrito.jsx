@@ -98,6 +98,23 @@ export default function Carrito() {
             const dataventa = await responseventa.json();
             console.log("venta registrada:", dataventa);
 
+            // Registrar los detalles de la venta
+            for (const productoId in detalleCompra) {
+                if (detalleCompra[productoId].cantidad > 0) {
+                    const bodyDetalleVenta = {
+                        cantidad: detalleCompra[productoId].cantidad,
+                        valortotal: detalleCompra[productoId].total,
+                        idventa: dataventa.idventa,
+                        idproducto: parseInt(productoId, 10)
+                    };
+                    await fetch('http://localhost:5000/detalleVenta', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(bodyDetalleVenta)
+                    });
+                }
+            }
+
             setShowModal(true);
 
         } catch (error) {

@@ -120,10 +120,32 @@ app.use(express.json());
         
     //tablas detalle ventas
         //obtener detalles ventas
-
-        //obtener un detalle venta
-
+            app.get("/detalleVenta", async(req,res) => {
+                try {
+                    const allTodos = await pool.query("SELECT * FROM detalleVenta");
+                    res.json( allTodos.rows);
+                } catch (error) {
+                    console.error(error.message);
+                    res.status(500).send("Error al obtener en la base de datos.");
+                }
+            });
         //publicar un detalle venta
+            app.post("/detalleVenta", async (req, res) => {
+                try {
+                    const { cantidad, valortotal, idventa, idproducto } = req.body;
+
+                    // Realizar la inserción en la base de datos
+                    const newDetalleVenta = await pool.query(
+                        "INSERT INTO detalleVenta (cantidad, valortotal, idventa, idproducto) VALUES ($1, $2, $3, $4) RETURNING *",
+                        [cantidad, valortotal, idventa, idproducto]
+                    );
+            
+                    res.json(newDetalleVenta.rows);
+                } catch (error) {
+                    console.error(error.message);
+                    res.status(500).send("Error al insertar el detalle de venta en la base de datos.");
+                }
+            });
 
         //modificar un detalle venta
 
@@ -795,22 +817,6 @@ app.use(express.json());
             }
         });
         //registrar detalle venta
-        app.post("/detalleVenta", async (req, res) => {
-            try {
-                const { cantidad, valortotal, idventa, idproducto } = req.body;
-
-                // Realizar la inserción en la base de datos
-                const newDetalleVenta = await pool.query(
-                    "INSERT INTO detalleVenta (cantidad, valortotal, idventa, idproducto) VALUES ($1, $2, $3, $4) RETURNING *",
-                    [cantidad, valortotal, idventa, idproducto]
-                );
-        
-                res.json(newDetalleVenta.rows);
-            } catch (error) {
-                console.error(error.message);
-                res.status(500).send("Error al insertar el detalle de venta en la base de datos.");
-            }
-        });
 
 //get/select all todo
     //tablas de productos

@@ -1,14 +1,16 @@
 .bg-custom {
     background-color: rgba(69, 159, 88, 1);
     color: white;
-    padding: 20px;
-    max-width: 15%;
+    max-width: 20%;
 }
 
 .text-white {
     color: white;
 }
 
+.columna-navegacion{
+    width: 15% !important;
+}
 .columna-navegacion a {
     color: white;
     text-decoration: none;
@@ -20,7 +22,7 @@
 
 .user-img {
     max-width: 80px;
-    border-radius: 50%;
+    border-radius: 20%;
 }
 
 .user-name {
@@ -35,7 +37,7 @@
     width: 100%;
     padding: 10px 20px;
     transition: all 0.3s ease;
-    border-radius: 28px;
+    border-radius: 10px;
     background-color: rgb(49, 119, 64);
     height: 70px;
 
@@ -48,4 +50,8 @@
 }
 .botonAdmin{
     width: 100%;
+}
+
+.columna.navegacion{
+    min-width: 20% !important;
 }

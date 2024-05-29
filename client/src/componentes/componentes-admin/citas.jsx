@@ -102,7 +102,11 @@ export default function Citas() {
 
   return (
     <>
-      <Cabecera />
+      <div>
+        <h1 className='tituloAdmin'>
+          Administrar Citas
+        </h1>
+      </div>
       <div>
         <DataTable
           columns={columns}

@@ -49,7 +49,7 @@ app.use(express.json());
                 try {
                     //obtener los datos del http
                     const { direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idcliente } = req.body;
-                    const idestadocita = 1;
+                    const idestadocita = 2;
 
                     // Verificación de la hora de la cita (7:00 AM - 6:00 PM)
                     const [hour, minute] = horacita.split(":").map(Number);
@@ -77,16 +77,47 @@ app.use(express.json());
                     res.status(500).send("Error al insertar la cita en la base de datos.");
                 }
             });
-        //modificar una cita en la db
-            app.patch("/citas",async(req,res)=>{
+        //modificar estado de una cita en la db
+            //aceptar
+            app.put("/citas/aceptar/:id", async(req,res) =>{
                 try {
-                    res.json("proximamente")
+                    const{ id } = req.params;
+                    const aceptarCita = await pool.query(
+                        "UPDATE citas SET idestadocita = 3 WHERE idcitas = $1",
+                        [id]
+                    );
+                    res.json("se acepto una cita");
                 } catch (error) {
                     console.error(error.message);
-                    res.status(500).send("Error al insertar la cita en la base de datos.");
                 }
-            })
-
+            });
+            //aceptar
+            app.put("/citas/rechazar/:id", async(req,res) =>{
+                try {
+                    const{ id } = req.params;
+                    const aceptarCita = await pool.query(
+                        "UPDATE citas SET idestadocita = 1 WHERE idcitas = $1",
+                        [id]
+                    );
+                    res.json("se rechazo una cita");
+                } catch (error) {
+                    console.error(error.message);
+                }
+            });
+            //aceptar
+            app.put("/citas/finalizar/:id", async(req,res) =>{
+                try {
+                    const{ id } = req.params;
+                    const aceptarCita = await pool.query(
+                        "UPDATE citas SET idestadocita = 4 WHERE idcitas = $1",
+                        [id]
+                    );
+                    res.json("se acepto una cita");
+                } catch (error) {
+                    console.error(error.message);
+                }
+            });
+            
     //tablas clientes
         //obtener clientes
             app.get("/clientes", async(req,res) => {

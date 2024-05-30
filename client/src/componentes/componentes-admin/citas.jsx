@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import DataTable from 'react-data-table-component'
-import { Col, Form, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
+import { Col, Form, FormControl, FormGroup, FormLabel, Row, Tab, Tabs } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { Toaster, toast } from 'sonner';
 import Cabecera from '../header';
 import "./citas.css";
 
 export default function Citas() {
-  const [citasInfo, setCitasInfo] = useState([]);
+  const [citasInfoRechazadas, setCitasInfoRechazadas] = useState([]);
+  const [citasInfoSolicitud, setCitasInfoSolicitud] = useState([]);
+  const [citasInfoAceptadas, setCitasInfoAceptadas] = useState([]);
+  const [citasInfoFinalizadas, setCitasInfoFinalizadas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [selectedRow, setSelectedRow] = useState([]);
 
@@ -38,7 +41,15 @@ export default function Citas() {
           telefono: clientesRes.find(cliente => cliente.idcliente === cita.idcliente)?.telefono || "N/A"
         }));
 
-        setCitasInfo(citas);
+        const rechazadas = citas.filter(cita => cita.idestadocita === 1);
+        const solicitudes = citas.filter(cita => cita.idestadocita === 2);
+        const aceptadas = citas.filter(cita => cita.idestadocita === 3);
+        const finalizadas = citas.filter(cita => cita.idestadocita === 4);
+
+        setCitasInfoRechazadas(rechazadas);
+        setCitasInfoSolicitud(solicitudes);
+        setCitasInfoAceptadas(aceptadas);
+        setCitasInfoFinalizadas(finalizadas);
         setCargando(false);
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -58,6 +69,60 @@ export default function Citas() {
       },
     });
   };
+  const aceptarUnaCita = () => {
+    const cita = selectedRow[0];
+    fetch(`http://localhost:5000/citas/aceptar/${cita.idcitas}`, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  };
+
+  const rechazarUnaCita = () => {
+    const cita = selectedRow[0];
+    fetch(`http://localhost:5000/citas/rechazar/${cita.idcitas}`, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  };
+  const finalizarUnaCita = () => {
+    const cita = selectedRow[0];
+    fetch(`http://localhost:5000/citas/finalizar/${cita.idcitas}`, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  };
+
+
 
   const columns = [
     { name: "Codigo cita", selector: row => row.idcitas },
@@ -102,111 +167,403 @@ export default function Citas() {
 
   return (
     <>
-      <div>
-        <h1 className='tituloAdmin'>
-          Administrar Citas
-        </h1>
-      </div>
-      <div>
-        <DataTable
-          columns={columns}
-          data={citasInfo}
-          fixedHeader
-          selectableRows
-          selectableRowsSingle
-          conditionalRowStyles={conditionalRowsStyles}
-          onSelectedRowsChange={handleChange}
-          pagination
-          progressPending={cargando}
-          responsive
-        />
-      </div>
-
-      <div>
-        <Form className='my-4'>
-          <Row>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Codigo Cita</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].idcitas : ""} disabled />
-            </FormGroup>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Servicio</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].servicio : ""} disabled />
-            </FormGroup>
-          </Row>
-          <Row>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Fecha</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].fechacita.split("T")[0] : ""} disabled />
-            </FormGroup>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Hora</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].horacita : ""} disabled />
-            </FormGroup>
-          </Row>
-          <FormGroup>
-            <FormLabel className='mt-3'>Descripción</FormLabel>
-            <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
-          </FormGroup>
-          <FormGroup>
-            <FormLabel className='mt-3'>Tipo de Domicilio</FormLabel>
-            <FormControl value={selectedRow[0] ? selectedRow[0].tipoDomicilio : ""} disabled />
-          </FormGroup>
-          <Row>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Dirección</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
-            </FormGroup>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Barrio</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
-            </FormGroup>
-          </Row>
-
-          <p className='mt-3 d-flex'>Datos de Dueño <hr className='separator' /></p>
-
-          <Row>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Nombre Completo</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
-            </FormGroup>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>NUIP</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].nuip : ""} disabled />
-            </FormGroup>
-          </Row>
-
-          <Row>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Correo Electrónico</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
-            </FormGroup>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Telefono</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].telefono : ""} disabled />
-            </FormGroup>
-          </Row>
-
-          <p className='mt-3 d-flex'>Datos de Mascota <hr className='separator' /></p>
-
-          <Row>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Nombre Mascota</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
-            </FormGroup>
-            <FormGroup as={Col} className='mt-3'>
-              <FormLabel>Raza</FormLabel>
-              <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
-            </FormGroup>
-          </Row>
-
-          <Toaster richColors expand={false} position='top-right' />
-          <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
-            <Button variant='outline-success' onClick={() => { aceptarCita(); actualizarEstado() }}>Aceptar Solicitud</Button>
-            <Button variant='outline-danger' onClick={() => { rechazarCita(); actualizarEstado() }}>Rechazar Solicitud</Button>
+      <Tabs defaultActiveKey="Solicitudes" id="tab-ventas" className='mb-3' fill justify>
+        <Tab eventKey='Solicitudes' title='Solicitudes citas'>
+          <div>
+            <h1 className='tituloAdmin'>
+              Administrar Solicitudes Citas
+            </h1>
           </div>
-        </Form>
-      </div>
+          <div>
+            <DataTable
+              columns={columns}
+              data={citasInfoSolicitud}
+              fixedHeader
+              selectableRows
+              selectableRowsSingle
+              conditionalRowStyles={conditionalRowsStyles}
+              onSelectedRowsChange={handleChange}
+              pagination
+              progressPending={cargando}
+              responsive
+            />
+          </div>
+
+          <div>
+            <Form className='my-4'>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Codigo Cita</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].idcitas : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Servicio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].servicio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Fecha</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].fechacita.split("T")[0] : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Hora</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].horacita : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup>
+                <FormLabel className='mt-3'>Descripción</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>Tipo de Domicilio</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].tipoDomicilio : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Dueño <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Completo</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>NUIP</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].nuip : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Correo Electrónico</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Telefono</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].telefono : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Mascota <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Toaster richColors expand={false} position='top-right' />
+              <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
+                <Button variant='outline-success' onClick={() => { aceptarUnaCita() }}>Aceptar Solicitud</Button>
+                <Button variant='outline-danger' onClick={() => { rechazarUnaCita() }}>Rechazar Solicitud</Button>
+              </div>
+            </Form>
+          </div>
+        </Tab>
+        <Tab eventKey='Citas aceptadas' title='Citas Aceptadas'>
+          <div>
+            <h1 className='tituloAdmin'>
+              Citas Aceptadas
+            </h1>
+          </div>
+          <div>
+            <DataTable
+              columns={columns}
+              data={citasInfoAceptadas}
+              fixedHeader
+              selectableRows
+              selectableRowsSingle
+              conditionalRowStyles={conditionalRowsStyles}
+              onSelectedRowsChange={handleChange}
+              pagination
+              progressPending={cargando}
+              responsive
+            />
+          </div>
+          
+          <div>
+            <Form className='my-4'>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Codigo Cita</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].idcitas : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Servicio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].servicio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Fecha</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].fechacita.split("T")[0] : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Hora</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].horacita : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup>
+                <FormLabel className='mt-3'>Descripción</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>Tipo de Domicilio</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].tipoDomicilio : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Dueño <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Completo</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>NUIP</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].nuip : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Correo Electrónico</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Telefono</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].telefono : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Mascota <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Toaster richColors expand={false} position='top-right' />
+              <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
+                <Button variant='outline-success' onClick={() => { finalizarUnaCita () }}>Finalizar Cita</Button>
+              </div>
+            </Form>
+          </div>
+        </Tab>
+        <Tab eventKey='Citas finalizadas' title='Citas Finalizadas'>
+          <div>
+            <h1 className='tituloAdmin'>
+              Citas Finalizadas
+            </h1>
+          </div>
+          <div>
+            <DataTable
+              columns={columns}
+              data={citasInfoFinalizadas}
+              fixedHeader
+              selectableRows
+              selectableRowsSingle
+              conditionalRowStyles={conditionalRowsStyles}
+              onSelectedRowsChange={handleChange}
+              pagination
+              progressPending={cargando}
+              responsive
+            />
+          </div>
+          
+          <div>
+            <Form className='my-4'>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Codigo Cita</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].idcitas : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Servicio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].servicio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Fecha</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].fechacita.split("T")[0] : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Hora</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].horacita : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup>
+                <FormLabel className='mt-3'>Descripción</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>Tipo de Domicilio</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].tipoDomicilio : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Dueño <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Completo</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>NUIP</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].nuip : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Correo Electrónico</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Telefono</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].telefono : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Mascota <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Toaster richColors expand={false} position='top-right' />
+            </Form>
+          </div>
+        </Tab>
+        <Tab eventKey='Citas rechazadas' title='Citas Rechazadas'>
+          <div>
+            <h1 className='tituloAdmin'>
+              Citas Rechazadas
+            </h1>
+          </div>
+          <div>
+            <DataTable
+              columns={columns}
+              data={citasInfoRechazadas}
+              fixedHeader
+              selectableRows
+              selectableRowsSingle
+              conditionalRowStyles={conditionalRowsStyles}
+              onSelectedRowsChange={handleChange}
+              pagination
+              progressPending={cargando}
+              responsive
+            />
+          </div>
+          
+          <div>
+            <Form className='my-4'>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Codigo Cita</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].idcitas : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Servicio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].servicio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Fecha</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].fechacita.split("T")[0] : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Hora</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].horacita : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup>
+                <FormLabel className='mt-3'>Descripción</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>Tipo de Domicilio</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].tipoDomicilio : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Dueño <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Completo</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>NUIP</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].nuip : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Correo Electrónico</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Telefono</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].telefono : ""} disabled />
+                </FormGroup>
+              </Row>
+              <p className='mt-3 d-flex'>Datos de Mascota <hr className='separator' /></p>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Nombre Mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel>Raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
+              <Toaster richColors expand={false} position='top-right' />
+            </Form>
+          </div>
+        </Tab>
+      </Tabs>
     </>
   );
 }

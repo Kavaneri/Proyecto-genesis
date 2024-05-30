@@ -218,7 +218,6 @@ export default function Formulario() {
                                     <Form.Select defaultValue="Choose...">
                                         <option value="NULL" >...</option>
                                         <option value="perro">Canino</option>
-                                        <option value="perro">Joaquin</option>
                                         <option value="gato">Felino</option>
                                     </Form.Select>
                                 </Form.Group>

@@ -54,14 +54,14 @@ export default function CategoriaComida({ baseInfo, type = "Comida" }) {
                     </Col>
                     <Col className='col-main productos'>
                         <Form.Group className="cmb-filtro" id="formGridCheckbox">
-                            <Form.Label htmlFor='category' className='cmb-filtro-label'>Categoria</Form.Label>
+                            <Form.Label htmlFor='category' className='cmb-filtro-label'>Especie Mascota</Form.Label>
                             <Form.Select defaultValue="Escoge..." style={{ width: '200px' }} onChange={handleCategory}>
                                 <option value='all'>Todos</option>
                                 <option value='Perro'>Perros</option>
                                 <option value='Gato'>Gatos</option>
                             </Form.Select>
                         </Form.Group>
-                        columna productos - tipo animal
+                        lo mejor para los peluditos
                         <Container>
                             <div className='row justify-content-center align-items-start'>
                                 <CardGroup>

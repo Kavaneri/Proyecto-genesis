@@ -1,62 +1,34 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import './login.css'
 import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
-// import { Link } from 'react-router-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod'
-import { LoginContext } from './context-login/context-login';
+import {zodResolver} from '@hookform/resolvers/zod'
 
-
+let regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
 
 const schema = z.object({
-    email: z.string().email({ message: "Correo invalido" }),
-    password: z.string().min(8, { message: "Contraseña invalida" })
+    email: z.string().email({message: "Correo invalido"}),
+    password: z.string().min(8,{message: "Contraseña invalida"}).regex(regex)
 })
 
-
-
-
 export default function Login() {
-
-    useEffect(() => {
-        document.title = "Ingresar"
-    })
-
-    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
-
-
-    const { authorize, setAuthorize, setAuthorizeAdmin, authorizeAdmin, setUser, user, handleAuth } = useContext(LoginContext)
-    const users = [{ name: "Roger Andrey", surname: "Vaca Arboleda", Nuip: "1006309353", phone: "3185747693", useremail: "example@hotmail.com", userpassword: "qQ1!qwer" }, { useremail: "chocoroger2011@hotmail.com", userpassword: "qQ1!qwer", admin: true }]
-
-    const [correo, setcorreo] = useState(null)
-    const [clave, setclave] = useState(null)
-
-    const navigate = useNavigate()
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({resolver: zodResolver(schema)});
 
     const onSubmit = async (data) => {
-        try {
-            console.log("email: ", correo);
-            console.log("clave: ", clave);
-            
-            const body = { correo, clave };
-
-            const url = `http://localhost:5000/autenticar`;
-            const response = await fetch(url, {
-                method : "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            });
-            const data = await response.json();
-            console.log("Usuario autenticado:", data);
-        } catch (err) {
-            console.log(err.message)
+        try{
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            throw new Error()
+            console.log(data);
+        }catch (error){
+            setError("root",{
+                message: "Correo o contraseña incorrectos"
+            })
         }
-
+       
     }
-
 
     return (
         <div className='formulario-div'>
@@ -66,7 +38,9 @@ export default function Login() {
                         <div className='d-flex flex-column ms-5 formulario-div-container-form'>
                             <div className='text-center'>
                                 {/* incluir logo veterinaria */}
-                                <Link to='/'><img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" /></Link>
+                                <a href="/">
+                                    <img src={logo} alt="Logo veterinaria La merced" width="100px" height="100px" />
+                                </a>
                                 <h4>Somos clinica veterinaria La Merced </h4>
                                 <p>Bienvenido</p>
                             </div>
@@ -74,15 +48,15 @@ export default function Login() {
                                 <Row>
                                     <FormGroup className='mb-4' controlId='formGridEmail'>
                                         <FormLabel>Correo Electrónico</FormLabel>
-                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" value={correo} onChange={(e) => setcorreo(e.target.value)} />
-                                        {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
+                                        <Form.Control {...register("email")} required type="email" placeholder="Example@hotmail.com" />
+                                        {errors.email && (<div style={{color:"red"}}>{errors.email.message}</div>)}
                                     </FormGroup>
 
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
                                         <FormLabel>Contraseña</FormLabel>
-                                        <FormControl {...register("password")} required type='password' value={clave} onChange={(e) => setclave(e.target.value)} />
-                                        {errors.password && (<div style={{ color: "red" }}>{errors.password.message}</div>)}
+                                        <FormControl {...register("password")} required type='password' />
+                                        {errors.password && (<div style={{color:"red"}}>{errors.password.message}</div>)}
                                     </FormGroup>
 
                                     <FormGroup className='mb-4' id='formGridCheckox'>
@@ -99,7 +73,7 @@ export default function Login() {
                                         </Button>
                                         {errors.root && (<div>{errors.root.message}</div>)}
 
-                                        <Link className='text-muted text-center forgotten-password' to='/correoContraseña'>¿Olvidaste tu contraseña?</Link>
+                                        <a className='text-muted text-center forgotten-password' href='#!'>¿Olvidaste tu contraseña?</a>
                                     </div>
 
                                     <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
@@ -113,6 +87,32 @@ export default function Login() {
 
                     <Col>
                         <div className='d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4'>
+                            {/* <Carousel className='carrusel' slide={false}>
+                                <Carousel.Item>
+                                    <img
+                                        width={300}
+                                        height={500}
+                                        className='d-block w-100'
+                                        src={img1}
+                                        alt='primer imagen' />
+                                </Carousel.Item>
+                                <Carousel.Item>
+                                    <img
+                                        width={900}
+                                        height={500}
+                                        className='d-block w-100'
+                                        src={img2}
+                                        alt='segunda imagen' />
+                                </Carousel.Item>
+                                <Carousel.Item>
+                                    <img
+                                        width={900}
+                                        height={500}
+                                        className='d-block w-100'
+                                        src={img3}
+                                        alt='tercer imagen' />
+                                </Carousel.Item>
+                            </Carousel> */}
                             <div className='text-white px-3 py-4 p-md-5 mx-md-4'>
                                 <h4 className='mb-4'>Nos alegra tenerte aquí</h4>
                                 <p className='small mb-0'> I journeyed long in walkin beyond the place of stopping

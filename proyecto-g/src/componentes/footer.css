@@ -1,9 +1,31 @@
 .footer-padding{
+    /* ff 3.6+ */
+    background: -moz-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* safari 5.1+,chrome 10+ */
+    background: -webkit-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* opera 11.10+ */
+    background: -o-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* ie 6-9 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#459F58', endColorstr='#2A9391', GradientType=0);
+
+    /* ie 10+ */
+    background: -ms-linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    /* global 94%+ browsers support */
+    background: linear-gradient(90deg, rgba(42, 147, 145, 1) 0%, rgba(69, 159, 88, 1) 100%);
+
+    position: relative;
+    /*border: 1px solid black;*/
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(42, 147, 145, 1);
+    padding: 2%;
+    max-height: 200px;
+    padding-top: 40px;
 }
 
 .footer-link{
@@ -12,9 +34,12 @@
     align-items: flex-start;
     flex-wrap: wrap;
     flex-direction: row;
-
-    width: 100%;
     text-align: left;
+
+    
+    height: 100px;
+    width: 100%;
+    margin: 1%;
 }
 
 .footer-link div{
@@ -22,13 +47,6 @@
     margin: 1rem;
 }
 
-.footer-link-logo{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-}
 .footer-link-logo img{
     margin-bottom: 1rem;
 }
@@ -42,7 +60,6 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-
 }
 
 .footer-links-div img{
@@ -50,10 +67,11 @@
 }
 
 .footer-links-div a{
-    color: black;
+    color: rgb(255, 255, 255);
     background-color: transparent;
     text-decoration: none;
     text-align: start;
+    margin-bottom: 10px;
 }
 
 
@@ -70,27 +88,27 @@
     font-size: 14px;
     line-height: 16px;
     margin-bottom: 1rem;
+    color: white;
 }
 
 .footer-links-div p{
     font-size: 12px;
     line-height: 14px;
-    margin-bottom: 1rem;
-
+    margin-bottom: 2rem;
+    color: white;
     margin: 0,5rem 0;
     cursor: pointer
 }
 
-.footer-derechos{
-    margin-top: 2rem;
-    text-align: center;
-    width: 100%;
+.footer-link-logo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100px;
+    max-height: 100px;
+    margin: 1% !important;
 }
-
-.footer-derechos p{
-    font-size: 12px;
-    line-height: 14px;
-    
-    
-
-} 
+.txtWhite{
+    color: white;
+}

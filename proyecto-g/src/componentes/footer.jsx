@@ -12,7 +12,7 @@ export default function Footer() {
             <div className='footer-link'>
                 <div className='footer-link-logo'>
                     <img src={logo} alt='logo' width="100" height="100" />
-                    <p>Calle 56 # 28-12 Esquina B/ Mirriñao, Palmira</p>
+                    <p className='txtWhite'>Calle 56 # 28-12 Esquina B/ Mirriñao, Palmira</p>
                 </div>
                 <div className='footer-links-div'>
                     <h4>Siguenos</h4>
@@ -52,7 +52,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className='footer-derechos'>
-                <p>Derechos reservados</p>
+                <p className='txtWhite'>Derechos reservados</p>
             </div>
         </div>
     )

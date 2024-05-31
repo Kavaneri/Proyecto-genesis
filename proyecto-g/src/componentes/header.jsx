@@ -16,7 +16,7 @@ import inicio from './iconos/inicio.svg'
 import calendario from './iconos/calendario.svg'
 import facebook from './iconos/facebook.svg'
 import instagram from './iconos/instagram.svg'
-import whatsapp from './iconos/WhatsApp (2).svg'
+import whatsapp from './iconos/whatsapp.svg'
 import logo from './Logo la merced.png'
 import pqrs from './iconos/pqrs2.svg'
 import './header.css'
@@ -48,7 +48,7 @@ export default function Cabecera() {
                             className='offcanvas'>
                             <Offcanvas.Header closeButton>
                                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                                    <Navbar.Brand className='header-brand' href="#">
+                                    <Navbar.Brand className='header-brand txtwhite' href="#" >
                                         <img
                                             alt=""
                                             src={logo}
@@ -60,43 +60,41 @@ export default function Cabecera() {
                                 </Offcanvas.Title>
                             </Offcanvas.Header>
                             <Offcanvas.Body>
-                                <Nav className='gap-3'>
-                                    <Nav.Item >
-                                        <Link className='offcanvas-link' to="/"><img src={inicio} alt='inicio' /> Inicio </Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Link className='offcanvas-link' to="/Agendarcita"><img src={calendario} alt='agendar cita' /> Agenda tu cita</Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Link className='offcanvas-link' to="/Pqrs"><img src={pqrs} alt='pqrs' /> PQRS</Link>
-                                    </Nav.Item>
+                                <Nav >
+                                <Nav.Item>
+                                            <Nav.Link href="/" className='txtwhite'><img src={inicio} alt='inicio' /> Inicio</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link href="/Agendarcita" className='txtwhite'><img src={calendario} alt='agendar cita' /> Agenda tu cita</Nav.Link>
+                                        </Nav.Item>
+                                        {/*<Nav.Item>
+                                            <Nav.Link href='/pqrs' className='txtwhite'><img src={pqrs} alt='pqrs' /> PQRS</Nav.Link>
+                                        </Nav.Item>*/}
+                                        
+ 
                                 </Nav>
+                                <Container>
+                                    <Row>
+                                        {/* <Col><img src={instagram} alt="instagram" /></Col>
+                                            <Col><img src={facebook} alt="facebook" /></Col>
+                                            <Col><img src={whatsapp} alt="whatsapp" /></Col>
+                                            <Col><img src={instagram} alt="instagram" /></Col> */}
+                                    </Row>
 
-                                <div className='zeldas text-center'>
-                                    <hr className='separator' />
-                                    <div className='d-flex gap-4'>
-                                        <img className='icon-resize' src={facebook} alt='facebook' />
-                                        <img src={instagram} alt='instagras' />
-                                        <img src={whatsapp} alt='whatsapp' />
-                                    </div>
-                                    <div className='pt-4 text-white'>Proyecto G V1.0</div>
-                                    <div className='text-white'>Derechos reservados 2024</div>
-                                </div>
-
-
+                                </Container>
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>
                         <Navbar.Brand className='header-brand'>
                             <Link to='/'>
-                                <img
-                                    alt=""
-                                    src={logo}
-                                    width="30"
-                                    height="30"
-                                    className="d-inline-block align-top" />{' '}
-                            </Link>
+                            <img
+                                alt=""
+                                src={logo}
+                                width="30"
+                                height="30"
+                                className="d-inline-block align-top" />{' '}
+                                </Link>
                         </Navbar.Brand>
-                        <Row className='justify-content-center'>
+                        <Row className='justifu-content-center'>
                             {/* <Col>
                                 <Form className="d-flex navbar-form ">
                                     <Form.Control

@@ -6,55 +6,48 @@ export default function Categorias() {
     return (
         <div className=' container text-center categorias-div'>
             <div className='row align-items-start'>
-                
-                <h2 className='titulo-separador'>Visita nuestra tienda</h2>
-                <hr className='separador' />
-                
                 <div className='col items item-1'>
-                    <Link to='/Comida'>
+
+                    {/* Todas la etiquetas "a" serán reemplazadas por etiquetas "Link" */}
+
+                    {/* <Link to='/Register'>
                         <p>Comida</p>
-                    </Link>
+                    </Link> */}
+                    <a href='/Comida'>
+                        <p>Comida</p>
+                    </a>
                 </div>
                 <div className='col items item-2'>
-                    <Link to='/Hogar'>
+                    <a href='#'>
                         <p>Hogar</p>
-                    </Link>
+                    </a>
                 </div>
                 <div className='col items item-3'>
-                    <Link to='/Juguetes'>
+                    <a href='#'>
                         <p>Juguetes</p>
-                    </Link>
+                    </a>
                 </div>
+
+            </div>
+
+            <div className='row align-items-start'>
                 <div className='col items item-4'>
-                    <Link to='/Salud'>
+                    <a href='#'>
                         <p>Salud</p>
-                    </Link>
+                    </a>
                 </div>
                 <div className='col items item-5'>
-                    <Link to='/Viaje'>
-                        <p>Viaje</p>
-                    </Link>
+                    <a href='#'>
+                        <p>Viajes</p>
+                    </a>
                 </div>
                 <div className='col items item-6'>
-                    <Link to='/Paseo'>
+                    <a href='#'>
                         <p>Paseo</p>
-                    </Link>
+                    </a>
                 </div>
             </div>
 
-            <div className='row align-items-start'>
-
-            </div>
-
-            <div className='row align-items-start'>
-
-                {/* <div className='col items item-7'>
-                    <a href='#'>
-                        <p>Arenas</p>
-                    </a>
-                </div> */}
-
-            </div>
 
 
         </div>

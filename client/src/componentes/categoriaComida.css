@@ -1,3 +1,8 @@
+.imagenProducto{
+    margin-top: 15px;
+    max-width: 500px;
+    max-height: 600px;
+}
 .sidebar {
     width: 200px; /* Ajusta el ancho según tus necesidades */
     padding: 20px;
@@ -34,4 +39,7 @@
 .productos{
     margin-top: 20px;
     margin-bottom: 20px;
+}
+.agregarCarrito{
+    padding-bottom: 0px !important;
 }

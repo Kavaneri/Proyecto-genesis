@@ -1,12 +1,17 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require ("./db");
-const crypto = require('crypto'); 
+const pool = require("./db");
+const multer = require('multer');
 
-//middleware
-app.use(cors ());
+// Configuración de multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Middleware
+app.use(cors());
 app.use(express.json());
+
 
 //ROUTES//
     //funciones barrios aprovados
@@ -338,16 +343,40 @@ app.use(express.json());
                 }
             });
     //tabla productos tienda
-        //obtener producto tienda
-            app.get("/productos", async(req,res) => {
-                try {
-                    const allTodos = await pool.query("SELECT * FROM productos");
-                    res.json( allTodos.rows);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
+        //publicar producto tienda
+        app.post('/productos', upload.single('foto'), async (req, res) => {
+            try {
+                const { producto, descripccion, precioventa, idespecie, idcategoria } = req.body;
+                const foto = req.file ? req.file.buffer : null;
+        
+                // Validar que todos los campos requeridos estén presentes
+                if (!producto || !descripccion || precioventa === undefined || idespecie === undefined || idcategoria === undefined || !foto) {
+                    return res.status(400).send("Por favor, complete todos los campos obligatorios.");
                 }
-            });
+        
+                // Insertar producto en la base de datos
+                const newProducto = await pool.query(
+                    "INSERT INTO productos (producto, descripccion, precioventa, idespecie, idcategoria, foto) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                    [producto, descripccion, precioventa, idespecie, idcategoria, foto]
+                );
+        
+                res.json({ idproducto: newProducto.rows[0].idproducto });
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al insertar el producto en la base de datos.");
+            }
+        });
+        //obtener producto tienda
+        app.get("/productos", async (req, res) => {
+            try {
+                const allProducts = await pool.query("SELECT idproducto, producto, descripccion, precioventa, idespecie, idcategoria, foto FROM productos");
+                res.json(allProducts.rows);
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al obtener en la base de datos.");
+            }
+        });
+        
 
         //obtener productos segun categorias
             //comida

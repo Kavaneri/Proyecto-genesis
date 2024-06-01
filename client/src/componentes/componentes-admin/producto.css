@@ -1,0 +1,61 @@
+/* Inventario.css */
+.inventario-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .inventario-container h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .inventario-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .inventario-form label {
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .inventario-form input,
+  .inventario-form select,
+  .inventario-form button {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .inventario-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .inventario-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .preview {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .preview img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  

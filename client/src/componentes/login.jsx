@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './login.css';
 import logo from './Logo la merced.png';
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap';
@@ -6,8 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginContext } from './context-login/context-login';
 import UserDetails from './UserDetails'; // Importa el componente UserDetails
+import { Modal } from 'react-bootstrap';
 
 const schema = z.object({
     email: z.string().email({ message: "Correo invalido" }),
@@ -15,9 +15,20 @@ const schema = z.object({
 });
 
 export default function Login() {
+    const [showModal, setShowModal] = useState(false);
     const [correo, setCorreo] = useState('');
     const [clave, setClave] = useState('');
     const [usuarioAutenticado, setUsuarioAutenticado] = useState(null);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = "Ingresar";
+    }, []);
+
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+        resolver: zodResolver(schema)
+    });
 
     const onSubmit = async (data) => {
         try {
@@ -29,18 +40,21 @@ export default function Login() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
-            const data = await response.json();
-            setUsuarioAutenticado(data);
+
+            if (response.ok) {
+                const userData = await response.json();
+                setUsuarioAutenticado(userData);
+                sessionStorage.setItem('usuario', JSON.stringify(userData));
+                navigate('/'); // Redirige a la página principal u otra página
+            } else {
+                setShowModal(true);
+                const errorData = await response.json();
+                console.error(errorData.message);
+            }
         } catch (err) {
             console.log(err.message);
         }
     };
-
-    useEffect(() => {
-        document.title = "Ingresar";
-    }, []);
-
-    const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm({ resolver: zodResolver(schema) });
 
     if (usuarioAutenticado) {
         return <UserDetails user={usuarioAutenticado} />;
@@ -120,6 +134,17 @@ export default function Login() {
                     </Col>
                 </Row>
             </Container>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Error</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Correo electrónico o contraseña incorrectos.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

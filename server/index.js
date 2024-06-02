@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -1456,6 +1457,30 @@ app.use(express.json());
             }
         });
         
+        //publicar usuarios
+        app.post("/usuarios/admin", async (req, res) => {
+            try {
+                // Obtener los datos del cuerpo de la solicitud
+                const { nuipusuario, clave_hash, correo, telefono, nombre } = req.body;
+                const idroll = 2;
+                console.log(nuipusuario, clave_hash, correo, telefono, nombre,idroll);
+        
+                // Calcular el hash SHA-256 de la contraseña
+                const hash = crypto.createHash('sha256').update(clave_hash).digest('hex');
+        
+                // Insertar los datos en la base de datos
+                const newProveedor = await pool.query(
+                    "INSERT INTO usuarios (nuipusuario, clave_hash, correo, telefono, nombre, idroll) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                    [nuipusuario, hash, correo, telefono, nombre, idroll]
+                );
+                console.log(nuipusuario, hash, correo, telefono, nombre, idroll);
+                res.json(newProveedor.rows[0]); // Responder con los datos insertados
+                
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al insertar en la base de datos.");
+            }
+        });
         //inicio seccion de un usuario
         app.post("/autenticar", async (req, res) => {
             try {
@@ -1471,13 +1496,13 @@ app.use(express.json());
         
                 // Verificar si se encontró un usuario con ese correo
                 if (usuario.rows.length === 0) {
-                    return res.status(404).json({ message: "El correo electrónico no está registrado." });
+                    return res.status(401).json({ message: "Correo electrónico o contraseña incorrectos." });
                 }
         
                 // Verificar si la contraseña coincide
                 const hash = crypto.createHash('sha256').update(clave).digest('hex');
                 if (usuario.rows[0].clave_hash !== hash) {
-                    return res.status(401).json({ message: "La contraseña es incorrecta." });
+                    return res.status(401).json({ message: "Correo electrónico o contraseña incorrectos." });
                 }
         
                 // Si la autenticación es exitosa, devolver los datos del usuario

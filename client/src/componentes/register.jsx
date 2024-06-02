@@ -53,7 +53,7 @@ const Formulario = () => {
                             <Form onSubmit={handleSubmit(onSubmit)}>
                                 <Row className="mb-3">
                                     <FormGroup as={Col} controlId='formGridName'>
-                                        <FormLabel>nombre</FormLabel>
+                                        <FormLabel>Nombre completo</FormLabel>
                                         <Form.Control {...register("nombre", { required: "El nombre es obligatorio" })} value={nombre} onChange={(e) => setnombres(e.target.value)} />
                                         {errors.nombre && (<div style={{ color: "red" }}>{errors.nombre.message}</div>)}
                                     </FormGroup>
@@ -89,7 +89,7 @@ const Formulario = () => {
                                 </Row>
 
                                 <FormGroup className='mb-4' controlId='formGridEmail'>
-                                    <FormLabel>Correo Electrónico</FormLabel>
+                                    <FormLabel>Correo electrónico</FormLabel>
                                     <Form.Control {...register("email", { required: "El correo electrónico es obligatorio", pattern: { value: /^\S+@\S+$/i, message: "El correo electrónico no es válido" } })} type="email" placeholder="Example@hotmail.com" value={correo} onChange={(e) => setcorreo(e.target.value)} />
                                     {errors.email && (<div style={{ color: "red" }}>{errors.email.message}</div>)}
                                 </FormGroup>

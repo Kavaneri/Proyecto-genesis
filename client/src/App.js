@@ -33,6 +33,11 @@ import Ventas from './componentes/componentes-admin/ventas';
 import Inventario from './componentes/componentes-admin/inventario';
 import Proveedores from './componentes/componentes-admin/proveedores';
 import Servicios from './componentes/componentes-admin/servicios';
+import  MostrarProductos from './componentes/componentes-admin/mostrarProductosPrueba';
+
+
+import PrivateRoute from './PrivateRoute'; // Importa el PrivateRoute
+import UserDetails from './componentes/UserDetails';
 
 function App() {
 
@@ -104,6 +109,14 @@ function App() {
         element: <EnlaceContraseña />
       },
       {
+        path: '/UserDetails',
+        element: (
+          <PrivateRoute>
+            <UserDetails />
+          </PrivateRoute>
+        )
+      },
+      {
         path: '/Admin',
         element: <Dashboard />,
         children: [
@@ -126,6 +139,10 @@ function App() {
           {
             path: '/Admin/Proveedores',
             element: <Proveedores />
+          },
+          {
+            path: '/Admin/mostrarProductosPrueba',
+            element: < MostrarProductos/>
           }
         ]
       },
@@ -137,23 +154,6 @@ function App() {
     <div className="App">
 
       <RouterProvider router={router} />
-      {/* <Dashboard/> */}
-
-
-      {/* <header className='App-header'>
-          <Cabecera />
-        </header>
-        <body>
-          <Carrusel />
-          <Routes>
-            <Route path='/Register' element={<Register />}></Route>
-            <Route path='/Cat' element={<CategoriaComida />}></Route>
-            <Route path='/Carrito' element={<Carrito />}></Route>
-          </Routes>
-        </body>
-        <footer>
-          <Footer />
-        </footer> */}
 
     </div>
   );

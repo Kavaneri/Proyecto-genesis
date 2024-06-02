@@ -52,6 +52,9 @@ export default function Dashboard() {
                                 <Link className='my-4 botonAdmin' to='/Admin/Inventario' onClick={handleEstiloLogo}>
                                     <Button className='menu-button'>Inventario</Button>
                                 </Link>
+                                <Link className='my-4 botonAdmin' to='/Admin/mostrarProductosPrueba' onClick={handleEstiloLogo}>
+                                    <Button className='menu-button'>Inventario</Button>
+                                </Link>
                             </div>
                         </Col>
 

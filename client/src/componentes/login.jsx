@@ -45,7 +45,15 @@ export default function Login() {
                 const userData = await response.json();
                 setUsuarioAutenticado(userData);
                 sessionStorage.setItem('usuario', JSON.stringify(userData));
-                navigate('/'); // Redirige a la página principal u otra página
+
+                if (userData.idroll === 2) {
+                    navigate('/Admin');
+                } else if (userData.idroll === 1) {
+                    navigate('/');
+                } else {
+                    // Manejar otros casos si hay otros roles
+                    navigate('/');
+                }
             } else {
                 setShowModal(true);
                 const errorData = await response.json();
@@ -87,7 +95,6 @@ export default function Login() {
                                     </FormGroup>
 
                                     <FormGroup className='mb-4' controlId='formGridPassword'>
-                                        <FormLabel>Contraseña</FormLabel>
                                         <FormControl
                                             {...register("password")}
                                             required

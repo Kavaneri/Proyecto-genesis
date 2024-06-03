@@ -1,19 +1,28 @@
+/* dashboard.css */
 .bg-custom {
     background-color: rgba(69, 159, 88, 1);
     color: white;
-    max-width: 20%;
 }
 
 .text-white {
     color: white;
 }
 
-.columna-navegacion{
-    width: 15% !important;
+.columna-navegacion {
+    width: 15%;
+    background-color: rgba(69, 159, 88, 1);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .columna-navegacion a {
     color: white;
     text-decoration: none;
+    width: 100%;
+    margin: 10px 0;
 }
 
 .columna-navegacion a:hover {
@@ -22,36 +31,48 @@
 
 .user-img {
     max-width: 80px;
-    border-radius: 20%;
+    border-radius: 50%;
+    margin-bottom: 10px;
 }
 
 .user-name {
     font-size: 1.2rem;
     font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;  
 }
 
 .menu-button {
-    background-color: transparent;
+    background-color: rgb(49, 119, 64);
     border: 1px solid white;
     color: white;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px;
     transition: all 0.3s ease;
     border-radius: 10px;
-    background-color: rgb(49, 119, 64);
-    height: 70px;
-
 }
 
 .menu-button:hover {
     background-color: rgb(139, 212, 155);
-    color: rgb(255, 255, 255);
     border-color: rgba(69, 159, 88, 1);
 }
-.botonAdmin{
+
+.botonAdmin {
     width: 100%;
 }
 
-.columna.navegacion{
-    min-width: 20% !important;
+
+.columna-contenido {
+    width: 85%;  
+    padding: 20px;
+}
+
+.logo-contenido {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.logo-contenido-escondido {
+    display: none;
 }

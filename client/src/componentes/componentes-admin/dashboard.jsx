@@ -30,6 +30,20 @@ export default function Dashboard() {
         }
     }, [])
 
+    const [usuarioAutenticado, setUsuarioAutenticado] = useState(null);
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    
+    const handleLogout = () => {
+        sessionStorage.removeItem('usuario');
+        setUsuarioAutenticado(null);
+        handleClose(); // Cierra el modal
+
+        // Redirige al usuario a la página de inicio
+        window.location.href = '/';
+    };
+
     if (!adminAuthenticated) {
         return <Navigate to="/Login" />
     } else {
@@ -55,6 +69,9 @@ export default function Dashboard() {
                                 <Link className='my-4 botonAdmin' to='/Admin/mostrarProductosPrueba' onClick={handleEstiloLogo}>
                                     <Button className='menu-button'>Inventario</Button>
                                 </Link>
+                                <Button variant="danger" onClick={handleLogout} className='mx-2 cerrarsesion'>
+                                    Cerrar Sesión
+                                </Button>
                             </div>
                         </Col>
 

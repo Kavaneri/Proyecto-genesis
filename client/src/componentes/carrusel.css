@@ -1,3 +1,7 @@
+.noMargin{
+    margin: 0px !important;
+    padding: 0px !important;
+}
 .carousel-indicators [data-bs-target]{
     border-radius: 100%;
     width: 10px;

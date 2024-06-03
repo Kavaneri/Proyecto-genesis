@@ -1,12 +1,18 @@
+const crypto = require('crypto');
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require ("./db");
-const crypto = require('crypto'); 
+const pool = require("./db");
+const multer = require('multer');
 
-//middleware
-app.use(cors ());
+// Configuración de multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Middleware
+app.use(cors());
 app.use(express.json());
+
 
 //ROUTES//
     //funciones barrios aprovados
@@ -49,7 +55,7 @@ app.use(express.json());
                 try {
                     //obtener los datos del http
                     const { direccion, fechacita, horacita, comentariocliente,idservicio,idtipodomicilio,idmascota,idbarrioaprovado,idcliente } = req.body;
-                    const idestadocita = 1;
+                    const idestadocita = 2;
 
                     // Verificación de la hora de la cita (7:00 AM - 6:00 PM)
                     const [hour, minute] = horacita.split(":").map(Number);
@@ -77,16 +83,47 @@ app.use(express.json());
                     res.status(500).send("Error al insertar la cita en la base de datos.");
                 }
             });
-        //modificar una cita en la db
-            app.patch("/citas",async(req,res)=>{
+        //modificar estado de una cita en la db
+            //aceptar
+            app.put("/citas/aceptar/:id", async(req,res) =>{
                 try {
-                    res.json("proximamente")
+                    const{ id } = req.params;
+                    const aceptarCita = await pool.query(
+                        "UPDATE citas SET idestadocita = 3 WHERE idcitas = $1",
+                        [id]
+                    );
+                    res.json("se acepto una cita");
                 } catch (error) {
                     console.error(error.message);
-                    res.status(500).send("Error al insertar la cita en la base de datos.");
                 }
-            })
-
+            });
+            //aceptar
+            app.put("/citas/rechazar/:id", async(req,res) =>{
+                try {
+                    const{ id } = req.params;
+                    const aceptarCita = await pool.query(
+                        "UPDATE citas SET idestadocita = 1 WHERE idcitas = $1",
+                        [id]
+                    );
+                    res.json("se rechazo una cita");
+                } catch (error) {
+                    console.error(error.message);
+                }
+            });
+            //aceptar
+            app.put("/citas/finalizar/:id", async(req,res) =>{
+                try {
+                    const{ id } = req.params;
+                    const aceptarCita = await pool.query(
+                        "UPDATE citas SET idestadocita = 4 WHERE idcitas = $1",
+                        [id]
+                    );
+                    res.json("se acepto una cita");
+                } catch (error) {
+                    console.error(error.message);
+                }
+            });
+            
     //tablas clientes
         //obtener clientes
             app.get("/clientes", async(req,res) => {
@@ -120,10 +157,32 @@ app.use(express.json());
         
     //tablas detalle ventas
         //obtener detalles ventas
-
-        //obtener un detalle venta
-
+            app.get("/detalleVenta", async(req,res) => {
+                try {
+                    const allTodos = await pool.query("SELECT * FROM detalleVenta");
+                    res.json( allTodos.rows);
+                } catch (error) {
+                    console.error(error.message);
+                    res.status(500).send("Error al obtener en la base de datos.");
+                }
+            });
         //publicar un detalle venta
+            app.post("/detalleVenta", async (req, res) => {
+                try {
+                    const { cantidad, valortotal, idventa, idproducto } = req.body;
+
+                    // Realizar la inserción en la base de datos
+                    const newDetalleVenta = await pool.query(
+                        "INSERT INTO detalleVenta (cantidad, valortotal, idventa, idproducto) VALUES ($1, $2, $3, $4) RETURNING *",
+                        [cantidad, valortotal, idventa, idproducto]
+                    );
+            
+                    res.json(newDetalleVenta.rows);
+                } catch (error) {
+                    console.error(error.message);
+                    res.status(500).send("Error al insertar el detalle de venta en la base de datos.");
+                }
+            });
 
         //modificar un detalle venta
 
@@ -285,16 +344,40 @@ app.use(express.json());
                 }
             });
     //tabla productos tienda
-        //obtener producto tienda
-            app.get("/productos", async(req,res) => {
-                try {
-                    const allTodos = await pool.query("SELECT * FROM productos");
-                    res.json( allTodos.rows);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
+        //publicar producto tienda
+        app.post('/productos', upload.single('foto'), async (req, res) => {
+            try {
+                const { producto, descripccion, precioventa, idespecie, idcategoria } = req.body;
+                const foto = req.file ? req.file.buffer : null;
+        
+                // Validar que todos los campos requeridos estén presentes
+                if (!producto || !descripccion || precioventa === undefined || idespecie === undefined || idcategoria === undefined || !foto) {
+                    return res.status(400).send("Por favor, complete todos los campos obligatorios.");
                 }
-            });
+        
+                // Insertar producto en la base de datos
+                const newProducto = await pool.query(
+                    "INSERT INTO productos (producto, descripccion, precioventa, idespecie, idcategoria, foto) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                    [producto, descripccion, precioventa, idespecie, idcategoria, foto]
+                );
+        
+                res.json({ idproducto: newProducto.rows[0].idproducto });
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al insertar el producto en la base de datos.");
+            }
+        });
+        //obtener producto tienda
+        app.get("/productos", async (req, res) => {
+            try {
+                const allProducts = await pool.query("SELECT idproducto, producto, descripccion, precioventa, idespecie, idcategoria, foto FROM productos");
+                res.json(allProducts.rows);
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al obtener en la base de datos.");
+            }
+        });
+        
 
         //obtener productos segun categorias
             //comida
@@ -795,22 +878,6 @@ app.use(express.json());
             }
         });
         //registrar detalle venta
-        app.post("/detalleVenta", async (req, res) => {
-            try {
-                const { cantidad, valortotal, idventa, idproducto } = req.body;
-
-                // Realizar la inserción en la base de datos
-                const newDetalleVenta = await pool.query(
-                    "INSERT INTO detalleVenta (cantidad, valortotal, idventa, idproducto) VALUES ($1, $2, $3, $4) RETURNING *",
-                    [cantidad, valortotal, idventa, idproducto]
-                );
-        
-                res.json(newDetalleVenta.rows);
-            } catch (error) {
-                console.error(error.message);
-                res.status(500).send("Error al insertar el detalle de venta en la base de datos.");
-            }
-        });
 
 //get/select all todo
     //tablas de productos
@@ -1371,6 +1438,47 @@ app.use(express.json());
                 // Obtener los datos del cuerpo de la solicitud
                 const { nuipusuario, clave_hash, correo, telefono, nombre } = req.body;
                 const idroll = 1;
+        
+                // Verificar si el nuipusuario ya existe
+                const existingUser = await pool.query("SELECT * FROM usuarios WHERE nuipusuario = $1", [nuipusuario]);
+                if (existingUser.rows.length > 0) {
+                    return res.status(400).json({ error: 'El nuipusuario ya está registrado.' });
+                }
+        
+                // Verificar si el correo ya existe
+                const existingEmail = await pool.query("SELECT * FROM usuarios WHERE correo = $1", [correo]);
+                if (existingEmail.rows.length > 0) {
+                    return res.status(400).json({ error: 'El correo ya está registrado.' });
+                }
+        
+                // Calcular el hash SHA-256 de la contraseña
+                const hash = crypto.createHash('sha256').update(clave_hash).digest('hex');
+        
+                // Insertar los datos en la base de datos
+                const newProveedor = await pool.query(
+                    "INSERT INTO usuarios (nuipusuario, clave_hash, correo, telefono, nombre, idroll) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                    [nuipusuario, hash, correo, telefono, nombre, idroll]
+                );
+        
+                res.json(newProveedor.rows[0]); // Responder con los datos insertados
+        
+            } catch (error) {
+                // Verificar si el error es por clave duplicada
+                if (error.code === '23505') { // 23505 es el código de error para violación de restricción única en PostgreSQL
+                    res.status(400).json({ error: 'El nuipusuario o correo ya está registrado.' });
+                } else {
+                    console.error(error.message);
+                    res.status(500).send("Error al insertar en la base de datos.");
+                }
+            }
+        });
+        
+        //publicar usuarios
+        app.post("/usuarios/admin", async (req, res) => {
+            try {
+                // Obtener los datos del cuerpo de la solicitud
+                const { nuipusuario, clave_hash, correo, telefono, nombre } = req.body;
+                const idroll = 2;
                 console.log(nuipusuario, clave_hash, correo, telefono, nombre,idroll);
         
                 // Calcular el hash SHA-256 de la contraseña
@@ -1389,7 +1497,6 @@ app.use(express.json());
                 res.status(500).send("Error al insertar en la base de datos.");
             }
         });
-        
         //inicio seccion de un usuario
         app.post("/autenticar", async (req, res) => {
             try {
@@ -1405,13 +1512,13 @@ app.use(express.json());
         
                 // Verificar si se encontró un usuario con ese correo
                 if (usuario.rows.length === 0) {
-                    return res.status(404).json({ message: "El correo electrónico no está registrado." });
+                    return res.status(401).json({ message: "Correo electrónico o contraseña incorrectos." });
                 }
         
                 // Verificar si la contraseña coincide
                 const hash = crypto.createHash('sha256').update(clave).digest('hex');
                 if (usuario.rows[0].clave_hash !== hash) {
-                    return res.status(401).json({ message: "La contraseña es incorrecta." });
+                    return res.status(401).json({ message: "Correo electrónico o contraseña incorrectos." });
                 }
         
                 // Si la autenticación es exitosa, devolver los datos del usuario

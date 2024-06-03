@@ -1,33 +1,30 @@
-import React, { useContext, useEffect } from 'react';
-import { Container, Row, Col, Form, Card, CardGroup, Button } from 'react-bootstrap';
-import Cabecera from './header';
-import { ShopContext } from './context-shop/context-shop';
-import './categoriaComida.css';
-import { Link } from 'react-router-dom';
-import { Toaster, toast } from 'sonner';
-import Footer from './footer';
+import React, { useContext, useEffect } from 'react'; // Importa React y hooks useContext y useEffect
+import { Container, Row, Col, Form, Card, CardGroup, Button } from 'react-bootstrap'; // Importa componentes de React-Bootstrap
+import Cabecera from './header'; // Importa el componente Cabecera
+import { ShopContext } from './context-shop/context-shop'; // Importa el contexto ShopContext
+import './categoriaComida.css'; // Importa los estilos CSS para el componente
+import { Link } from 'react-router-dom'; // Importa el componente Link de react-router-dom para la navegación
+import { Toaster, toast } from 'sonner'; // Importa componentes para mostrar notificaciones
+import Footer from './footer'; // Importa el componente Footer
 
-// Componente principal
+
+// Componente principal que muestra productos de la categoría "Comida"
 export default function CategoriaComida({ baseInfo, type = "Comida" }) {
-    //console.log("cagaste")
+    // Obtiene el estado y las funciones del contexto ShopContext
     const { productos, detalleCompra, agregarProducto, filtrarProductos, handleCategory, preFiltrar } = useContext(ShopContext);
 
-    // Console.log para imprimir el estado detalleCompra
-    //console.log(JSON.stringify(detalleCompra, null, 2));
-
-    // Hook useEffect para ejecutar código cuando el componente se monta
+    // Actualiza el título del documento cuando el componente se monta
     useEffect(() => {
-        document.title = "Comida"; // Actualiza el título del documento
+        document.title = "Comida";
     }, []);
 
-    // Filtra los productos por tipo utilizando las funciones del contexto
-    const primerfiltro = preFiltrar(productos, type);
-    const filtrados = filtrarProductos(primerfiltro);
+    // Filtra los productos por tipo "Comida" y luego aplica filtros adicionales
+    const primerfiltro = preFiltrar(productos, type); // Primer filtro por tipo
+    const filtrados = filtrarProductos(primerfiltro); // Filtro adicional
 
-    // Renderizado del componente
     return (
         <>
-            <Cabecera />
+            <Cabecera /> {/* Muestra el encabezado */}
             <Container fluid onLoad={() => window.scrollTo({ top: -1000, behavior: "smooth" })}>
                 <Row className="justify-content-center">
                     <Col className='col-filtros' xs='3'>
@@ -54,32 +51,32 @@ export default function CategoriaComida({ baseInfo, type = "Comida" }) {
                     </Col>
                     <Col className='col-main productos'>
                         <Form.Group className="cmb-filtro" id="formGridCheckbox">
-                            <Form.Label htmlFor='category' className='cmb-filtro-label'>Categoria</Form.Label>
+                            <Form.Label htmlFor='category' className='cmb-filtro-label'>Especie Mascota</Form.Label>
                             <Form.Select defaultValue="Escoge..." style={{ width: '200px' }} onChange={handleCategory}>
                                 <option value='all'>Todos</option>
                                 <option value='Perro'>Perros</option>
                                 <option value='Gato'>Gatos</option>
                             </Form.Select>
                         </Form.Group>
-                        columna productos - tipo animal
+                        lo mejor para los peluditos
                         <Container>
                             <div className='row justify-content-center align-items-start'>
                                 <CardGroup>
                                     {filtrados.map((producto) => (
                                         <div key={producto.id} className='col col-sm-3'>
                                             <Card>
-                                                <Card.Img variant="top" src={producto.productImage} />
+                                                <Card.Img variant="top" src={producto.productImage}  className='imagenProducto'/> {/* Muestra la imagen del producto */}
                                                 <Card.Body className='card-body'>
                                                     <Card.Title className='card-title text-center'>
-                                                        <small>{producto.productName}</small>
+                                                        <small>{producto.productName}</small> {/* Muestra el nombre del producto */}
                                                     </Card.Title>
                                                     <Card.Text className='card-text text-center'>
-                                                        <small className='text-muted'>{producto.precio}</small>
+                                                        <small className='text-muted'>{producto.precio}</small> {/* Muestra el precio del producto */}
                                                     </Card.Text>
-                                                    <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                                                        <Toaster richColors expand={false} closeButton />
-                                        {/* aquí es donde se llama la función para agregar un producto */}
-                                                        <Button className='mx-2' variant='outline-success' onClick={() => { agregarProducto(producto.id); toast.info('Producto agregado al carrito') }}>
+                                                    <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4 agregarCarrito">
+                                                        <Toaster richColors expand={false} closeButton /> {/* Muestra notificaciones */}
+                                                        {/* Botón para agregar el producto al carrito */}
+                                                        <Button className='mx-2 ' variant='outline-success' onClick={() => { agregarProducto(producto.id); toast.info('Producto agregado al carrito') }}>
                                                             Agregar al Carrito
                                                         </Button>
                                                     </div>
@@ -93,7 +90,7 @@ export default function CategoriaComida({ baseInfo, type = "Comida" }) {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
+            <Footer /> {/* Muestra el pie de página */}
         </>
     );
 }

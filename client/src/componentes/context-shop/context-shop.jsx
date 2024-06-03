@@ -35,15 +35,29 @@ function mapSpeciesToCategory(idespecie) {
     }
 }
 
+// Función para convertir un array de bytes a una cadena base64
+const convertImage = (foto) => {
+    if (!foto) {
+        return ''; // Devuelve una cadena vacía si la foto no está definida
+    }
+    // Convierte un array de bytes a una cadena base64
+    return `data:image/jpeg;base64,${btoa(
+        new Uint8Array(foto.data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ''
+        )
+    )}`;
+};
+
 // Proveedor del contexto
 export const ShopContextProvider = ({ children }) => {
-    const [productos, setProductos] = useState([]);
-    const [detalleCompra, setDetalleCompra] = useState({});
+    const [productos, setProductos] = useState([]); // Estado para almacenar los productos
+    const [detalleCompra, setDetalleCompra] = useState({}); // Estado para almacenar el detalle de la compra
 
     // Función para obtener los productos desde la API
     const fetchProductos = async () => {
         try {
-            const url = `http://localhost:5000/productos`;
+            const url = `http://localhost:5000/productos`; // URL de la API
             const response = await fetch(url, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
@@ -55,7 +69,7 @@ export const ShopContextProvider = ({ children }) => {
                 id: item.idproducto,
                 productName: item.producto,
                 precio: item.precioventa,
-                productImage: item.foto || 'default_image_url.jpg', // URL de imagen por defecto si es null
+                productImage: convertImage(item.foto), // Convierte la imagen desde el array de bytes a base64
                 category: mapSpeciesToCategory(item.idespecie), // Función para mapear idespecie a category
                 type: mapCategoryToType(item.idcategoria) // Función para mapear idcategoria a type
             }));
@@ -63,51 +77,52 @@ export const ShopContextProvider = ({ children }) => {
             // Actualiza el estado con los datos mapeados
             setProductos(mappedData);
         } catch (error) {
-            console.log(error.message);
+            console.log(error.message); // Manejo de errores
         }
     };
 
+    // Llama a fetchProductos cuando el componente se monta
     useEffect(() => {
-        fetchProductos(); // Llama a fetchProductos cuando el componente se monta
+        fetchProductos();
     }, []);
 
+    // Función para filtrar productos por tipo (primer filtro)
     const preFiltrar = (products, type) => {
         return products.filter(product => product.type === type);
     };
 
-    const [filtro, setFiltro] = useState({ category: "all" });
+    const [filtro, setFiltro] = useState({ category: "all" }); // Estado para almacenar el filtro seleccionado
 
+    // Función para filtrar productos según el tipo y la categoría seleccionada
     const filtrarProductos = (products, type) => {
         return products.filter(product => 
             filtro.category === "all" || product.category === filtro.category || product.type === type
         );
     };
 
+    // Maneja el cambio de categoría en el filtro
     const handleCategory = (event) => {
         setFiltro(prevState => ({
             ...prevState, category: event.target.value
         }));
     };
 
-    // Aquí recibimos desde categoria y se envía a detalle compra
-    
+    // Función para agregar un producto al detalle de la compra
     const agregarProducto = (productoId) => {
         setDetalleCompra((prev) => {
-            console.log('Adding product:', productoId);
             const nuevoDetalle = { ...prev };
             if (!nuevoDetalle[productoId]) {
                 nuevoDetalle[productoId] = { cantidad: 0, total: 0 };
             }
             nuevoDetalle[productoId].cantidad += 1;
             nuevoDetalle[productoId].total = nuevoDetalle[productoId].cantidad * productos.find(p => p.id === productoId).precio;
-            console.log('New detail:', nuevoDetalle);
             return nuevoDetalle;
         });
     };
-    
+
+    // Función para remover un producto del detalle de la compra
     const removerProducto = (productoId) => {
         setDetalleCompra((prev) => {
-            console.log('Removing product:', productoId);
             const nuevoDetalle = { ...prev };
             if (nuevoDetalle[productoId] && nuevoDetalle[productoId].cantidad > 0) {
                 nuevoDetalle[productoId].cantidad -= 1;
@@ -116,20 +131,21 @@ export const ShopContextProvider = ({ children }) => {
                     delete nuevoDetalle[productoId];
                 }
             }
-            console.log('New detail:', nuevoDetalle);
             return nuevoDetalle;
         });
     };
-    
 
+    // Función para obtener la cantidad total de productos en el carrito
     const getCantidadProductos = () => {
         return Object.values(detalleCompra).reduce((acc, item) => acc + item.cantidad, 0);
     };
 
+    // Función para obtener el subtotal de todos los productos en el carrito
     const getSubtotalProductos = () => {
         return Object.values(detalleCompra).reduce((acc, item) => acc + item.total, 0);
     };
 
+    // Valor del contexto que será accesible para los componentes hijos
     const contextValue = {
         productos,
         detalleCompra,
@@ -142,6 +158,7 @@ export const ShopContextProvider = ({ children }) => {
         preFiltrar
     };
 
+    // Retorna el proveedor del contexto con el valor actual
     return (
         <ShopContext.Provider value={contextValue}>
             {children}

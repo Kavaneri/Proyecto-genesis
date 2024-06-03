@@ -1438,7 +1438,18 @@ app.use(express.json());
                 // Obtener los datos del cuerpo de la solicitud
                 const { nuipusuario, clave_hash, correo, telefono, nombre } = req.body;
                 const idroll = 1;
-                console.log(nuipusuario, clave_hash, correo, telefono, nombre,idroll);
+        
+                // Verificar si el nuipusuario ya existe
+                const existingUser = await pool.query("SELECT * FROM usuarios WHERE nuipusuario = $1", [nuipusuario]);
+                if (existingUser.rows.length > 0) {
+                    return res.status(400).json({ error: 'El nuipusuario ya está registrado.' });
+                }
+        
+                // Verificar si el correo ya existe
+                const existingEmail = await pool.query("SELECT * FROM usuarios WHERE correo = $1", [correo]);
+                if (existingEmail.rows.length > 0) {
+                    return res.status(400).json({ error: 'El correo ya está registrado.' });
+                }
         
                 // Calcular el hash SHA-256 de la contraseña
                 const hash = crypto.createHash('sha256').update(clave_hash).digest('hex');
@@ -1448,12 +1459,17 @@ app.use(express.json());
                     "INSERT INTO usuarios (nuipusuario, clave_hash, correo, telefono, nombre, idroll) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
                     [nuipusuario, hash, correo, telefono, nombre, idroll]
                 );
-                console.log(nuipusuario, hash, correo, telefono, nombre, idroll);
+        
                 res.json(newProveedor.rows[0]); // Responder con los datos insertados
-                
+        
             } catch (error) {
-                console.error(error.message);
-                res.status(500).send("Error al insertar en la base de datos.");
+                // Verificar si el error es por clave duplicada
+                if (error.code === '23505') { // 23505 es el código de error para violación de restricción única en PostgreSQL
+                    res.status(400).json({ error: 'El nuipusuario o correo ya está registrado.' });
+                } else {
+                    console.error(error.message);
+                    res.status(500).send("Error al insertar en la base de datos.");
+                }
             }
         });
         

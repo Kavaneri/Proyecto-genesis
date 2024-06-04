@@ -57,7 +57,7 @@ export const ShopContextProvider = ({ children }) => {
     // Función para obtener los productos desde la API
     const fetchProductos = async () => {
         try {
-            const url = `http://localhost:5000/productos`; // URL de la API
+            const url = `http://localhost:5000/productos/activos`; // URL de la API
             const response = await fetch(url, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }

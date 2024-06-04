@@ -59,16 +59,6 @@ export default function Citas() {
     fetchData();
   }, []);
 
-  const actualizarEstado = () => {
-    const cita = selectedRow[0];
-    fetch(`http://localhost:5000/citas/${cita.idcitas}`, {
-      method: "PUT",
-      body: JSON.stringify(cita),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
-  };
   const aceptarUnaCita = () => {
     const cita = selectedRow[0];
     fetch(`http://localhost:5000/citas/aceptar/${cita.idcitas}`, {
@@ -80,13 +70,14 @@ export default function Citas() {
     .then(response => response.json())
     .then(data => {
         console.log(data);
+        toast.success('Cita aceptada');
+        window.location.reload();
         // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
     })
     .catch(error => {
         console.error('Error:', error);
     });
   };
-
   const rechazarUnaCita = () => {
     const cita = selectedRow[0];
     fetch(`http://localhost:5000/citas/rechazar/${cita.idcitas}`, {
@@ -98,6 +89,8 @@ export default function Citas() {
     .then(response => response.json())
     .then(data => {
         console.log(data);
+        toast.error('Cita rechazada');
+        window.location.reload();
         // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
     })
     .catch(error => {
@@ -115,6 +108,8 @@ export default function Citas() {
     .then(response => response.json())
     .then(data => {
         console.log(data);
+        toast.success('Cita aceptada');
+        window.location.reload();
         // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
     })
     .catch(error => {
@@ -145,15 +140,6 @@ export default function Citas() {
 
   const handleChange = (state) => {
     setSelectedRow(state.selectedRows);
-  };
-
-  const aceptarCita = () => {
-    const seleccion = selectedRow[0];
-    if (seleccion) {
-      seleccion.estado = "Aceptada";
-      setSelectedRow([seleccion]);
-      toast.success('Cita aceptada');
-    }
   };
 
   const rechazarCita = () => {

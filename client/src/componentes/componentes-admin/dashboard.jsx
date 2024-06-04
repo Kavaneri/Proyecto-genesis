@@ -64,10 +64,10 @@ export default function Dashboard() {
                                     <Button className='menu-button'>Ventas</Button>
                                 </Link>
                                 <Link className='my-4 botonAdmin' to='/Admin/Inventario' onClick={handleEstiloLogo}>
-                                    <Button className='menu-button'>Inventario</Button>
+                                    <Button className='menu-button'>Productos Tienda</Button>
                                 </Link>
                                 <Link className='my-4 botonAdmin' to='/Admin/mostrarProductosPrueba' onClick={handleEstiloLogo}>
-                                    <Button className='menu-button'>Inventario</Button>
+                                    <Button className='menu-button'>Inventario intrahospitalario</Button>
                                 </Link>
                                 <Button variant="danger" onClick={handleLogout} className='mx-2 cerrarsesion'>
                                     Cerrar Sesión

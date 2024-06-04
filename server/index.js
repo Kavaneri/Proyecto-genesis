@@ -97,6 +97,7 @@ app.use(express.json());
                     console.error(error.message);
                 }
             });
+
             //aceptar
             app.put("/citas/rechazar/:id", async(req,res) =>{
                 try {
@@ -377,6 +378,16 @@ app.use(express.json());
                 res.status(500).send("Error al obtener en la base de datos.");
             }
         });
+        app.get('/productos/activos', async (req, res) => {
+            try {
+              const productosActivos = await pool.query('SELECT * FROM productos WHERE activo = true');
+              res.json(productosActivos.rows);
+            } catch (error) {
+              console.error(error.message);
+              res.status(500).json('Error al obtener los productos');
+            }
+          });
+          
         
 
         //obtener productos segun categorias
@@ -467,6 +478,21 @@ app.use(express.json());
                     res.status(500).send("Error al obtener en la base de datos.");
                 }
             });
+        //borrado suave productos
+            app.put('/productos/borrar/:id', async (req, res) => {
+                try {
+                const { id } = req.params;
+                const borrarProducto = await pool.query(
+                    'UPDATE productos SET activo = false WHERE idproducto = $1',
+                    [id]
+                );
+                res.json('Producto borrado suavemente');
+                } catch (error) {
+                console.error(error.message);
+                res.status(500).json('Error al borrar el producto');
+                }
+            });
+          
 
     //tabla productos intrahospitalarios
         //obtener producto intrahospitalarios
@@ -669,12 +695,39 @@ app.use(express.json());
                     res.status(500).send("Error al insertar la venta en la base de datos.");
                 }
             });
+        //Despachar una venta
+            app.put("/ventas/despachar/:id", async (req, res) => {
+                try {
+                  const { id } = req.params;
+                  const despacharVenta = await pool.query(
+                    "UPDATE ventas SET idestadoventa = 3 WHERE idventa = $1",
+                    [id]
+                  );
+                  res.json("Venta despachada exitosamente");
+                } catch (error) {
+                  console.error(error.message);
+                  res.status(500).json("Error al despachar la venta");
+                }
+              });
+            //finalizar una venta
+              app.put("/ventas/Finalizar/:id", async (req, res) => {
+                try {
+                  const { id } = req.params;
+                  const despacharVenta = await pool.query(
+                    "UPDATE ventas SET idestadoventa = 4 WHERE idventa = $1",
+                    [id]
+                  );
+                  res.json("Venta despachada exitosamente");
+                } catch (error) {
+                  console.error(error.message);
+                  res.status(500).json("Error al despachar la venta");
+                }
+              });
 
-            
 
-        
-        
-            
+
+
+
 
 //post/create a testVet
     //tablas de productos

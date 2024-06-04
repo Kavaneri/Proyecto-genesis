@@ -46,7 +46,6 @@ export default function Formulario() {
     } else {
         schema = z.object({
             nombremascota: z.string().min(3, { message: "El nombre es requerido" }),
-            razamascota: z.string().min(3, { message: "El nombre es requerido" }),
             direccion: z.string().min(3, { message: "La dirección es requerida" }),
         });
     }

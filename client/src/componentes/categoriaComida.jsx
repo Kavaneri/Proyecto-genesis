@@ -5,7 +5,7 @@ import { ShopContext } from './context-shop/context-shop'; // Importa el context
 import './categoriaComida.css'; // Importa los estilos CSS para el componente
 import { Link } from 'react-router-dom'; // Importa el componente Link de react-router-dom para la navegación
 import { Toaster, toast } from 'sonner'; // Importa componentes para mostrar notificaciones
-import Footer from './footer'; // Importa el componente Footer
+import Footer from './footer'; // Importa el componente Foote
 
 
 // Componente principal que muestra productos de la categoría "Comida"

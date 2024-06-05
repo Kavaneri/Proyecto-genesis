@@ -234,48 +234,7 @@ app.use(express.json());
                     res.status(500).send("Error al obtener en la base de datos.");
                 }
             });
-    //tabla lotes producto intrahospitalario
-        //obtener lotes intrahospitalario
-            app.get("/lotesProductos",async (req,res) => {
-                try {
-                    const allTodos = await pool.query("SELECT * FROM lotesProductos");
-                    res.json(allTodos.rows);
-                } catch (error) {
-                    console.log(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
-                }
-            });
-        //publicar un lote de producto intrahospitalario
-            app.post("/lotesProductos", async (req, res) => {
-                try {
-                    //obtener lo escrito en el raw body
-                    const { cantlote, compralote, vecimientolote, idproductointrahospitalario } = req.body;
-                    
-                    // Verificar si los datos son válidos
-                    
-                    //volver el http a query sql
-                    const newLoteProducto = await pool.query(
-                        "INSERT INTO lotesProductos (cantLote, compraLote, vecimientoLote, idProductoIntrahospitalario) VALUES ($1, $2, $3, $4) RETURNING *",
-                        [cantlote, compralote, vecimientolote, idproductointrahospitalario]
-                    );
-                    
-                    res.json(newLoteProducto.rows[0]);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al insertar en la base de datos.");
-                }
-            });
-        //borrar un lote de producto intrahospitalario
-            app.delete("/lotesProductos/:id",async (req,res) => {
-                try {
-                    const {id} = req.params;
-                    const allTodos = await pool.query("DELETE FROM lotesProductos WHERE idLoteProducto = $1",[id]);
-                    res.json("producto borrado");
-                } catch (error) {
-                    console.log(error.message);
-                    res.status(500).send("Error al borrar en la base de datos.");
-                }
-            });
+  
     //tabla de mascotas de las citas
         //obtener mascotas de las citas
             app.get("/mascotascitas", async(req,res) => {
@@ -520,6 +479,17 @@ app.use(express.json());
                     res.status(500).send("Error al obtener en la base de datos.");
                 }
             });
+        //obtener productos intrahospitalarios activos
+            app.get("/productosIntrahospitalarios/activos", async (req, res) => {
+                try {
+                    const allTodos = await pool.query("SELECT * FROM productosIntrahospitalarios WHERE activo = true");
+                    res.json(allTodos.rows);
+                } catch (error) {
+                    console.error(error.message);
+                    res.status(500).send("Error al obtener en la base de datos.");
+                }
+            });
+
         //publicar producto intrahospitalarios
             app.post("/productosIntrahospitalarios", async (req, res) => {
                 try {
@@ -541,14 +511,56 @@ app.use(express.json());
                 }
             });
         //modificar producto intrahospitalarios
-            app.patch("/productosIntrahospitalarios", async(req,res) => {
+            // Actualizar producto intrahospitalario, precio, inventario, miniinventariorecomendado
+            app.put("/productosIntrahospitalarios/:id", async (req, res) => {
                 try {
-                    res.json( "proximamente");
+                    const { id } = req.params;
+                    const { preciocompra, inventarioactual, mininventariorecomendado } = req.body;
+                    
+                    // Verificar si los datos son válidos
+                    
+                    // Actualizar los datos en la base de datos
+                    const updateProducto = await pool.query(
+                        "UPDATE productosIntrahospitalarios SET precioCompra = $1, inventarioActual = $2, minInventarioRecomendado = $3 WHERE idproductointrahospitalario = $4 RETURNING *",
+                        [preciocompra, inventarioactual, mininventariorecomendado, id]
+                    );
+
+                    if (updateProducto.rows.length === 0) {
+                        return res.status(404).send("Producto no encontrado");
+                    }
+
+                    res.json(updateProducto.rows[0]);
                 } catch (error) {
                     console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
+                    res.status(500).send("Error al actualizar en la base de datos.");
                 }
             });
+            //borrar producto intrahospitalario
+            // Borrado suave de producto intrahospitalario
+            app.delete("/productosIntrahospitalarios/:id", async (req, res) => {
+                try {
+                    const { id } = req.params;
+                    
+                    // Actualizar el estado de activo a false
+                    const deleteProducto = await pool.query(
+                        "UPDATE productosIntrahospitalarios SET activo = false WHERE idproductointrahospitalario = $1 RETURNING *",
+                        [id]
+                    );
+
+                    if (deleteProducto.rows.length === 0) {
+                        return res.status(404).send("Producto no encontrado");
+                    }
+
+                    res.json(deleteProducto.rows[0]);
+                } catch (error) {
+                    console.error(error.message);
+                    res.status(500).send("Error al realizar el borrado suave en la base de datos.");
+                }
+            });
+
+
+
+
     //tabla proovedores
         //obtener proovedores
             app.get("/proveedores", async (req,res) =>{
@@ -600,35 +612,6 @@ app.use(express.json());
                 } catch (error) {
                     console.error(error.message);
                     res.status(500).send("Error al obtener en la base de datos.");
-                }
-            });
-    //tabla salida productos intrahospitalarios
-        //obtener salidas productos intrahospitalarios
-            app.get("/salidasProductos", async(req,res) =>{
-                try {
-                    const allTodos = await pool.query("SELECT * FROM salidasProductos");
-                    res.json(allTodos.rows);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
-                }
-            });
-        //agregar salida de productos intrahospitalarios
-            app.post("/salidasProductos", async (req, res) => {
-                try {
-                    //obtener lo escrito en el raw body
-                    const { fechasalida, cantidad, idproductointrahospitalario } = req.body;
-
-                    //volver el http a query sql
-                    const newSalidaProducto = await pool.query(
-                        "INSERT INTO salidasProductos (fechaSalida, cantidad, idProductoIntrahospitalario) VALUES ($1, $2, $3) RETURNING *",
-                        [fechasalida, cantidad, idproductointrahospitalario]
-                    );
-                    
-                    res.json(newSalidaProducto.rows[0]);
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al insertar en la base de datos.");
                 }
             });
     //tabla de servicios:

@@ -157,7 +157,8 @@ export default function Inventario() {
       <Tabs defaultActiveKey="Administrar productos" id="tab-ventas" className='mb-3' fill justify>
         <Tab eventKey='Administrar productos' title='Administrar productos'>
           <div>
-            <h1>Administrar productos</h1>
+            <h1 className='principalTitulo'>Administrar productos</h1>
+            <div className='linia'></div>
             <DataTable
               columns={columnsProductos}
               data={products}
@@ -180,7 +181,7 @@ export default function Inventario() {
               responsive
             />
             <div className="selected-product-details">
-              <h2>Detalles del Producto Seleccionado</h2>
+              <h2 className='principalTitulo'>Detalles del Producto Seleccionado</h2>
               <Form>
                 <Row>
                   <FormGroup as={Col} className='mt-3'>
@@ -224,7 +225,7 @@ export default function Inventario() {
         </Tab>
         <Tab eventKey='Agregar un Producto' title='Agregar un Producto'>
           <div className="inventario-container">
-            <h1>Agregar Producto</h1>
+            <h1 className='principalTitulo'>Agregar Producto</h1>
             <form onSubmit={handleSubmit} className="inventario-form">
               <label>
                 Nombre del Producto:

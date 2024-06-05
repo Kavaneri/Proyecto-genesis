@@ -53,9 +53,9 @@ export default function Dashboard() {
                     <Row>
                         <Col className='columna-navegacion col-3 d-flex flex-column align-items-center bg-custom text-white'>
                             <div className='d-flex flex-column align-items-center sticky-top'>
-                                <div className='my-5 text-center'>
-                                    <img src={usuarioLogo} alt='imagen usuario' className='user-img mb-2' />
-                                    <div className='user-name'>Nombre admin/recep</div>
+                                <div className='my-5 text-center usuario'>
+                                    <img src={logo} alt='imagen usuario' className='user-img mb-2' />
+                                    <div className='user-name'>Bienvenido</div>
                                 </div>
                                 <Link className='my-4 botonAdmin' to='/Admin/Citas' onClick={handleEstiloLogo}>
                                     <Button className='menu-button'>Citas</Button>
@@ -69,7 +69,7 @@ export default function Dashboard() {
                                 <Link className='my-4 botonAdmin' to='/Admin/mostrarProductosPrueba' onClick={handleEstiloLogo}>
                                     <Button className='menu-button'>Inventario intrahospitalario</Button>
                                 </Link>
-                                <Button variant="danger" onClick={handleLogout} className='mx-2 cerrarsesion'>
+                                <Button variant="danger" onClick={handleLogout} className='mx-2 botonAdmin cerrarsesion'>
                                     Cerrar Sesión
                                 </Button>
                             </div>

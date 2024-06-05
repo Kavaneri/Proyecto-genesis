@@ -18,4 +18,25 @@
     background-color: gray !important;
   }
   
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px; /* Espacio entre los botones */
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .customButton {
+    flex: 1 1 50%;
+    max-width: 25%;
+    box-sizing: border-box; /* Para incluir el padding y border en el ancho total */
+  }
+  .finalizar{
+    max-height: 40px ;
+    padding: 5px;
+  }
+  
   

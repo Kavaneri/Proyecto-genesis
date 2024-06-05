@@ -32,10 +32,17 @@ export default function Carrito() {
     const [showModal, setShowModal] = useState(false);
 
     const barrios = [
-        { id: 15, nombre: 'Barrio 1' },
-        { id: 16, nombre: 'Barrio 2' },
-        { id: 17, nombre: 'Barrio 3' },
+        { id: 15, nombre: 'Las Delicias' },
+        { id: 16, nombre: 'El Prado' },
+        { id: 17, nombre: 'El Recreo' },
+        { id: 18, nombre: 'Caimitos' },
+        { id: 19, nombre: 'Olímpico' },
+        { id: 20, nombre: 'Cincuentenario' },
+        { id: 21, nombre: 'San Carlos' },
+        { id: 22, nombre: 'Villa Claudia' },
+        { id: 23, nombre: 'Las Mercedes' }
     ];
+    
 
     useEffect(() => {
         document.title = 'Mi Carrito';
@@ -71,6 +78,7 @@ export default function Carrito() {
         }
 
         setvalortotal(total);
+        window.open('https://www.pse.com.co/persona', '_blank');
 
         try {
             const urlcliente = `http://localhost:5000/clientes`;

@@ -17,7 +17,6 @@ export default function Inicio() {
       <Cabecera />
       <Carrusel />
       <Categorias />
-      <CarruselDescuentos />
       <Footer />
     </div>
   )

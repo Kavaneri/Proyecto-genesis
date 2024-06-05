@@ -316,7 +316,7 @@ if (usuario === null) {
                                             <option value="NULL" >...</option>
                                             <option value="3">recogemos tu mascota</option>
                                             <option value="4">veterinario a domicilio</option>
-                                            <option value="5">tu mismo lo traes</option>
+                                            <option value="5">presencial</option>
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridBarrioAprovado">
@@ -325,9 +325,15 @@ if (usuario === null) {
                                             defaultValue="" 
                                             onChange={(e) => setidbarrioaprovado(parseInt(e.target.value, 10))}>
                                             <option value="NULL" >...</option>
-                                            <option value="15">San Pedro</option>
-                                            <option value="16">primero de mayo</option>
-                                            <option value="17">popular modelo</option>
+                                            <option value="15">Las Delicias</option>
+                                            <option value="16">El Prado</option>
+                                            <option value="17">El Recreo</option>
+                                            <option value="18">Caimitos</option>
+                                            <option value="19">Olímpico</option>
+                                            <option value="20">Cincuentenario</option>
+                                            <option value="21">San Carlos</option>
+                                            <option value="22">Villa Claudia</option>
+                                            <option value="23">Las Mercedes</option>
                                         </Form.Select>
                                     </Form.Group>
     
@@ -506,7 +512,7 @@ if (usuario === null) {
                                         <option value="NULL" >...</option>
                                         <option value="3">recogemos tu mascota</option>
                                         <option value="4">veterinario a domicilio</option>
-                                        <option value="5">tu mismo lo traes</option>
+                                        <option value="5">presencial</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formGridBarrioAprovado">
@@ -515,9 +521,15 @@ if (usuario === null) {
                                         defaultValue="" 
                                         onChange={(e) => setidbarrioaprovado(parseInt(e.target.value, 10))}>
                                         <option value="NULL" >...</option>
-                                        <option value="15">San Pedro</option>
-                                        <option value="16">primero de mayo</option>
-                                        <option value="17">popular modelo</option>
+                                        <option value="15">Las Delicias</option>
+                                        <option value="16">El Prado</option>
+                                        <option value="17">El Recreo</option>
+                                        <option value="18">Caimitos</option>
+                                        <option value="19">Olímpico</option>
+                                        <option value="20">Cincuentenario</option>
+                                        <option value="21">San Carlos</option>
+                                        <option value="22">Villa Claudia</option>
+                                        <option value="23">Las Mercedes</option>
                                     </Form.Select>
                                 </Form.Group>
 

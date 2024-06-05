@@ -1,96 +1,48 @@
-.categorias-div {
-    width: max-content;
-    height: max-content;
-    margin-top: 20px;
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.categories .col-12 {
+    width: 100%;
+    margin-bottom: 20px; /* Añadido para separar elementos en pantallas pequeñas */
+}
+
+@media (min-width: 768px) {
+    .categories .col-md-4 {
+        width: 33.3333%;
+    }
 }
 
 .items {
-
-    width: 300px;
     height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 10px;
-    /* padding-top: 20px;
-    padding-bottom: 20px; */
+    background-color: #9c9c9c81;
+    border: 1px solid #2a9391;
+    border-radius: 7.5px;
+    text-align: center;
 }
 
 .items a {
     text-decoration: none;
-    color: black;
+    color: white; /* Cambia el color del texto a blanco */
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 100%;
+    height: 100%;
 }
 
-.item-1 {
-    background-color: #9c9c9c81;
+.items a p {
+    margin: 0;
+    color: white; /* Asegura que el color del texto sea blanco */
+}
+
+.item-1, .item-2, .item-3, .item-4, .item-5, .item-6 {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-}
-
-.item-2 {
-    background-color: #9c9c9c81;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-
-}
-
-.item-3 {
-    background-color: #9c9c9c81;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-}
-
-.item-4 {
-    background-color: #9c9c9c81;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-}
-
-.item-5 {
-    background-color: #9c9c9c81;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-}
-
-.item-6 {
-    background-color: #9c9c9c81;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-}
-
-.item-7 {
-    background-color: #dfdfdf81;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #2a9391;
-    border-radius: 7.5px;
-}
-
-.separador {
-    border-top: 2px solid #2a9391;
-}
-
-.titulo-separador {
-    color: #2a9391;
-    font-weight: bold;
 }

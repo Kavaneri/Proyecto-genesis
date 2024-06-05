@@ -52,41 +52,50 @@ export default function Ventas() {
 
   // Manejadores de ventas
   const despacharVenta = () => {
-    const venta = selectedRow;
-    fetch(`http://localhost:5000/ventas/despachar/${venta.idventa}`, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      toast.success('Venta despachada exitosamente');
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    try {
+      const venta = selectedRow;
+      fetch(`http://localhost:5000/ventas/despachar/${venta.idventa}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        toast.success('Venta despachada exitosamente');
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    } catch (error) {
+      console.log(error.message)      
+    }
   };
 
   const finalizarVenta = () => {
-    const venta = selectedRow;
-    fetch(`http://localhost:5000/ventas/Finalizar/${venta.idventa}`, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      toast.success('Venta finalizada exitosamente');
-      window.location.reload();
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    try {
+      const venta = selectedRow;
+      fetch(`http://localhost:5000/ventas/Finalizar/${venta.idventa}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        toast.success('Venta finalizada exitosamente');
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+      
+    } catch (error) {
+      console.log(error.message)     
+    }
   };
 
   // Columnas de la tabla de ventas

@@ -8,38 +8,39 @@ export default function Categorias() {
             <h2 className='titulo-separador'>Visita nuestra tienda</h2>
             <hr className='separador' />
 
-            <div className='row align-items-start'>
-                <div className='col items item-1'>
-                    <Link to='/Comida'>
-                        <p>Comida</p>
-                    </Link>
-                </div>
-                <div className='col items item-2'>
-                    <Link to='/Hogar'>
-                        <p>Hogar</p>
-                    </Link>
-                </div>
-                <div className='col items item-3'>
-                    <Link to='/Juguetes'>
-                        <p>Juguetes</p>
-                    </Link>
-                </div>
-                <div className='col items item-4'>
-                    <Link to='/Salud'>
-                        <p>Salud</p>
-                    </Link>
-                </div>
-                <div className='col items item-5'>
-                    <Link to='/Viaje'>
-                        <p>Viaje</p>
-                    </Link>
-                </div>
-                <div className='col items item-6'>
-                    <Link to='/Paseo'>
-                        <p>Paseo</p>
-                    </Link>
-                </div>
-            </div>
+            <div className='row align-items-start categories'>
+    <Link to='/Comida' className='col-12 col-md-4'>
+        <div className='items item-1'>
+            <p>Comida</p>
+        </div>
+    </Link>
+    <Link to='/Hogar' className='col-12 col-md-4'>
+        <div className='items item-2'>
+            <p>Hogar</p>
+        </div>
+    </Link>
+    <Link to='/Juguetes' className='col-12 col-md-4'>
+        <div className='items item-3'>
+            <p>Juguetes</p>
+        </div>
+    </Link>
+    <Link to='/Salud' className='col-12 col-md-4'>
+        <div className='items item-4'>
+            <p>Salud</p>
+        </div>
+    </Link>
+    <Link to='/Viaje' className='col-12 col-md-4'>
+        <div className='items item-5'>
+            <p>Viaje</p>
+        </div>
+    </Link>
+    <Link to='/Paseo' className='col-12 col-md-4'>
+        <div className='items item-6'>
+            <p>Paseo</p>
+        </div>
+    </Link>
+</div>
+
         </div>
     );
 }

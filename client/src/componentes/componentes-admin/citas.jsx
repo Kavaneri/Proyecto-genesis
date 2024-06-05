@@ -62,63 +62,78 @@ export default function Citas() {
   }, []);
 
   const aceptarUnaCita = () => {
-    const cita = selectedRow[0];
-    fetch(`http://localhost:5000/citas/aceptar/${cita.idcitas}`, {
-        method: "PUT",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        toast.success('Cita aceptada');
-        window.location.reload();
-        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    try {
+      const cita = selectedRow[0];
+      fetch(`http://localhost:5000/citas/aceptar/${cita.idcitas}`, {
+          method: "PUT",
+          headers: {
+              "Content-type": "application/json; charset=UTF-8",
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          toast.success('Cita aceptada');
+          window.location.reload();
+          // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+      
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   const rechazarUnaCita = () => {
-    const cita = selectedRow[0];
-    fetch(`http://localhost:5000/citas/rechazar/${cita.idcitas}`, {
-        method: "PUT",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        toast.error('Cita rechazada');
-        window.location.reload();
-        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    try {
+      const cita = selectedRow[0];
+      fetch(`http://localhost:5000/citas/rechazar/${cita.idcitas}`, {
+          method: "PUT",
+          headers: {
+              "Content-type": "application/json; charset=UTF-8",
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          toast.error('Cita rechazada');
+          window.location.reload();
+          // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+      
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   const finalizarUnaCita = () => {
-    const cita = selectedRow[0];
-    fetch(`http://localhost:5000/citas/finalizar/${cita.idcitas}`, {
-        method: "PUT",
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        toast.success('Cita aceptada');
-        window.location.reload();
-        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    try {
+      const cita = selectedRow[0];
+      fetch(`http://localhost:5000/citas/finalizar/${cita.idcitas}`, {
+          method: "PUT",
+          headers: {
+              "Content-type": "application/json; charset=UTF-8",
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+          toast.success('Cita aceptada');
+          window.location.reload();
+          // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+      
+      } catch (error) {
+        console.log(error.message)
+      }
   };
 
   const columns = [
@@ -222,12 +237,10 @@ export default function Citas() {
             </Form>
 
             <div className='d-grid gap-2'>
-              <Button variant='primary' size='lg' onClick={aceptarUnaCita}>
-                Aceptar Solicitud
-              </Button>
-              <Button variant='danger' size='lg' onClick={rechazarUnaCita}>
-                Rechazar Solicitud
-              </Button>
+              <div className='buttonContainer'>
+                <Button className='customButton mt-3 finalizar' variant='outline-success'  onClick={aceptarUnaCita}>Aceptar Solicitud</Button>
+                <Button className='customButton mt-3  finalizar' variant='outline-danger'  onClick={rechazarUnaCita}>Rechazar Solicitud</Button>
+              </div>
             </div>
           </div>
         </Tab>
@@ -284,22 +297,24 @@ export default function Citas() {
             </Form>
 
             <div className='d-grid gap-2'>
-              <Button variant='success' size='lg' onClick={finalizarUnaCita}>
-                Finalizar Cita
-              </Button>
+              <div className='buttonContainer'>
+                  <Button className='customButton finalizar' variant='outline-success' size='lg' onClick={finalizarUnaCita}>
+                    Finalizar Cita
+                  </Button>
+              </div>
             </div>
           </div>
         </Tab>
-        <Tab eventKey='Citas Rechazadas' title='Citas Rechazadas'>
+        <Tab eventKey='Citas Finalizadas' title='Citas Finalizadas'>
           <div>
             <h1 className='tituloAdmin'>
-              Administrar Citas Rechazadas
+              Administrar Citas Finalizadas
             </h1>
           </div>
           <div>
             <DataTable
               columns={columns}
-              data={citasInfoRechazadas}
+              data={citasInfoFinalizadas}
               fixedHeader
               conditionalRowStyles={conditionalRowsStyles}
               onRowClicked={handleRowClicked}
@@ -343,16 +358,16 @@ export default function Citas() {
             </Form>
           </div>
         </Tab>
-        <Tab eventKey='Citas Finalizadas' title='Citas Finalizadas'>
+        <Tab eventKey='Citas Rechazadas' title='Citas Rechazadas'>
           <div>
             <h1 className='tituloAdmin'>
-              Administrar Citas Finalizadas
+              Administrar Citas Rechazadas
             </h1>
           </div>
           <div>
             <DataTable
               columns={columns}
-              data={citasInfoFinalizadas}
+              data={citasInfoRechazadas}
               fixedHeader
               conditionalRowStyles={conditionalRowsStyles}
               onRowClicked={handleRowClicked}

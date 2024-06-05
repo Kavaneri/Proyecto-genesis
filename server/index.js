@@ -1,13 +1,16 @@
 const crypto = require('crypto');
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const pool = require("./db");
 const multer = require('multer');
 
+
 // Configuración de multer
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+
+const app = express();
 
 // Middleware
 app.use(cors());
@@ -378,6 +381,7 @@ app.use(express.json());
                 res.status(500).send("Error al obtener en la base de datos.");
             }
         });
+        //obtener productos activos
         app.get('/productos/activos', async (req, res) => {
             try {
               const productosActivos = await pool.query('SELECT * FROM productos WHERE activo = true');
@@ -386,8 +390,50 @@ app.use(express.json());
               console.error(error.message);
               res.status(500).json('Error al obtener los productos');
             }
-          });
-          
+        });
+        //cambiar precio
+        app.put('/productos/precio/:idproducto/precioventa', async (req, res) => {
+            try {
+                const { idproducto } = req.params;
+                const { precioventa } = req.body;
+        
+                // Validar que el precio de venta esté presente
+                if (precioventa === undefined) {
+                    return res.status(400).send("Por favor, proporcione el nuevo precio de venta.");
+                }
+        
+                // Actualizar el precio de venta del producto en la base de datos
+                const updatedProducto = await pool.query(
+                    "UPDATE productos SET precioventa = $1 WHERE idproducto = $2 RETURNING *",
+                    [precioventa, idproducto]
+                );
+        
+                if (updatedProducto.rowCount === 0) {
+                    return res.status(404).send("Producto no encontrado.");
+                }
+        
+                res.json({ message: "Precio de venta actualizado correctamente.", producto: updatedProducto.rows[0] });
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error al actualizar el precio de venta en la base de datos.");
+            }
+        });
+        //borrado suave productos
+        app.put('/productos/borrar/:id', async (req, res) => {
+                try {
+                const { id } = req.params;
+                const borrarProducto = await pool.query(
+                    'UPDATE productos SET activo = false WHERE idproducto = $1',
+                    [id]
+                );
+                res.json('Producto borrado suavemente');
+                } catch (error) {
+                console.error(error.message);
+                res.status(500).json('Error al borrar el producto');
+                }
+        });
+        
+
         
 
         //obtener productos segun categorias
@@ -459,39 +505,8 @@ app.use(express.json());
             });
             
         //publicar producto tienda
-            app.delete("/productos", async(req,res) => {
-                try {
-                    res.json( "proximamente");
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
-                }
-            });
 
 
-        //modificar producto tienda
-            app.patch("/productos", async(req,res) => {
-                try {
-                    res.json( "proximamente");
-                } catch (error) {
-                    console.error(error.message);
-                    res.status(500).send("Error al obtener en la base de datos.");
-                }
-            });
-        //borrado suave productos
-            app.put('/productos/borrar/:id', async (req, res) => {
-                try {
-                const { id } = req.params;
-                const borrarProducto = await pool.query(
-                    'UPDATE productos SET activo = false WHERE idproducto = $1',
-                    [id]
-                );
-                res.json('Producto borrado suavemente');
-                } catch (error) {
-                console.error(error.message);
-                res.status(500).json('Error al borrar el producto');
-                }
-            });
           
 
     //tabla productos intrahospitalarios
@@ -509,14 +524,14 @@ app.use(express.json());
             app.post("/productosIntrahospitalarios", async (req, res) => {
                 try {
                     //obtener lo escrito en el raw body
-                    const { nombreproductointrahospitalario, preciocompra, descripccion, inventarioactual, mininventariorecomendado, idproveedor, idtipoproducto } = req.body;
+                    const { nombreProductoIntrahospitalario, preciocompra, descripccion, inventarioactual, mininventariorecomendado} = req.body;
                     
                     // Verificar si los datos son válidos
                     
                     //volver el http a query sql
                     const newProducto = await pool.query(
-                        "INSERT INTO productosIntrahospitalarios (nombreProductoIntrahospitalario, precioCompra, descripccion, inventarioActual, minInventarioRecomendado, idProveedor, idTipoProducto) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-                        [nombreproductointrahospitalario, preciocompra, descripccion, inventarioactual, mininventariorecomendado, idproveedor, idtipoproducto]
+                        "INSERT INTO productosIntrahospitalarios (nombreProductoIntrahospitalario, precioCompra, descripccion, inventarioActual, minInventarioRecomendado) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+                        [nombreProductoIntrahospitalario, preciocompra, descripccion, inventarioactual, mininventariorecomendado]
                     );
 
                     res.json(newProducto.rows[0]);

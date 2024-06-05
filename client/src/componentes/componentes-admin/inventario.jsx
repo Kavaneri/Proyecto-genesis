@@ -13,6 +13,7 @@ export default function Inventario() {
   const [preview, setPreview] = useState(null);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [newPrecioVenta, setNewPrecioVenta] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,6 +32,7 @@ export default function Inventario() {
     fetchProducts();
   }, []);
 
+  //publicar un producto
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -50,6 +52,7 @@ export default function Inventario() {
       .then((data) => {
         console.log(data);
         alert('Producto agregado con éxito!');
+        window.location.reload(); // Recargar la página después de agregar el producto
       })
       .catch((error) => {
         console.error('Error al insertar el producto:', error);
@@ -70,6 +73,37 @@ export default function Inventario() {
 
   const handleRowClick = (row) => {
     setSelectedProduct(row);
+    setNewPrecioVenta(row.precioventa);
+  };
+
+  const cambiarPrecio = () => {
+    if (!selectedProduct) {
+      alert('Selecciona un producto para cambiar el precio.');
+      return;
+    }
+    try {
+      console.log(selectedProduct.idproducto)
+      console.log(newPrecioVenta)
+      fetch(`http://localhost:5000/productos/precio/${selectedProduct.idproducto}/precioventa`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({ precioventa: newPrecioVenta }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          alert('Precio del producto actualizado exitosamente');
+          window.location.reload(); // Recargar la página después de actualizar el precio
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   const borrarProducto = () => {
@@ -120,7 +154,74 @@ export default function Inventario() {
 
   return (
     <>
-      <Tabs defaultActiveKey="Agregar un Producto" id="tab-ventas" className='mb-3' fill justify>
+      <Tabs defaultActiveKey="Administrar productos" id="tab-ventas" className='mb-3' fill justify>
+        <Tab eventKey='Administrar productos' title='Administrar productos'>
+          <div>
+            <h1>Administrar productos</h1>
+            <DataTable
+              columns={columnsProductos}
+              data={products}
+              onRowClicked={handleRowClick}
+              customStyles={{
+                rows: {
+                  style: {
+                    cursor: 'pointer',
+                    '&:nth-of-type(n)': {
+                      backgroundColor: row => selectedProduct && row.idproducto === selectedProduct.idproducto ? '#d3d3d3' : 'white',
+                    },
+                    '&:hover': {
+                      backgroundColor: '#d3d3d3',
+                    },
+                  },
+                },
+              }}
+              fixedHeader
+              pagination
+              responsive
+            />
+            <div className="selected-product-details">
+              <h2>Detalles del Producto Seleccionado</h2>
+              <Form>
+                <Row>
+                  <FormGroup as={Col} className='mt-3'>
+                    <FormLabel>ID Producto</FormLabel>
+                    <FormControl type="text" value={selectedProduct ? selectedProduct.idproducto : ''} readOnly />
+                  </FormGroup>
+                  <FormGroup as={Col} className='mt-3'>
+                    <FormLabel>Producto</FormLabel>
+                    <FormControl type="text" value={selectedProduct ? selectedProduct.producto : ''} readOnly />
+                  </FormGroup>
+                  <FormGroup as={Col} className='mt-3'>
+                    <FormLabel>Precio Venta</FormLabel>
+                    <FormControl
+                      type="number"
+                      value={newPrecioVenta}
+                      onChange={(e) => setNewPrecioVenta(parseFloat(e.target.value))}
+                    />
+                  </FormGroup>
+                </Row>
+                <FormGroup>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl type="text" value={selectedProduct ? selectedProduct.descripccion : ''} readOnly />
+                </FormGroup>
+                <Row>
+                  <FormGroup as={Col} className='mt-3'>
+                    <FormLabel>Especie</FormLabel>
+                    <FormControl type="text" value={selectedProduct ? selectedProduct.idespecie : ''} readOnly />
+                  </FormGroup>
+                  <FormGroup as={Col} className='mt-3'>
+                    <FormLabel>Categoría</FormLabel>
+                    <FormControl type="text" value={selectedProduct ? selectedProduct.idcategoria : ''} readOnly />
+                  </FormGroup>
+                </Row>
+              </Form>
+            </div>
+            <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
+              <Button variant='outline-danger' onClick={borrarProducto}>Eliminar Producto</Button>
+              <Button variant='outline-primary' onClick={cambiarPrecio}>Cambiar Precio</Button>
+            </div>
+          </div>
+        </Tab>
         <Tab eventKey='Agregar un Producto' title='Agregar un Producto'>
           <div className="inventario-container">
             <h1>Agregar Producto</h1>
@@ -192,68 +293,6 @@ export default function Inventario() {
               )}
               <button type="submit">Agregar Producto</button>
             </form>
-          </div>
-        </Tab>
-        <Tab eventKey='Administrar productos' title='Administrar productos'>
-          <div>
-            <h1>Administrar productos</h1>
-            <DataTable
-              columns={columnsProductos}
-              data={products}
-              onRowClicked={handleRowClick}
-              customStyles={{
-                rows: {
-                  style: {
-                    cursor: 'pointer',
-                    '&:nth-of-type(n)': {
-                      backgroundColor: row => selectedProduct && row.idproducto === selectedProduct.idproducto ? '#d3d3d3' : 'white',
-                    },
-                    '&:hover': {
-                      backgroundColor: '#d3d3d3',
-                    },
-                  },
-                },
-              }}
-              fixedHeader
-              pagination
-              responsive
-            />
-            <div className="selected-product-details">
-              <h2>Detalles del Producto Seleccionado</h2>
-              <Form>
-                <Row>
-                  <FormGroup as={Col} className='mt-3'>
-                    <FormLabel>ID Producto</FormLabel>
-                    <FormControl type="text" value={selectedProduct ? selectedProduct.idproducto : ''} readOnly />
-                  </FormGroup>
-                  <FormGroup as={Col} className='mt-3'>
-                    <FormLabel>Producto</FormLabel>
-                    <FormControl type="text" value={selectedProduct ? selectedProduct.producto : ''} readOnly />
-                  </FormGroup>
-                  <FormGroup as={Col} className='mt-3'>
-                    <FormLabel>Precio Venta</FormLabel>
-                    <FormControl type="number" value={selectedProduct ? selectedProduct.precioventa : ''} readOnly />
-                  </FormGroup>
-                </Row>
-                <FormGroup>
-                  <FormLabel>Descripción</FormLabel>
-                  <FormControl type="text" value={selectedProduct ? selectedProduct.descripccion : ''} readOnly />
-                </FormGroup>
-                <Row>
-                  <FormGroup as={Col} className='mt-3'>
-                    <FormLabel>Especie</FormLabel>
-                    <FormControl type="text" value={selectedProduct ? selectedProduct.idespecie : ''} readOnly />
-                  </FormGroup>
-                  <FormGroup as={Col} className='mt-3'>
-                    <FormLabel>Categoría</FormLabel>
-                    <FormControl type="text" value={selectedProduct ? selectedProduct.idcategoria : ''} readOnly />
-                  </FormGroup>
-                </Row>
-              </Form>
-            </div>
-            <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
-              <Button variant='outline-danger' onClick={borrarProducto}>Eliminar Producto</Button>
-            </div>
           </div>
         </Tab>
       </Tabs>

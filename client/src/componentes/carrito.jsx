@@ -55,14 +55,6 @@ export default function Carrito() {
         const newErrors = {};
         if(usuario==null){
 
-            if (!nuipcliente) newErrors.nuipcliente = 'NUIP Cliente es obligatorio.';
-            if (!correo) newErrors.correo = 'Correo es obligatorio.';
-            if (!telefono) {
-                newErrors.telefono = 'Teléfono es obligatorio.';
-            } else if (!/^\d{10}$/.test(telefono)) {
-                newErrors.telefono = 'El teléfono debe tener 10 dígitos y ser numérico.';
-            }
-            if (!nombres) newErrors.nombres = 'Nombres son obligatorios.';
 
         }
         if (!direccion) newErrors.direccion = 'Dirección es obligatoria.';

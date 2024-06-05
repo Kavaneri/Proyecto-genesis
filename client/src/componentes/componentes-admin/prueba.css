@@ -9,6 +9,10 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
+  .inventario-form {
+    display: flex;
+    flex-direction: column;
+  }
   .inventario-container h1 {
     text-align: center;
     margin-bottom: 20px;

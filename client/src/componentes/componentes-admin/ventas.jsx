@@ -50,9 +50,9 @@ export default function Ventas() {
     }
   }, [selectedRow, detallesVenta, clientes]);
 
-  //manejadores ventas
+  // Manejadores de ventas
   const despacharVenta = () => {
-    const venta = selectedRow; // Asegúrate de que selectedRow contiene el objeto de la venta seleccionada
+    const venta = selectedRow;
     fetch(`http://localhost:5000/ventas/despachar/${venta.idventa}`, {
       method: "PUT",
       headers: {
@@ -63,14 +63,15 @@ export default function Ventas() {
     .then(data => {
       console.log(data);
       toast.success('Venta despachada exitosamente');
-      window.location.reload(); // Recargar la página después de despachar la venta
+      window.location.reload();
     })
     .catch(error => {
       console.error('Error:', error);
     });
   };
+
   const finalizarVenta = () => {
-    const venta = selectedRow; // Asegúrate de que selectedRow contiene el objeto de la venta seleccionada
+    const venta = selectedRow;
     fetch(`http://localhost:5000/ventas/Finalizar/${venta.idventa}`, {
       method: "PUT",
       headers: {
@@ -80,14 +81,14 @@ export default function Ventas() {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      toast.success('Venta despachada exitosamente');
-      window.location.reload(); // Recargar la página después de despachar la venta
+      toast.success('Venta finalizada exitosamente');
+      window.location.reload();
     })
     .catch(error => {
       console.error('Error:', error);
     });
   };
-  
+
   // Columnas de la tabla de ventas
   const columnsVentas = [
     {
@@ -125,6 +126,24 @@ export default function Ventas() {
   const ventasDespachadas = ventas.filter(venta => venta.idestadoventa === 3);
   const ventasFinalizadas = ventas.filter(venta => venta.idestadoventa === 4);
 
+  // Estilos personalizados para DataTable
+  const customStyles = {
+    rows: {
+      style: {
+        cursor: 'pointer',
+        '&:nth-of-type(n)': {
+          backgroundColor: row =>
+            selectedRow && row.idventa === selectedRow.idventa
+              ? '#d3d3d3'
+              : 'white',
+        },
+        '&:hover': {
+          backgroundColor: '#d3d3d3',
+        },
+      },
+    },
+  };
+
   return (
     <>
       <Tabs defaultActiveKey="Ventas a despachar" id="tab-ventas" className='mb-3' fill justify>
@@ -136,10 +155,9 @@ export default function Ventas() {
             <DataTable
               columns={columnsVentas}
               data={ventasIniciadas}
+              customStyles={customStyles}
               fixedHeader
-              selectableRows
-              selectableRowsSingle
-              onSelectedRowsChange={data => setSelectedRow(data.selectedRows[0])}
+              onRowClicked={row => setSelectedRow(row)}
               pagination
               responsive
             />
@@ -168,6 +186,7 @@ export default function Ventas() {
             <DataTable
               columns={columnsProductos}
               data={productos}
+              customStyles={customStyles}
               fixedHeader
               pagination
               responsive
@@ -214,7 +233,7 @@ export default function Ventas() {
               <FormControl value={datosUsuario ? datosUsuario.telefono : ""} disabled />
             </FormGroup>
               <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
-                <Button variant='outline-success' onClick={(  ) => { despacharVenta() }}>Venta Despachada</Button>
+                <Button variant='outline-success' onClick={() => { despacharVenta() }}>Venta Despachada</Button>
               </div>
               <Toaster richColors expand={false} position='top-right' />
           </Row>
@@ -228,10 +247,9 @@ export default function Ventas() {
             <DataTable
               columns={columnsVentas}
               data={ventasDespachadas}
+              customStyles={customStyles}
               fixedHeader
-              selectableRows
-              selectableRowsSingle
-              onSelectedRowsChange={data => setSelectedRow(data.selectedRows[0])}
+              onRowClicked={row => setSelectedRow(row)}
               pagination
               responsive
             />
@@ -260,6 +278,7 @@ export default function Ventas() {
             <DataTable
               columns={columnsProductos}
               data={productos}
+              customStyles={customStyles}
               fixedHeader
               pagination
               responsive
@@ -306,7 +325,7 @@ export default function Ventas() {
               <FormControl value={datosUsuario ? datosUsuario.telefono : ""} disabled />
             </FormGroup>
               <div className='d-flex justify-content-center align-items-center gap-4 my-4 p-4'>
-                <Button variant='outline-success' onClick={(  ) => { finalizarVenta() }}>Venta Despachada</Button>
+                <Button variant='outline-success' onClick={() => { finalizarVenta() }}>Venta Despachada</Button>
               </div>
               <Toaster richColors expand={false} position='top-right' />
           </Row>
@@ -320,10 +339,9 @@ export default function Ventas() {
             <DataTable
               columns={columnsVentas}
               data={ventasFinalizadas}
+              customStyles={customStyles}
               fixedHeader
-              selectableRows
-              selectableRowsSingle
-              onSelectedRowsChange={data => setSelectedRow(data.selectedRows[0])}
+              onRowClicked={row => setSelectedRow(row)}
               pagination
               responsive
             />
@@ -352,6 +370,7 @@ export default function Ventas() {
             <DataTable
               columns={columnsProductos}
               data={productos}
+              customStyles={customStyles}
               fixedHeader
               pagination
               responsive

@@ -27,35 +27,39 @@ export default function Formulario() {
 
 
     // Definir el esquema de validación
-    let schema;
-    if (usuario === null) {
-        schema = z.object({
-            nombremascota: z.string().min(3, { message: "El nombre es requerido" }),
-            razamascota: z.string().min(3, { message: "El nombre es requerido" }),
-            email: z.string().email({ message: "Correo inválido" }),
-            direccion: z.string().min(3, { message: "La dirección es requerida" }),
-            nuip: z.coerce.number()
-                .int()
-                .min(10000000, { message: "El número de identificación debe contener mínimo 8 cifras" })
-                .max(9999999999, { message: "El número de identificación debe contener máximo 10 cifras" }),
-            telefono: z.coerce.number()
-                .int()
-                .min(1000000, { message: "El número de identificación debe contener mínimo 7 cifras" })
-                .max(9999999999, { message: "El número de identificación debe contener máximo 10 cifras" }),
-        });
-    } else {
-        schema = z.object({
-            nombremascota: z.string().min(3, { message: "El nombre es requerido" }),
-            direccion: z.string().min(3, { message: "La dirección es requerida" }),
-        });
-    }
+let schema;
+if (usuario === null) {
+    schema = z.object({
+        nombremascota: z.string().min(3, { message: "El nombre de la mascota es requerido y debe tener al menos 3 caracteres" }),
+        raza: z.string().min(3, { message: "La raza es requerida y debe tener al menos 3 caracteres" }),
+        email: z.string().email({ message: "Correo inválido" }),
+        direccion: z.string().min(3, { message: "La dirección es requerida y debe tener al menos 3 caracteres" }),
+        nuip: z.coerce.number()
+            .int()
+            .min(10000000, { message: "El número de identificación debe contener mínimo 8 cifras" })
+            .max(9999999999, { message: "El número de identificación debe contener máximo 10 cifras" }),
+        telefono: z.coerce.number()
+            .int()
+            .min(1000000, { message: "El número de teléfono debe contener mínimo 7 cifras" })
+            .max(9999999999, { message: "El número de teléfono debe contener máximo 10 cifras" }),
+    });
+} else {
+    schema = z.object({
+        nombremascota: z.string().min(3, { message: "El nombre de la mascota es requerido y debe tener al menos 3 caracteres" }),
+        raza: z.string().min(2, { message: "La raza es requerida y debe tener al menos 2 caracteres" }),
+        direccion: z.string().min(6, { message: "La dirección es requerida y debe tener al menos 6 caracteres" }),
+    });
+}
 
     // Calcular la fecha mínima permitida (2 días después de la fecha actual)
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 3);
     const maxDate = new Date();
     maxDate.setDate(maxDate.getDate() + 30)
-
+    const isSunday = (date) => {
+        const day = date.getDay();
+        return day !== 0; // 0 es domingo en JavaScript
+    };
     //capturar datos cliente
     //nuipcliente, correo, telefono, nombres
     const [nuipcliente, setnuipcliente] = useState('');
@@ -266,21 +270,26 @@ export default function Formulario() {
                                                 minDate={minDate}
                                                 maxDate={maxDate}
                                                 locale="es"
+                                                filterDate={isSunday} 
                                             />
                                     </Form.Group>
     
                                     <Form.Group as={Col} className='mb-4' controlId='formGridHora'>
                                         <Form.Label className='etiqueta' style={{ color: 'white' }}>Hora</Form.Label>
                                         <Form.Select
-                                            defaultValue="" 
-                                            onChange={(e) => sethoracita(e.target.value, 10)}>
-                                            <option value="" disabled>Choose...</option>
-                                            <option value="7:00">7 am</option>
-                                            <option value="10:00">10 am</option>
-                                            <option value="13:00">1 pm</option>
-                                            <option value="15:00">3 pm</option>
-                                            <option value="18:00">5 pm</option>
-                                        </Form.Select>
+                                        defaultValue="" 
+                                        onChange={(e) => sethoracita(e.target.value, 10)}>
+                                        <option value="" disabled>Choose...</option>
+                                        <option value="7:00">7 am</option>
+                                        <option value="8:00">8 am</option>
+                                        <option value="9:00">9 pm</option>
+                                        <option value="10:00">10 am</option>
+                                        <option value="11:00">11 am</option>
+                                        <option value="14:00">2 pm</option>
+                                        <option value="15:00">3 pm</option>
+                                        <option value="16:00">4 pm</option>
+                                        <option value="17:00">5 pm</option>
+                                    </Form.Select>
                                     </Form.Group>
     
                                     <Form.Group as={Col} controlId="formGridServicio">
@@ -289,12 +298,11 @@ export default function Formulario() {
                                         defaultValue="" 
                                         onChange={(e) => setidservicio(parseInt(e.target.value, 10))}>
                                         <option value="" disabled>Choose...</option>
-                                        <option value="2">baño perro</option>
-                                        <option value="4">baño gato</option>
-                                        <option value="5">cita general perro</option>
-                                        <option value="6">cita general gato</option>
-                                        <option value="7">cita dentita perro</option>
-                                        <option value="8">cita dentita gato</option>
+                                        <option value="2">profilaxis</option>
+                                        <option value="3">castrar</option>
+                                        <option value="4">ecografia</option>
+                                        <option value="5">radiografia</option>
+                                        <option value="6">cita general</option>
                                     </Form.Select>
                                     </Form.Group>
                                 </Row>
@@ -452,6 +460,7 @@ export default function Formulario() {
                                             minDate={minDate}
                                             maxDate={maxDate}
                                             locale="es"
+                                            filterDate={isSunday} 
                                         />
                                 </Form.Group>
 
@@ -462,10 +471,14 @@ export default function Formulario() {
                                         onChange={(e) => sethoracita(e.target.value, 10)}>
                                         <option value="" disabled>Choose...</option>
                                         <option value="7:00">7 am</option>
+                                        <option value="8:00">8 am</option>
+                                        <option value="9:00">9 pm</option>
                                         <option value="10:00">10 am</option>
-                                        <option value="13:00">1 pm</option>
+                                        <option value="11:00">11 am</option>
+                                        <option value="14:00">2 pm</option>
                                         <option value="15:00">3 pm</option>
-                                        <option value="18:00">5 pm</option>
+                                        <option value="16:00">4 pm</option>
+                                        <option value="17:00">5 pm</option>
                                     </Form.Select>
                                 </Form.Group>
 
@@ -475,12 +488,11 @@ export default function Formulario() {
                                     defaultValue="" 
                                     onChange={(e) => setidservicio(parseInt(e.target.value, 10))}>
                                     <option value="" disabled>Choose...</option>
-                                    <option value="2">baño perro</option>
-                                    <option value="4">baño gato</option>
-                                    <option value="5">cita general perro</option>
-                                    <option value="6">cita general gato</option>
-                                    <option value="7">cita dentita perro</option>
-                                    <option value="8">cita dentita gato</option>
+                                        <option value="2">profilaxis</option>
+                                        <option value="3">castrar</option>
+                                        <option value="4">ecografia</option>
+                                        <option value="5">radiografia</option>
+                                        <option value="6">cita general</option>
                                 </Form.Select>
                                 </Form.Group>
                             </Row>

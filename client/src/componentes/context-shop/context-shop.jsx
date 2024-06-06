@@ -114,8 +114,10 @@ export const ShopContextProvider = ({ children }) => {
             if (!nuevoDetalle[productoId]) {
                 nuevoDetalle[productoId] = { cantidad: 0, total: 0 };
             }
-            nuevoDetalle[productoId].cantidad += 1;
-            nuevoDetalle[productoId].total = nuevoDetalle[productoId].cantidad * productos.find(p => p.id === productoId).precio;
+            if (nuevoDetalle[productoId].cantidad < 10) {
+                nuevoDetalle[productoId].cantidad += 1;
+                nuevoDetalle[productoId].total = nuevoDetalle[productoId].cantidad * productos.find(p => p.id === productoId).precio;
+            }
             return nuevoDetalle;
         });
     };
@@ -126,10 +128,28 @@ export const ShopContextProvider = ({ children }) => {
             const nuevoDetalle = { ...prev };
             if (nuevoDetalle[productoId] && nuevoDetalle[productoId].cantidad > 0) {
                 nuevoDetalle[productoId].cantidad -= 1;
-                nuevoDetalle[productoId].total = nuevoDetalle[productoId].cantidad * productos.find(p => p.id === productoId).precio;
                 if (nuevoDetalle[productoId].cantidad === 0) {
                     delete nuevoDetalle[productoId];
+                } else {
+                    nuevoDetalle[productoId].total = nuevoDetalle[productoId].cantidad * productos.find(p => p.id === productoId).precio;
                 }
+            }
+            return nuevoDetalle;
+        });
+    };
+
+    // Nueva función para actualizar la cantidad de un producto
+    const actualizarCantidadProducto = (productoId, cantidad) => {
+        if (cantidad < 0) return; // Asegúrate de que la cantidad no sea negativa
+        setDetalleCompra((prev) => {
+            const nuevoDetalle = { ...prev };
+            if (!nuevoDetalle[productoId]) {
+                nuevoDetalle[productoId] = { cantidad: 0, total: 0 };
+            }
+            nuevoDetalle[productoId].cantidad = cantidad;
+            nuevoDetalle[productoId].total = cantidad * productos.find(p => p.id === productoId).precio;
+            if (nuevoDetalle[productoId].cantidad === 0) {
+                delete nuevoDetalle[productoId];
             }
             return nuevoDetalle;
         });
@@ -151,6 +171,7 @@ export const ShopContextProvider = ({ children }) => {
         detalleCompra,
         agregarProducto,
         removerProducto,
+        actualizarCantidadProducto,
         getSubtotalProductos,
         getCantidadProductos,
         filtrarProductos,

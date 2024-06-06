@@ -135,7 +135,7 @@ export default function Login() {
                         <div className='d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4'>
                             <div className='text-white px-3 py-4 p-md-5 mx-md-4'>
                                 <h4 className='mb-4'>Nos alegra tenerte aquí</h4>
-                                <p className='small mb-0'>mision y vision</p>
+                                <p className='small mb-0'>la clinica veterinaria la merced es una empresa para el cuidado de mascotas y darles la mejor compañia</p>
                             </div>
                         </div>
                     </Col>

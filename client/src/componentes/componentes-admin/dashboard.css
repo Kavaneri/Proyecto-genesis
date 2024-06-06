@@ -47,13 +47,14 @@
 }
 
 .menu-button {
-    background-color: rgba(49, 119, 64, 0);
+    background-color: rgba(49, 119, 64, 0.575);
     border: 1px solid rgba(255, 255, 255, 0);
     color: white;
     width: 100%;
-    padding: 10px;
+    padding-bottom: 10px;
     transition: all 0.3s ease;
     border-radius: 10px;
+    height: 65px;
 }
 
 .menu-button:hover {

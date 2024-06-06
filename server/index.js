@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+
 const express = require("express");
 const cors = require("cors");
 const pool = require("./db");
@@ -16,7 +17,210 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//apartado correos
 
+const nodeMailer  = require('nodemailer');
+const { error, info } = require('console');
+//perb luog wbfv iomv
+const transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth:{
+        user:"papyrus1764@gmail.com",
+        pass:"perbluogwbfviomv"
+    }
+});
+
+let mail ={
+    from: "papyrus1764@gmail.com",
+    to: "jmlm1719lara@gmail.com",
+    subject: "hola",
+    text: "hola usuario",
+    html: `<h5>Este mensaje es desde nodemailer</h5>`
+}
+
+    app.post("/correoTest",async (req, res) => {
+    try {
+        transporter.sendMail(mail, (error, info) => {
+            if(error){
+                console.log("error en send email",error.message);
+            }else{
+                console.log("email sent");
+            }
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+    });
+    app.post("/send-rejected-email", (req, res) => {
+    const { idcitas, cliente, servicio, fecha, hora, correo } = req.body;
+    const mailOptions = {
+      from: "papyrus1764@gmail.com",
+      to: correo,
+      subject: "Cita Rechazada",
+      html: `
+        <h1>Cita Rechazada</h1>
+        <p>Hola ${cliente},</p>
+        <p>Lo lamentamos pero tu cita ha sido rechazada. Aquí están los detalles:</p>
+        <ul>
+          <li><strong>Código de cita:</strong> ${idcitas}</li>
+          <li><strong>Servicio:</strong> ${servicio}</li>
+          <li><strong>Fecha:</strong> ${fecha}</li>
+          <li><strong>Hora:</strong> ${hora}</li>
+        </ul>
+      `
+    };
+  
+    // Llamada a la función de envío de correo
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error enviando el correo");
+      } else {
+        console.log('Correo enviado:', info.response);
+        res.status(200).send("Correo enviado");
+      }
+    });
+    });
+    app.post("/send-acceptance-email", (req, res) => {
+    const { idcitas, cliente, servicio, fecha, hora, correo } = req.body;
+    const mailOptions = {
+      from: "papyrus1764@gmail.com",
+      to: correo,
+      subject: "Cita Aceptada",
+      html: `
+        <h1>Cita Aceptada</h1>
+        <p>Hola ${cliente},</p>
+        <p>Tu cita ha sido aceptada. Aquí están los detalles:</p>
+        <ul>
+          <li><strong>Código de cita:</strong> ${idcitas}</li>
+          <li><strong>Servicio:</strong> ${servicio}</li>
+          <li><strong>Fecha:</strong> ${fecha}</li>
+          <li><strong>Hora:</strong> ${hora}</li>
+        </ul>
+      `
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error enviando el correo");
+      } else {
+        console.log('Correo enviado:', info.response);
+        res.status(200).send("Correo enviado");
+      }
+    });
+    });
+    app.post("/send-completion-email", (req, res) => {
+    const { idcitas, cliente, servicio, fecha, hora, correo } = req.body;
+    const mailOptions = {
+      from: "tuemail@gmail.com",
+      to: correo,
+      subject: "Cita Finalizada",
+      html: `
+        <h1>Cita Finalizada</h1>
+        <p>Hola ${cliente},</p>
+        <p>Tu cita ha sido finalizada. Aquí están los detalles:</p>
+        <ul>
+          <li><strong>Código de cita:</strong> ${idcitas}</li>
+          <li><strong>Servicio:</strong> ${servicio}</li>
+          <li><strong>Fecha:</strong> ${fecha}</li>
+          <li><strong>Hora:</strong> ${hora}</li>
+        </ul>
+        <p>Queremos conocer tu opinión. Por favor, llena la siguiente <a href="https://forms.gle/3gTt78kfYec7PbXj6">encuesta de satisfacción</a>.</p>
+      `
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error enviando el correo");
+      } else {
+        console.log('Correo enviado:', info.response);
+        res.status(200).send("Correo enviado");
+      }
+    });
+    });
+
+    //olvidaste contraseña:
+        // Enviar código al correo
+        app.post("/usuarios/solicitar-codigo", async (req, res) => {
+            try {
+                const { correo } = req.body;
+                const usuario = await pool.query("SELECT * FROM usuarios WHERE correo = $1", [correo]);
+
+                if (usuario.rows.length === 0) {
+                    return res.status(404).json({ message: "El correo electrónico no está registrado." });
+                }
+
+                const nuevoCodigo = generarCodigoAleatorio();
+                await pool.query("UPDATE usuarios SET codigo = $1 WHERE correo = $2", [nuevoCodigo, correo]);
+
+                // Configura nodemailer
+                let transporter = nodeMailer.createTransport({
+                    service: 'gmail', // Usa el servicio de tu preferencia
+                    auth: {
+                        user: 'papyrus1764@gmail.com',
+                        pass: 'perbluogwbfviomv'
+                    }
+                });
+
+                // Enviar correo
+                let mailOptions = {
+                    from: 'tuemail@gmail.com',
+                    to: correo,
+                    subject: 'Código de Verificación',
+                    text: `Tu código de verificación es: ${nuevoCodigo}`
+                };
+
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return res.status(500).send(error.toString());
+                    }
+                    res.json({ message: "El código ha sido enviado exitosamente." });
+                });
+
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error en el servidor.");
+            }
+        });
+
+        app.post("/send-sell-email", (req, res) => {
+            const { cliente, correo } = req.body;
+            
+            // Log para verificar que los datos están llegando correctamente
+            console.log("Cliente:", cliente);
+            console.log("Correo:", correo);
+        
+            if (!correo) {
+                return res.status(400).send("Correo no definido");
+            }
+        
+            const mailOptions = {
+                from: "papyrus1764@gmail.com",
+                to: correo,
+                subject: "venta despachada",
+                html: `
+                    <h1>Cita Aceptada</h1>
+                    <p>Hola ${cliente},</p>
+                    <p>Tu compra ha sido despachada. En las próximas horas tocaremos tu puerta.</p>
+                `
+            };
+        
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).send("Error enviando el correo");
+                } else {
+                    console.log('Correo enviado:', info.response);
+                    return res.status(200).send("Correo enviado");
+                }
+            });
+        });
+        
+    
 //ROUTES//
     //funciones barrios aprovados
         //obtener barriosAprovados
@@ -1579,47 +1783,82 @@ app.use(express.json());
                 res.status(500).send("Error en el servidor.");
             }
         });
-        
-        //cambiar contraseña de un usuario
-        app.patch("/usuarios/cambiar-clave", async (req, res) => {
+
+        // Generar un código aleatorio de 5 caracteres
+        function generarCodigoAleatorio() {
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let resultado = '';
+            for (let i = 0; i < 5; i++) {
+                resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return resultado;
+        }
+        // Asignar un código aleatorio a un usuario
+        app.patch("/usuarios/asignar-codigo", async (req, res) => {
             try {
-                // Obtener los datos del cuerpo de la solicitud
-                const { correo, nuevaClave } = req.body;
-                //const { correo, claveActual, nuevaClave } = req.body;
-        
+                // Obtener el correo del cuerpo de la solicitud
+                const { correo } = req.body;
+
                 // Buscar el usuario en la base de datos por correo electrónico
                 const usuario = await pool.query(
                     "SELECT * FROM usuarios WHERE correo = $1",
                     [correo]
                 );
-        
+
                 // Verificar si se encontró un usuario con ese correo
                 if (usuario.rows.length === 0) {
                     return res.status(404).json({ message: "El correo electrónico no está registrado." });
                 }
-        
-                // Verificar si la clave actual coincide
-                //const hashClaveActual = crypto.createHash('sha256').update(claveActual).digest('hex');
-                //if (usuario.rows[0].clave_hash !== hashClaveActual) {
-                //    return res.status(401).json({ message: "La clave actual es incorrecta." });
-                //}
-        
+
+                // Generar un nuevo código aleatorio
+                const nuevoCodigo = generarCodigoAleatorio();
+
+                // Actualizar el código del usuario en la base de datos
+                await pool.query(
+                    "UPDATE usuarios SET codigo = $1 WHERE correo = $2",
+                    [nuevoCodigo, correo]
+                );
+
+                res.json({ message: "El código ha sido asignado exitosamente.", codigo: nuevoCodigo });
+            } catch (error) {
+                console.error(error.message);
+                res.status(500).send("Error en el servidor.");
+            }
+        });
+
+        // Cambiar contraseña de un usuario
+        app.patch("/usuarios/cambiar-clave", async (req, res) => {
+            try {
+                // Obtener los datos del cuerpo de la solicitud
+                const { correo, codigo, nuevaClave } = req.body;
+
+                // Buscar el usuario en la base de datos por correo electrónico y código
+                const usuario = await pool.query(
+                    "SELECT * FROM usuarios WHERE correo = $1 AND codigo = $2",
+                    [correo, codigo]
+                );
+
+                // Verificar si se encontró un usuario con ese correo y código
+                if (usuario.rows.length === 0) {
+                    return res.status(404).json({ message: "El correo electrónico o el código no están registrados." });
+                }
+
                 // Calcular el hash SHA-256 de la nueva clave
                 const hashNuevaClave = crypto.createHash('sha256').update(nuevaClave).digest('hex');
-        
+
                 // Actualizar la clave del usuario en la base de datos
                 await pool.query(
-                    "UPDATE usuarios SET clave_hash = $1 WHERE correo = $2",
-                    [hashNuevaClave, correo]
+                    "UPDATE usuarios SET clave_hash = $1 WHERE correo = $2 AND codigo = $3",
+                    [hashNuevaClave, correo, codigo]
                 );
-        
+
                 res.json({ message: "La clave ha sido cambiada exitosamente." });
             } catch (error) {
                 console.error(error.message);
                 res.status(500).send("Error en el servidor.");
             }
         });
-        
+
         //cambiar telefono de un usuario
         app.patch("/usuarios/cambiar-telefono", async (req, res) => {
             try {

@@ -1,3 +1,8 @@
+.cantidad-input {
+    width: 60px;
+    text-align: center;
+}
+
 .detalle{
     max-width: 1000px;
     max-height:  400px;

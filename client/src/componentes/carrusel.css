@@ -1,3 +1,7 @@
+.carousel-inner{
+    margin: 0px !important;   
+    padding: 0px !important; 
+}
 .noMargin{
     margin: 0px !important;
     padding: 0px !important;

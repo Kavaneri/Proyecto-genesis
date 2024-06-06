@@ -61,8 +61,10 @@ export default function Carrito() {
     const validateForm = () => {
         const newErrors = {};
         if(usuario==null){
-
-
+            if (!nuipcliente) newErrors.nuipcliente = 'NUIP Cliente es obligatorio.';
+            if (!correo) newErrors.correo = 'Correo es obligatorio.';
+            if (!telefono) newErrors.telefono = 'Teléfono es obligatorio.';
+            if (!nombres) newErrors.nombres = 'Nombres son obligatorios.';
         }
         if (!direccion) newErrors.direccion = 'Dirección es obligatoria.';
         if (idbarriosaprovado === 0) newErrors.idbarriosaprovado = 'Debe seleccionar un barrio.';

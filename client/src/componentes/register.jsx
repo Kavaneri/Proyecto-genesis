@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './login.css'
 import logo from './Logo la merced.png'
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,6 +20,8 @@ const Formulario = () => {
     const [nombre, setnombres] = useState('');
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm();
+
+    const navigate = useNavigate()
 
     const onSubmit = async (data) => {
         try {
@@ -48,6 +50,7 @@ const Formulario = () => {
             console.log("Usuario autenticado:", data);
 
             setShowSuccessModal(true);
+            navigate('/')
         } catch (error) {
             console.log(error.message);
             setServerError('Error al comunicarse con el servidor.');

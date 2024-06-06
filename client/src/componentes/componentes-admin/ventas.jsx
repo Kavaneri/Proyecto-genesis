@@ -54,6 +54,7 @@ export default function Ventas() {
   const despacharVenta = () => {
     try {
       const venta = selectedRow;
+  
       fetch(`http://localhost:5000/ventas/despachar/${venta.idventa}`, {
         method: "PUT",
         headers: {
@@ -63,6 +64,33 @@ export default function Ventas() {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+  
+        // Enviar un correo electrónico al cliente
+        fetch(`http://localhost:5000/send-sell-email`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+          body: JSON.stringify({
+            cliente: datosUsuario.nombres,
+            correo: datosUsuario.correo,
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error enviando el correo');
+          }
+          return response.text(); // Cambiado a text() para asegurar que se reciba el mensaje de respuesta
+        })
+        .then(emailData => {
+          console.log(emailData);
+          toast.success('Correo de notificación enviado exitosamente');
+        })
+        .catch(error => {
+          console.error('Error al enviar el correo:', error);
+          toast.error('Error al enviar el correo de notificación');
+        });
+  
         toast.success('Venta despachada exitosamente');
         window.location.reload();
       })
@@ -70,9 +98,10 @@ export default function Ventas() {
         console.error('Error:', error);
       });
     } catch (error) {
-      console.log(error.message)      
+      console.log(error.message);
     }
   };
+  
 
   const finalizarVenta = () => {
     try {
@@ -102,15 +131,18 @@ export default function Ventas() {
   const columnsVentas = [
     {
       name: "ID Venta",
-      selector: row => row.idventa
+      selector: row => row.idventa,
+      sortable: true
     },
     {
       name: "Fecha",
-      selector: row => new Date(row.fechaventa).toLocaleDateString()
+      selector: row => new Date(row.fechaventa).toLocaleDateString(),
+      sortable: true
     },
     {
       name: "Valor Total",
-      selector: row => row.valortotal
+      selector: row => row.valortotal,
+      sortable: true
     }
   ];
 

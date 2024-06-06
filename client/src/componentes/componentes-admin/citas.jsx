@@ -65,79 +65,147 @@ export default function Citas() {
     try {
       const cita = selectedRow[0];
       fetch(`http://localhost:5000/citas/aceptar/${cita.idcitas}`, {
-          method: "PUT",
-          headers: {
-              "Content-type": "application/json; charset=UTF-8",
-          }
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
       })
       .then(response => response.json())
       .then(data => {
-          console.log(data);
-          toast.success('Cita aceptada');
-          window.location.reload();
-          // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+        console.log(data);
+        toast.success('Cita aceptada');
+        
+        // Llamada para enviar el correo
+        fetch(`http://localhost:5000/send-acceptance-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            idcitas: cita.idcitas,
+            cliente: cita.cliente,
+            servicio: cita.servicio,
+            fecha: cita.fechacita.split("T")[0],
+            hora: cita.horacita,
+            correo: cita.correo
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Correo enviado:', data);
+        })
+        .catch(error => {
+          console.error('Error enviando el correo:', error);
+        });
+        
+        // Recargar la página o actualizar el estado de la aplicación
+        window.location.reload();
       })
       .catch(error => {
-          console.error('Error:', error);
+        console.error('Error:', error);
       });
-      
+  
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
-
+  
   const rechazarUnaCita = () => {
     try {
       const cita = selectedRow[0];
       fetch(`http://localhost:5000/citas/rechazar/${cita.idcitas}`, {
-          method: "PUT",
-          headers: {
-              "Content-type": "application/json; charset=UTF-8",
-          }
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
       })
       .then(response => response.json())
       .then(data => {
-          console.log(data);
-          toast.error('Cita rechazada');
-          window.location.reload();
-          // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+        console.log(data);
+        toast.error('Cita rechazada');
+        // Llamada para enviar el correo
+        return fetch(`http://localhost:5000/send-rejected-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            idcitas: cita.idcitas,
+            cliente: cita.cliente,
+            servicio: cita.servicio,
+            fecha: cita.fechacita.split("T")[0],
+            hora: cita.horacita,
+            correo: cita.correo
+          })
+        });
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Correo enviado:', data);
+        // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+        window.location.reload();
       })
       .catch(error => {
-          console.error('Error:', error);
+        console.error('Error:', error);
       });
-      
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
+  
 
   const finalizarUnaCita = () => {
     try {
       const cita = selectedRow[0];
       fetch(`http://localhost:5000/citas/finalizar/${cita.idcitas}`, {
-          method: "PUT",
-          headers: {
-              "Content-type": "application/json; charset=UTF-8",
-          }
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
       })
       .then(response => response.json())
       .then(data => {
-          console.log(data);
-          toast.success('Cita aceptada');
-          window.location.reload();
-          // Actualiza el estado de la aplicación o realiza cualquier acción adicional necesaria
+        console.log(data);
+        toast.success('Cita finalizada');
+        
+        // Llamada para enviar el correo
+        fetch(`http://localhost:5000/send-completion-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            idcitas: cita.idcitas,
+            cliente: cita.cliente,
+            servicio: cita.servicio,
+            fecha: cita.fechacita.split("T")[0],
+            hora: cita.horacita,
+            correo: cita.correo
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Correo enviado:', data);
+        })
+        .catch(error => {
+          console.error('Error enviando el correo:', error);
+        });
+  
+        // Recargar la página o actualizar el estado de la aplicación
+        window.location.reload();
       })
       .catch(error => {
-          console.error('Error:', error);
+        console.error('Error:', error);
       });
-      
-      } catch (error) {
-        console.log(error.message)
-      }
+  
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+  
 
   const columns = [
-    { name: "Codigo cita", selector: row => row.idcitas },
+    { name: "Codigo cita", selector: row => row.idcitas,sortable: true },
     { name: "Dueño paciente", selector: row => row.cliente },
     { name: "Raza paciente", selector: row => row.raza },
     { name: "Fecha solicitud", selector: row => row.fechacita },
@@ -230,10 +298,34 @@ export default function Citas() {
                 <FormLabel className='mt-3'>Descripción</FormLabel>
                 <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
               </FormGroup>
-              <FormGroup>
-                <FormLabel className='mt-3'>Direccion</FormLabel>
-                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].direccioncliente : ""} disabled />
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Direccion</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup as={Col} className='mt-3'>
+                <FormLabel className='mt-3'>correo</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
               </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>nombres</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>nombre mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
             </Form>
 
             <div className='d-grid gap-2'>
@@ -290,10 +382,34 @@ export default function Citas() {
                 <FormLabel className='mt-3'>Descripción</FormLabel>
                 <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
               </FormGroup>
-              <FormGroup>
-                <FormLabel className='mt-3'>Direccion</FormLabel>
-                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].direccioncliente : ""} disabled />
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Direccion</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup as={Col} className='mt-3'>
+                <FormLabel className='mt-3'>correo</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
               </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>nombres</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>nombre mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
             </Form>
 
             <div className='d-grid gap-2'>
@@ -351,10 +467,34 @@ export default function Citas() {
                 <FormLabel className='mt-3'>Descripción</FormLabel>
                 <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
               </FormGroup>
-              <FormGroup>
-                <FormLabel className='mt-3'>Direccion</FormLabel>
-                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].direccioncliente : ""} disabled />
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Direccion</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup as={Col} className='mt-3'>
+                <FormLabel className='mt-3'>correo</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
               </FormGroup>
+              <FormGroup>
+                <FormLabel className='mt-3'>nombres</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>nombre mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
             </Form>
           </div>
         </Tab>
@@ -400,14 +540,38 @@ export default function Citas() {
                   <FormControl value={selectedRow[0] ? selectedRow[0].horacita : ""} disabled />
                 </FormGroup>
               </Row>
-              <FormGroup>
+              <FormGroup as={Col} className='mt-3'>
                 <FormLabel className='mt-3'>Descripción</FormLabel>
-                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentariocliente : ""} disabled />
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].comentarioclientecliente : ""} disabled />
+              </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Direccion</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].direccion : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>Barrio</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].barrio : ""} disabled />
+                </FormGroup>
+              </Row>
+              <FormGroup as={Col} className='mt-3'>
+                <FormLabel className='mt-3'>correo</FormLabel>
+                <FormControl value={selectedRow[0] ? selectedRow[0].correo : ""} disabled />
               </FormGroup>
               <FormGroup>
-                <FormLabel className='mt-3'>Direccion</FormLabel>
-                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].direccioncliente : ""} disabled />
+                <FormLabel className='mt-3'>nombres</FormLabel>
+                <FormControl as="textarea" value={selectedRow[0] ? selectedRow[0].cliente : ""} disabled />
               </FormGroup>
+              <Row>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>nombre mascota</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].mascota : ""} disabled />
+                </FormGroup>
+                <FormGroup as={Col} className='mt-3'>
+                  <FormLabel className='mt-3'>raza</FormLabel>
+                  <FormControl value={selectedRow[0] ? selectedRow[0].raza : ""} disabled />
+                </FormGroup>
+              </Row>
             </Form>
           </div>
         </Tab>
